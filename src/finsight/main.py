@@ -11,4 +11,3 @@ app = FastAPI(
     description="Evidence-backed research assistant for SEC filings",
 )
 app.include_router(health_router)
-
