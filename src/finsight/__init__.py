@@ -1,0 +1,2 @@
+"""FinSight application package."""
+
