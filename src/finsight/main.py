@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from finsight.api.routes.filings import router as filings_router
 from finsight.api.routes.health import router as health_router
 from finsight.core.config import get_settings
 
@@ -11,3 +12,4 @@ app = FastAPI(
     description="Evidence-backed research assistant for SEC filings",
 )
 app.include_router(health_router)
+app.include_router(filings_router)
