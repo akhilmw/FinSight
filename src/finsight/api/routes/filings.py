@@ -4,6 +4,7 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from finsight.api.dependencies import get_sec_client
 from finsight.clients.sec import CompanyNotFoundError, SecClient
 from finsight.db.session import get_db
 from finsight.repositories.filing import FilingRepository
@@ -17,6 +18,10 @@ from finsight.services.filing_ingestion import FilingIngestionService
 router = APIRouter(prefix="/filings", tags=["filings"])
 
 DatabaseSession = Annotated[Session, Depends(get_db)]
+SecClientDependency = Annotated[
+    SecClient,
+    Depends(get_sec_client),
+]
 
 
 @router.post(
@@ -27,19 +32,18 @@ DatabaseSession = Annotated[Session, Depends(get_db)]
 async def ingest_filings(
     request: FilingIngestRequest,
     session: DatabaseSession,
+    sec_client: SecClientDependency,
 ) -> FilingIngestResponse:
+    service = FilingIngestionService(
+        session=session,
+        sec_client=sec_client,
+    )
     try:
-        async with SecClient() as sec_client:
-            service = FilingIngestionService(
-                session=session,
-                sec_client=sec_client,
-            )
-
-            result = await service.ingest(
-                ticker=request.ticker,
-                form_types=request.form_types,
-                limit=request.limit,
-            )
+        result = await service.ingest(
+            ticker=request.ticker,
+            form_types=request.form_types,
+            limit=request.limit,
+        )
     except CompanyNotFoundError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
