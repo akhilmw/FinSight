@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import date
 from types import TracebackType
 from typing import Self
+from urllib.parse import urlparse
 
 import httpx
 
@@ -28,6 +29,10 @@ class SecFiling:
 
 
 class CompanyNotFoundError(Exception):
+    pass
+
+
+class InvalidFilingDocumentError(Exception):
     pass
 
 
@@ -127,6 +132,42 @@ class SecClient:
                 break
 
         return result_sec_filings
+
+    async def download_filing_html(
+        self,
+        source_url: str,
+    ) -> bytes:
+        parsed_url = urlparse(source_url)
+
+        if (
+            parsed_url.scheme != "https"
+            or parsed_url.hostname != "www.sec.gov"
+            or not parsed_url.path.startswith("/Archives/edgar/data/")
+        ):
+            raise ValueError("Invalid SEC filing URL")
+
+        response = await self._client.get(source_url)
+        response.raise_for_status()
+
+        content_type = response.headers.get(
+            "content-type",
+            "",
+        ).lower()
+
+        valid_content_types = (
+            "text/html",
+            "application/xhtml+xml",
+        )
+
+        if not any(expected_type in content_type for expected_type in valid_content_types):
+            raise InvalidFilingDocumentError(
+                f"Expected an HTML filing, received: {content_type or 'unknown'}"
+            )
+
+        if not response.content:
+            raise InvalidFilingDocumentError("SEC returned an empty filing document")
+
+        return response.content
 
     async def __aenter__(self) -> Self:
         return self

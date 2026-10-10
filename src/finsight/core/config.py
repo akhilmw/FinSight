@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -10,6 +11,7 @@ class Settings(BaseSettings):
     sec_user_agent: str
     sec_request_timeout_seconds: float = 20.0
     sec_requests_per_second: float = 5.0
+    raw_document_directory: Path = Path("data/raw")
 
     model_config = SettingsConfigDict(
         env_file=".env",

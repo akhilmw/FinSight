@@ -131,3 +131,43 @@ def test_get_recent_filings_filters_normalizes_and_limits_results() -> None:
         ]
 
     asyncio.run(run_test())
+
+
+def test_download_filing_html_returns_exact_bytes() -> None:
+    content = b"<html><body>Filing</body></html>"
+
+    async def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.host == "www.sec.gov"
+
+        return httpx.Response(
+            status_code=200,
+            headers={"Content-Type": "text/html; charset=utf-8"},
+            content=content,
+        )
+
+    async def run_test() -> None:
+        transport = httpx.MockTransport(handler)
+
+        async with SecClient(transport=transport) as client:
+            result = await client.download_filing_html(
+                "https://www.sec.gov/Archives/edgar/data/"
+                "1045810/000104581026000021/nvda-20260125.htm"
+            )
+
+        assert result == content
+
+    asyncio.run(run_test())
+
+
+def test_download_filing_html_rejects_non_sec_url() -> None:
+    async def run_test() -> None:
+        async with SecClient() as client:
+            with pytest.raises(
+                ValueError,
+                match="Invalid SEC filing URL",
+            ):
+                await client.download_filing_html(
+                    "https://example.com/malicious.html"
+                )
+
+    asyncio.run(run_test())

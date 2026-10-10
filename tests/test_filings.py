@@ -1,5 +1,7 @@
 from collections.abc import Iterator
 from datetime import date
+from hashlib import sha256
+from pathlib import Path
 from typing import cast
 from unittest.mock import AsyncMock
 
@@ -9,15 +11,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from finsight.api.dependencies import get_sec_client
+from finsight.api.dependencies import get_document_store, get_sec_client
 from finsight.clients.sec import SecClient, SecCompany, SecFiling
 from finsight.db.base import Base
 from finsight.db.session import get_db
 from finsight.main import app
+from finsight.storage.local import LocalDocumentStore
 
 
 @pytest.fixture
-def client() -> Iterator[TestClient]:
+def client(tmp_path: Path) -> Iterator[TestClient]:
     engine = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
@@ -53,6 +56,9 @@ def client() -> Iterator[TestClient]:
             ),
         )
     ]
+    fake_sec_client.download_filing_html.return_value = (
+        b"<html><body>NVIDIA filing</body></html>"
+    )
 
     def override_get_db() -> Iterator[Session]:
         with testing_session() as session:
@@ -61,8 +67,12 @@ def client() -> Iterator[TestClient]:
     async def override_get_sec_client() -> SecClient:
         return cast(SecClient, fake_sec_client)
 
+    def override_get_document_store() -> LocalDocumentStore:
+        return LocalDocumentStore(tmp_path)
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_sec_client] = override_get_sec_client
+    app.dependency_overrides[get_document_store] = override_get_document_store
 
     with TestClient(app) as test_client:
         yield test_client
@@ -126,6 +136,49 @@ def test_ingest_list_and_retrieve_filing(client: TestClient) -> None:
 
 def test_get_filing_returns_404_when_missing(client: TestClient) -> None:
     response = client.get("/filings/999")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Filing 999 was not found",
+    }
+
+
+def test_download_filing_updates_api_resource(client: TestClient) -> None:
+    ingest_response = client.post(
+        "/filings/ingest",
+        json={
+            "ticker": "NVDA",
+            "form_types": ["10-K", "10-Q"],
+            "limit": 5,
+        },
+    )
+    assert ingest_response.status_code == 200
+
+    filings = client.get("/filings").json()
+    filing_id = filings[0]["id"]
+
+    download_response = client.post(f"/filings/{filing_id}/download")
+
+    assert download_response.status_code == 200
+    download_result = download_response.json()
+    expected_content = b"<html><body>NVIDIA filing</body></html>"
+
+    assert download_result["filing_id"] == filing_id
+    assert download_result["sha256"] == sha256(expected_content).hexdigest()
+    assert Path(download_result["path"]).read_bytes() == expected_content
+
+    detail_response = client.get(f"/filings/{filing_id}")
+    assert detail_response.status_code == 200
+
+    filing = detail_response.json()
+    assert filing["status"] == "downloaded"
+    assert filing["raw_document_path"] == download_result["path"]
+    assert filing["content_sha256"] == download_result["sha256"]
+    assert filing["downloaded_at"] is not None
+
+
+def test_download_filing_returns_404_when_missing(client: TestClient) -> None:
+    response = client.post("/filings/999/download")
 
     assert response.status_code == 404
     assert response.json() == {

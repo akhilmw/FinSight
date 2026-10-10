@@ -73,3 +73,18 @@ class Filing(Base):
         onupdate=func.now(),
         nullable=False,
     )
+
+    raw_document_path: Mapped[str | None] = mapped_column(
+        String(1000),
+        nullable=True,
+    )
+
+    content_sha256: Mapped[str | None] = mapped_column(
+        String(64),
+        nullable=True,
+    )
+
+    downloaded_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )

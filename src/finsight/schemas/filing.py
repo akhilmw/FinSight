@@ -28,6 +28,11 @@ class FilingIngestResponse(BaseModel):
     created: int
     skipped: int
 
+class FilingDownloadResponse(BaseModel):
+    filing_id: int
+    path: str
+    sha256: str
+
 
 class FilingResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -43,3 +48,6 @@ class FilingResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime
+    raw_document_path: str | None
+    content_sha256: str | None
+    downloaded_at: datetime | None

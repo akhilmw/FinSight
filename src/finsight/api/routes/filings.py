@@ -4,16 +4,22 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from finsight.api.dependencies import get_sec_client
-from finsight.clients.sec import CompanyNotFoundError, SecClient
+from finsight.api.dependencies import get_document_store, get_sec_client
+from finsight.clients.sec import CompanyNotFoundError, InvalidFilingDocumentError, SecClient
 from finsight.db.session import get_db
 from finsight.repositories.filing import FilingRepository
 from finsight.schemas import (
+    FilingDownloadResponse,
     FilingIngestRequest,
     FilingIngestResponse,
     FilingResponse,
 )
+from finsight.services.filing_download import (
+    FilingDownloadService,
+    FilingNotFoundError,
+)
 from finsight.services.filing_ingestion import FilingIngestionService
+from finsight.storage.local import LocalDocumentStore
 
 router = APIRouter(prefix="/filings", tags=["filings"])
 
@@ -99,3 +105,42 @@ def get_filing(
         )
 
     return FilingResponse.model_validate(filing)
+
+
+@router.post(
+    "/{filing_id}/download",
+    response_model=FilingDownloadResponse,
+)
+async def download_filing(
+    filing_id: int,
+    session: DatabaseSession,
+    sec_client: SecClientDependency,
+    document_store: Annotated[
+        LocalDocumentStore,
+        Depends(get_document_store),
+    ],
+) -> FilingDownloadResponse:
+    service = FilingDownloadService(
+        session=session,
+        sec_client=sec_client,
+        document_store=document_store,
+    )
+
+    try:
+        result = await service.download(filing_id)
+    except FilingNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+    except (httpx.HTTPError, InvalidFilingDocumentError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="The SEC filing could not be downloaded",
+        ) from exc
+
+    return FilingDownloadResponse(
+        filing_id=result.filing_id,
+        path=result.path,
+        sha256=result.sha256,
+    )
