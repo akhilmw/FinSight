@@ -1,10 +1,13 @@
 from datetime import date, datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Date, DateTime, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from finsight.db.base import Base
 
+if TYPE_CHECKING:
+    from finsight.db.models.filing_section import FilingSectionRecord
 
 class Filing(Base):
     __tablename__ = "filings"
@@ -87,4 +90,10 @@ class Filing(Base):
     downloaded_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
+    )
+
+    sections: Mapped[list["FilingSectionRecord"]] = relationship(
+        back_populates="filing",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

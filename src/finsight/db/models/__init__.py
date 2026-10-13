@@ -1,5 +1,7 @@
-"""Database models."""
-
 from finsight.db.models.filing import Filing
+from finsight.db.models.filing_section import FilingSectionRecord
 
-__all__ = ["Filing"]
+__all__ = [
+    "Filing",
+    "FilingSectionRecord",
+]

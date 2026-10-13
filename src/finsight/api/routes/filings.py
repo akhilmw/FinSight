@@ -7,11 +7,14 @@ from sqlalchemy.orm import Session
 from finsight.api.dependencies import get_document_store, get_sec_client
 from finsight.clients.sec import CompanyNotFoundError, InvalidFilingDocumentError, SecClient
 from finsight.db.session import get_db
+from finsight.parsers.sec_html import SecHtmlParser
+from finsight.parsers.sec_sections import SecSectionDetector
 from finsight.repositories.filing import FilingRepository
 from finsight.schemas import (
     FilingDownloadResponse,
     FilingIngestRequest,
     FilingIngestResponse,
+    FilingProcessResponse,
     FilingResponse,
 )
 from finsight.services.filing_download import (
@@ -19,6 +22,15 @@ from finsight.services.filing_download import (
     FilingNotFoundError,
 )
 from finsight.services.filing_ingestion import FilingIngestionService
+from finsight.services.filing_processing import (
+    FilingNotDownloadedError,
+    FilingProcessingService,
+    NoSectionsFoundError,
+    RawDocumentNotFoundError,
+)
+from finsight.services.filing_processing import (
+    FilingNotFoundError as ProcessingFilingNotFoundError,
+)
 from finsight.storage.local import LocalDocumentStore
 
 router = APIRouter(prefix="/filings", tags=["filings"])
@@ -143,4 +155,48 @@ async def download_filing(
         filing_id=result.filing_id,
         path=result.path,
         sha256=result.sha256,
+    )
+
+
+@router.post(
+    "/{filing_id}/process",
+    response_model=FilingProcessResponse,
+)
+async def process_filing(
+    filing_id: int,
+    session: DatabaseSession,
+) -> FilingProcessResponse:
+    service = FilingProcessingService(
+        session=session,
+        html_parser=SecHtmlParser(),
+        section_detector=SecSectionDetector(),
+    )
+
+    try:
+        result = await service.process(filing_id)
+    except ProcessingFilingNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+    except FilingNotDownloadedError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    except RawDocumentNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    except NoSectionsFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+
+    return FilingProcessResponse(
+        filing_id=result.filing_id,
+        created=result.created,
+        replaced=result.replaced,
     )

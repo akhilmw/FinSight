@@ -51,3 +51,8 @@ class FilingResponse(BaseModel):
     raw_document_path: str | None
     content_sha256: str | None
     downloaded_at: datetime | None
+
+class FilingProcessResponse(BaseModel):
+    filing_id: int
+    created: int
+    replaced: int

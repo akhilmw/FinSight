@@ -4,6 +4,7 @@ from finsight.schemas.filing import (
     FilingDownloadResponse,
     FilingIngestRequest,
     FilingIngestResponse,
+    FilingProcessResponse,
     FilingResponse,
 )
 
@@ -12,4 +13,5 @@ __all__ = [
     "FilingIngestResponse",
     "FilingResponse",
     "FilingDownloadResponse",
+    "FilingProcessResponse",
 ]
