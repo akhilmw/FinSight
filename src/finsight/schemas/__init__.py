@@ -1,6 +1,7 @@
 """Pydantic request and response schemas."""
 
 from finsight.schemas.filing import (
+    FilingChunkResponse,
     FilingDownloadResponse,
     FilingIngestRequest,
     FilingIngestResponse,
@@ -14,4 +15,5 @@ __all__ = [
     "FilingResponse",
     "FilingDownloadResponse",
     "FilingProcessResponse",
+    "FilingChunkResponse",
 ]

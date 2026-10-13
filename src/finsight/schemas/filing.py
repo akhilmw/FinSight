@@ -56,3 +56,9 @@ class FilingProcessResponse(BaseModel):
     filing_id: int
     created: int
     replaced: int
+
+class FilingChunkResponse(BaseModel):
+    filing_id: int
+    sections_processed: int
+    created: int
+    replaced: int

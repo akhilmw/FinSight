@@ -18,6 +18,15 @@ from finsight.db.session import get_db
 from finsight.main import app
 from finsight.storage.local import LocalDocumentStore
 
+FAKE_FILING_HTML = b"""
+<html><body>
+  <h1>Item 1. Business</h1>
+  <p>We design accelerated computing platforms.</p>
+  <h1>Item 1A. Risk Factors</h1>
+  <p>Competition may adversely affect our business.</p>
+</body></html>
+"""
+
 
 @pytest.fixture
 def client(tmp_path: Path) -> Iterator[TestClient]:
@@ -56,9 +65,7 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
             ),
         )
     ]
-    fake_sec_client.download_filing_html.return_value = (
-        b"<html><body>NVIDIA filing</body></html>"
-    )
+    fake_sec_client.download_filing_html.return_value = FAKE_FILING_HTML
 
     def override_get_db() -> Iterator[Session]:
         with testing_session() as session:
@@ -161,7 +168,7 @@ def test_download_filing_updates_api_resource(client: TestClient) -> None:
 
     assert download_response.status_code == 200
     download_result = download_response.json()
-    expected_content = b"<html><body>NVIDIA filing</body></html>"
+    expected_content = FAKE_FILING_HTML
 
     assert download_result["filing_id"] == filing_id
     assert download_result["sha256"] == sha256(expected_content).hexdigest()
@@ -183,4 +190,76 @@ def test_download_filing_returns_404_when_missing(client: TestClient) -> None:
     assert response.status_code == 404
     assert response.json() == {
         "detail": "Filing 999 was not found",
+    }
+
+
+def test_process_and_chunk_filing_end_to_end(client: TestClient) -> None:
+    ingest_response = client.post(
+        "/filings/ingest",
+        json={
+            "ticker": "NVDA",
+            "form_types": ["10-K"],
+            "limit": 1,
+        },
+    )
+    assert ingest_response.status_code == 200
+
+    filing_id = client.get("/filings").json()[0]["id"]
+
+    assert client.post(f"/filings/{filing_id}/download").status_code == 200
+    assert client.post(f"/filings/{filing_id}/process").json() == {
+        "filing_id": filing_id,
+        "created": 2,
+        "replaced": 0,
+    }
+
+    first_chunk_response = client.post(f"/filings/{filing_id}/chunk")
+
+    assert first_chunk_response.status_code == 200
+    assert first_chunk_response.json() == {
+        "filing_id": filing_id,
+        "sections_processed": 2,
+        "created": 2,
+        "replaced": 0,
+    }
+
+    second_chunk_response = client.post(f"/filings/{filing_id}/chunk")
+
+    assert second_chunk_response.status_code == 200
+    assert second_chunk_response.json() == {
+        "filing_id": filing_id,
+        "sections_processed": 2,
+        "created": 2,
+        "replaced": 2,
+    }
+    assert client.get(f"/filings/{filing_id}").json()["status"] == "chunked"
+
+
+def test_chunk_filing_returns_404_when_missing(client: TestClient) -> None:
+    response = client.post("/filings/999/chunk")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Filing 999 was not found",
+    }
+
+
+def test_chunk_filing_returns_409_without_sections(
+    client: TestClient,
+) -> None:
+    client.post(
+        "/filings/ingest",
+        json={
+            "ticker": "NVDA",
+            "form_types": ["10-K"],
+            "limit": 1,
+        },
+    )
+    filing_id = client.get("/filings").json()[0]["id"]
+
+    response = client.post(f"/filings/{filing_id}/chunk")
+
+    assert response.status_code == 409
+    assert response.json() == {
+        "detail": f"Filing {filing_id} has no processed sections",
     }

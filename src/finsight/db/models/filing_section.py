@@ -16,6 +16,7 @@ from finsight.db.base import Base
 
 if TYPE_CHECKING:
     from finsight.db.models.filing import Filing
+    from finsight.db.models.filing_chunk import FilingChunkRecord
 
 
 class FilingSectionRecord(Base):
@@ -75,4 +76,10 @@ class FilingSectionRecord(Base):
 
     filing: Mapped["Filing"] = relationship(
         back_populates="sections",
+    )
+
+    chunks: Mapped[list["FilingChunkRecord"]] = relationship(
+        back_populates="section",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )

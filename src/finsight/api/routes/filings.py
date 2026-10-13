@@ -5,17 +5,26 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from finsight.api.dependencies import get_document_store, get_sec_client
+from finsight.chunking.section import SectionChunker
 from finsight.clients.sec import CompanyNotFoundError, InvalidFilingDocumentError, SecClient
 from finsight.db.session import get_db
 from finsight.parsers.sec_html import SecHtmlParser
 from finsight.parsers.sec_sections import SecSectionDetector
 from finsight.repositories.filing import FilingRepository
 from finsight.schemas import (
+    FilingChunkResponse,
     FilingDownloadResponse,
     FilingIngestRequest,
     FilingIngestResponse,
     FilingProcessResponse,
     FilingResponse,
+)
+from finsight.services.filing_chunking import (
+    FilingChunkingService,
+    FilingHasNoSectionsError,
+)
+from finsight.services.filing_chunking import (
+    FilingNotFoundError as ChunkingFilingNotFoundError,
 )
 from finsight.services.filing_download import (
     FilingDownloadService,
@@ -197,6 +206,43 @@ async def process_filing(
 
     return FilingProcessResponse(
         filing_id=result.filing_id,
+        created=result.created,
+        replaced=result.replaced,
+    )
+
+
+@router.post(
+    "/{filing_id}/chunk",
+    response_model=FilingChunkResponse,
+)
+def chunk_filing(
+    filing_id: int,
+    session: DatabaseSession,
+) -> FilingChunkResponse:
+    service = FilingChunkingService(
+        session=session,
+        chunker=SectionChunker(
+            max_tokens=600,
+            overlap_tokens=100,
+        ),
+    )
+
+    try:
+        result = service.chunk_filing(filing_id)
+    except ChunkingFilingNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+    except FilingHasNoSectionsError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+
+    return FilingChunkResponse(
+        filing_id=result.filing_id,
+        sections_processed=result.sections_processed,
         created=result.created,
         replaced=result.replaced,
     )
