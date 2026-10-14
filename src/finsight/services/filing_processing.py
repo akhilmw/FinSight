@@ -58,21 +58,15 @@ class FilingProcessingService:
         filing = self._filing_repository.get_by_id(filing_id)
 
         if filing is None:
-            raise FilingNotFoundError(
-                f"Filing {filing_id} was not found"
-            )
+            raise FilingNotFoundError(f"Filing {filing_id} was not found")
 
         if filing.raw_document_path is None:
-            raise FilingNotDownloadedError(
-                f"Filing {filing_id} has not been downloaded"
-            )
+            raise FilingNotDownloadedError(f"Filing {filing_id} has not been downloaded")
 
         document_path = Path(filing.raw_document_path)
 
         if not document_path.is_file():
-            raise RawDocumentNotFoundError(
-                f"Raw document does not exist: {document_path}"
-            )
+            raise RawDocumentNotFoundError(f"Raw document does not exist: {document_path}")
 
         content = await asyncio.to_thread(document_path.read_bytes)
         extracted_sections = await asyncio.to_thread(
@@ -81,13 +75,9 @@ class FilingProcessingService:
         )
 
         if not extracted_sections:
-            raise NoSectionsFoundError(
-                f"No sections were detected for filing {filing_id}"
-            )
+            raise NoSectionsFoundError(f"No sections were detected for filing {filing_id}")
 
-        existing_sections = self._section_repository.list_by_filing_id(
-            filing_id
-        )
+        existing_sections = self._section_repository.list_by_filing_id(filing_id)
 
         records = [
             FilingSectionRecord(

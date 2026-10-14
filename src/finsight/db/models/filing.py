@@ -9,6 +9,7 @@ from finsight.db.base import Base
 if TYPE_CHECKING:
     from finsight.db.models.filing_section import FilingSectionRecord
 
+
 class Filing(Base):
     __tablename__ = "filings"
 

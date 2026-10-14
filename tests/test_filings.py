@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from datetime import date
 from hashlib import sha256
 from pathlib import Path
@@ -11,10 +11,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from finsight.api.dependencies import get_document_store, get_sec_client
+from finsight.api.dependencies import (
+    get_document_store,
+    get_embedding_client,
+    get_sec_client,
+)
 from finsight.clients.sec import SecClient, SecCompany, SecFiling
 from finsight.db.base import Base
 from finsight.db.session import get_db
+from finsight.embeddings import EmbeddingClient
 from finsight.main import app
 from finsight.storage.local import LocalDocumentStore
 
@@ -26,6 +31,17 @@ FAKE_FILING_HTML = b"""
   <p>Competition may adversely affect our business.</p>
 </body></html>
 """
+
+
+class FakeEmbeddingClient:
+    model = "text-embedding-3-small"
+    dimensions = 1536
+
+    async def embed(
+        self,
+        texts: Sequence[str],
+    ) -> list[list[float]]:
+        return [[0.1] * self.dimensions for _ in texts]
 
 
 @pytest.fixture
@@ -66,6 +82,7 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
         )
     ]
     fake_sec_client.download_filing_html.return_value = FAKE_FILING_HTML
+    fake_embedding_client = FakeEmbeddingClient()
 
     def override_get_db() -> Iterator[Session]:
         with testing_session() as session:
@@ -77,9 +94,13 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
     def override_get_document_store() -> LocalDocumentStore:
         return LocalDocumentStore(tmp_path)
 
+    async def override_get_embedding_client() -> EmbeddingClient:
+        return fake_embedding_client
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_sec_client] = override_get_sec_client
     app.dependency_overrides[get_document_store] = override_get_document_store
+    app.dependency_overrides[get_embedding_client] = override_get_embedding_client
 
     with TestClient(app) as test_client:
         yield test_client
@@ -193,7 +214,9 @@ def test_download_filing_returns_404_when_missing(client: TestClient) -> None:
     }
 
 
-def test_process_and_chunk_filing_end_to_end(client: TestClient) -> None:
+def test_process_chunk_and_embed_filing_end_to_end(
+    client: TestClient,
+) -> None:
     ingest_response = client.post(
         "/filings/ingest",
         json={
@@ -232,7 +255,28 @@ def test_process_and_chunk_filing_end_to_end(client: TestClient) -> None:
         "created": 2,
         "replaced": 2,
     }
-    assert client.get(f"/filings/{filing_id}").json()["status"] == "chunked"
+    first_embed_response = client.post(f"/filings/{filing_id}/embed")
+
+    assert first_embed_response.status_code == 200
+    assert first_embed_response.json() == {
+        "filing_id": filing_id,
+        "total_chunks": 2,
+        "embedded": 2,
+        "skipped": 0,
+        "batches": 1,
+    }
+
+    second_embed_response = client.post(f"/filings/{filing_id}/embed")
+
+    assert second_embed_response.status_code == 200
+    assert second_embed_response.json() == {
+        "filing_id": filing_id,
+        "total_chunks": 2,
+        "embedded": 0,
+        "skipped": 2,
+        "batches": 0,
+    }
+    assert client.get(f"/filings/{filing_id}").json()["status"] == "embedded"
 
 
 def test_chunk_filing_returns_404_when_missing(client: TestClient) -> None:
@@ -262,4 +306,34 @@ def test_chunk_filing_returns_409_without_sections(
     assert response.status_code == 409
     assert response.json() == {
         "detail": f"Filing {filing_id} has no processed sections",
+    }
+
+
+def test_embed_filing_returns_404_when_missing(client: TestClient) -> None:
+    response = client.post("/filings/999/embed")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Filing 999 was not found",
+    }
+
+
+def test_embed_filing_returns_409_without_chunks(
+    client: TestClient,
+) -> None:
+    client.post(
+        "/filings/ingest",
+        json={
+            "ticker": "NVDA",
+            "form_types": ["10-K"],
+            "limit": 1,
+        },
+    )
+    filing_id = client.get("/filings").json()[0]["id"]
+
+    response = client.post(f"/filings/{filing_id}/embed")
+
+    assert response.status_code == 409
+    assert response.json() == {
+        "detail": f"Filing {filing_id} has no stored chunks",
     }

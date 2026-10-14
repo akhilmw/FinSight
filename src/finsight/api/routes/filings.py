@@ -4,16 +4,19 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from finsight.api.dependencies import get_document_store, get_sec_client
+from finsight.api.dependencies import get_document_store, get_embedding_client, get_sec_client
 from finsight.chunking.section import SectionChunker
 from finsight.clients.sec import CompanyNotFoundError, InvalidFilingDocumentError, SecClient
+from finsight.core.config import get_settings
 from finsight.db.session import get_db
+from finsight.embeddings import EmbeddingClient
 from finsight.parsers.sec_html import SecHtmlParser
 from finsight.parsers.sec_sections import SecSectionDetector
 from finsight.repositories.filing import FilingRepository
 from finsight.schemas import (
     FilingChunkResponse,
     FilingDownloadResponse,
+    FilingEmbeddingResponse,
     FilingIngestRequest,
     FilingIngestResponse,
     FilingProcessResponse,
@@ -29,6 +32,13 @@ from finsight.services.filing_chunking import (
 from finsight.services.filing_download import (
     FilingDownloadService,
     FilingNotFoundError,
+)
+from finsight.services.filing_embedding import (
+    FilingEmbeddingService,
+    FilingHasNoChunksError,
+)
+from finsight.services.filing_embedding import (
+    FilingNotFoundError as EmbeddingFilingNotFoundError,
 )
 from finsight.services.filing_ingestion import FilingIngestionService
 from finsight.services.filing_processing import (
@@ -48,6 +58,10 @@ DatabaseSession = Annotated[Session, Depends(get_db)]
 SecClientDependency = Annotated[
     SecClient,
     Depends(get_sec_client),
+]
+EmbeddingClientDependency = Annotated[
+    EmbeddingClient,
+    Depends(get_embedding_client),
 ]
 
 
@@ -245,4 +259,42 @@ def chunk_filing(
         sections_processed=result.sections_processed,
         created=result.created,
         replaced=result.replaced,
+    )
+
+
+@router.post(
+    "/{filing_id}/embed",
+    response_model=FilingEmbeddingResponse,
+)
+async def embed_filing(
+    filing_id: int,
+    session: DatabaseSession,
+    embedding_client: EmbeddingClientDependency,
+) -> FilingEmbeddingResponse:
+    settings = get_settings()
+    service = FilingEmbeddingService(
+        session=session,
+        embedding_client=embedding_client,
+        batch_size=settings.embedding_batch_size,
+    )
+
+    try:
+        result = await service.embed_filing(filing_id)
+    except EmbeddingFilingNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(exc),
+        ) from exc
+    except FilingHasNoChunksError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+
+    return FilingEmbeddingResponse(
+        filing_id=result.filing_id,
+        total_chunks=result.total_chunks,
+        embedded=result.embedded,
+        skipped=result.skipped,
+        batches=result.batches,
     )

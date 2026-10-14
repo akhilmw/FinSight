@@ -44,22 +44,14 @@ class FilingChunkingService:
         filing = self._filing_repository.get_by_id(filing_id)
 
         if filing is None:
-            raise FilingNotFoundError(
-                f"Filing {filing_id} was not found"
-            )
+            raise FilingNotFoundError(f"Filing {filing_id} was not found")
 
-        sections = self._section_repository.list_by_filing_id(
-            filing_id
-        )
+        sections = self._section_repository.list_by_filing_id(filing_id)
 
         if not sections:
-            raise FilingHasNoSectionsError(
-                f"Filing {filing_id} has no processed sections"
-            )
+            raise FilingHasNoSectionsError(f"Filing {filing_id} has no processed sections")
 
-        existing_chunks = self._chunk_repository.list_by_filing_id(
-            filing_id
-        )
+        existing_chunks = self._chunk_repository.list_by_filing_id(filing_id)
 
         records: list[FilingChunkRecord] = []
 

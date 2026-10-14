@@ -28,6 +28,7 @@ class FilingIngestResponse(BaseModel):
     created: int
     skipped: int
 
+
 class FilingDownloadResponse(BaseModel):
     filing_id: int
     path: str
@@ -52,13 +53,23 @@ class FilingResponse(BaseModel):
     content_sha256: str | None
     downloaded_at: datetime | None
 
+
 class FilingProcessResponse(BaseModel):
     filing_id: int
     created: int
     replaced: int
+
 
 class FilingChunkResponse(BaseModel):
     filing_id: int
     sections_processed: int
     created: int
     replaced: int
+
+
+class FilingEmbeddingResponse(BaseModel):
+    filing_id: int
+    total_chunks: int
+    embedded: int
+    skipped: int
+    batches: int

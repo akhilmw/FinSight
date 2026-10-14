@@ -28,15 +28,11 @@ class SectionChunker:
             raise ValueError("overlap_tokens must not be negative")
 
         if overlap_tokens >= max_tokens:
-            raise ValueError(
-                "overlap_tokens must be smaller than max_tokens"
-            )
+            raise ValueError("overlap_tokens must be smaller than max_tokens")
 
         self._max_tokens = max_tokens
         self._overlap_tokens = overlap_tokens
-        self._encoding = encoding or tiktoken.get_encoding(
-            "cl100k_base"
-        )
+        self._encoding = encoding or tiktoken.get_encoding("cl100k_base")
 
     def chunk(self, text: str) -> list[SectionChunk]:
         normalized_text = text.strip()
@@ -60,18 +56,14 @@ class SectionChunker:
                 hard_end=hard_end,
             )
 
-            chunk_text = self._encoding.decode(
-                tokens[start_token:end_token]
-            )
+            chunk_text = self._encoding.decode(tokens[start_token:end_token])
 
             if chunk_text.strip():
                 chunks.append(
                     SectionChunk(
                         index=len(chunks),
                         text=chunk_text,
-                        token_count=len(
-                            self._encoding.encode(chunk_text)
-                        ),
+                        token_count=len(self._encoding.encode(chunk_text)),
                         start_token=start_token,
                         end_token=end_token,
                     )
@@ -103,11 +95,7 @@ class SectionChunker:
         if hard_end == len(tokens):
             return hard_end
 
-        candidate, token_offsets = (
-            self._encoding.decode_with_offsets(
-                tokens[start_token:hard_end]
-            )
-        )
+        candidate, token_offsets = self._encoding.decode_with_offsets(tokens[start_token:hard_end])
 
         minimum_position = int(len(candidate) * 0.6)
 
@@ -145,13 +133,9 @@ class SectionChunker:
         )
 
         for index in range(proposed_start, search_end):
-            token_bytes = self._encoding.decode_single_token_bytes(
-                tokens[index]
-            )
+            token_bytes = self._encoding.decode_single_token_bytes(tokens[index])
 
-            if token_bytes.startswith(
-                (b" ", b"\n", b"\t", b"\r")
-            ):
+            if token_bytes.startswith((b" ", b"\n", b"\t", b"\r")):
                 return index
 
         return proposed_start

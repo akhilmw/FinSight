@@ -23,9 +23,7 @@ class FilingSectionRepository:
         return self._session.scalars(statement).all()
 
     def delete_by_filing_id(self, filing_id: int) -> None:
-        statement = delete(FilingSectionRecord).where(
-            FilingSectionRecord.filing_id == filing_id
-        )
+        statement = delete(FilingSectionRecord).where(FilingSectionRecord.filing_id == filing_id)
         self._session.execute(statement)
 
     def add_all(

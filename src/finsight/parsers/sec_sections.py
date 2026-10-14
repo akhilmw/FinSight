@@ -16,6 +16,7 @@ class SectionHeading:
     start_line: int
     heading_end_line: int
 
+
 @dataclass(frozen=True)
 class FilingSection:
     item: str
@@ -79,9 +80,7 @@ class SecSectionDetector:
                 end_line = len(lines)
 
             content_start = heading.heading_end_line + 1
-            section_text = "\n".join(
-                lines[content_start:end_line]
-            ).strip()
+            section_text = "\n".join(lines[content_start:end_line]).strip()
 
             if not section_text:
                 continue

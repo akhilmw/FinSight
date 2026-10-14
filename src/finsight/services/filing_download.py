@@ -39,9 +39,7 @@ class FilingDownloadService:
             raise FilingNotFoundError(f"Filing {filing_id} was not found")
 
         try:
-            content = await self._sec_client.download_filing_html(
-                filing.source_url
-            )
+            content = await self._sec_client.download_filing_html(filing.source_url)
 
             stored_document = await asyncio.to_thread(
                 self._document_store.save,

@@ -1,10 +1,12 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     CheckConstraint,
     DateTime,
     ForeignKey,
+    String,
     Text,
     UniqueConstraint,
     func,
@@ -60,6 +62,21 @@ class FilingChunkRecord(Base):
     text: Mapped[str] = mapped_column(
         Text,
         nullable=False,
+    )
+
+    embedding: Mapped[list[float] | None] = mapped_column(
+        Vector(1536),
+        nullable=True,
+    )
+
+    embedding_model: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    embedded_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
     )
 
     token_count: Mapped[int] = mapped_column(nullable=False)

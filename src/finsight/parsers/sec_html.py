@@ -28,9 +28,7 @@ class SecHtmlParser:
         if soup.title is not None:
             title = self._normalize_text(soup.title.get_text(" ", strip=True))
 
-        for element in soup.select(
-            "script, style, noscript, svg, ix\\:header, ix\\:hidden"
-        ):
+        for element in soup.select("script, style, noscript, svg, ix\\:header, ix\\:hidden"):
             element.decompose()
 
         lines: list[str] = []
@@ -44,9 +42,7 @@ class SecHtmlParser:
         text = "\n".join(lines)
 
         if not text:
-            raise InvalidSecHtmlError(
-                "Filing HTML did not contain readable text"
-            )
+            raise InvalidSecHtmlError("Filing HTML did not contain readable text")
 
         return ParsedFiling(
             title=title or None,
