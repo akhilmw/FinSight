@@ -6,6 +6,7 @@ from sqlalchemy import (
     CheckConstraint,
     DateTime,
     ForeignKey,
+    Index,
     String,
     Text,
     UniqueConstraint,
@@ -43,6 +44,14 @@ class FilingChunkRecord(Base):
         CheckConstraint(
             "end_token > start_token",
             name="ck_filing_chunks_token_range",
+        ),
+        Index(
+            "ix_filing_chunks_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={
+                "embedding": "vector_cosine_ops",
+            },
         ),
     )
 
