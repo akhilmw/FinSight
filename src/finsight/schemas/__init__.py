@@ -9,6 +9,11 @@ from finsight.schemas.filing import (
     FilingProcessResponse,
     FilingResponse,
 )
+from finsight.schemas.search import (
+    FilingSearchMatchResponse,
+    FilingSearchRequest,
+    FilingSearchResponse,
+)
 
 __all__ = [
     "FilingIngestRequest",
@@ -18,4 +23,7 @@ __all__ = [
     "FilingProcessResponse",
     "FilingChunkResponse",
     "FilingEmbeddingResponse",
+    "FilingSearchRequest",
+    "FilingSearchResponse",
+    "FilingSearchMatchResponse",
 ]

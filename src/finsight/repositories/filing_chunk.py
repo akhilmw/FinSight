@@ -1,12 +1,22 @@
 from collections.abc import Sequence
+from dataclasses import dataclass
 
 from sqlalchemy import delete, or_, select
 from sqlalchemy.orm import Session
 
 from finsight.db.models import (
+    Filing,
     FilingChunkRecord,
     FilingSectionRecord,
 )
+
+
+@dataclass(frozen=True)
+class FilingChunkSearchResult:
+    chunk: FilingChunkRecord
+    section: FilingSectionRecord
+    filing: Filing
+    distance: float
 
 
 class FilingChunkRepository:
@@ -67,3 +77,52 @@ class FilingChunkRepository:
         chunks: list[FilingChunkRecord],
     ) -> None:
         self._session.add_all(chunks)
+
+    def search_similar(
+        self,
+        query_embedding: list[float],
+        embedding_model: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+    ) -> list[FilingChunkSearchResult]:
+        if limit < 1:
+            raise ValueError("limit must be at least 1")
+
+        distance = FilingChunkRecord.embedding.cosine_distance(query_embedding)
+
+        statement = (
+            select(
+                FilingChunkRecord,
+                FilingSectionRecord,
+                Filing,
+                distance.label("distance"),
+            )
+            .join(
+                FilingSectionRecord,
+                FilingChunkRecord.section_id == FilingSectionRecord.id,
+            )
+            .join(
+                Filing,
+                FilingSectionRecord.filing_id == Filing.id,
+            )
+            .where(
+                FilingChunkRecord.embedding.is_not(None),
+                FilingChunkRecord.embedding_model == embedding_model,
+            )
+        )
+
+        if filing_id is not None:
+            statement = statement.where(Filing.id == filing_id)
+
+        statement = statement.order_by(distance).limit(limit)
+        rows = self._session.execute(statement)
+
+        return [
+            FilingChunkSearchResult(
+                chunk=chunk,
+                section=section,
+                filing=filing,
+                distance=float(distance_value),
+            )
+            for chunk, section, filing, distance_value in rows
+        ]

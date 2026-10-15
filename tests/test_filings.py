@@ -21,6 +21,11 @@ from finsight.db.base import Base
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
 from finsight.main import app
+from finsight.services.filing_search import (
+    FilingSearchMatch,
+    FilingSearchResult,
+    FilingSearchService,
+)
 from finsight.storage.local import LocalDocumentStore
 
 FAKE_FILING_HTML = b"""
@@ -337,3 +342,98 @@ def test_embed_filing_returns_409_without_chunks(
     assert response.json() == {
         "detail": f"Filing {filing_id} has no stored chunks",
     }
+
+
+@pytest.mark.parametrize("filing_id", [None, 3])
+def test_search_returns_ranked_evidence_with_optional_filing_filter(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+    filing_id: int | None,
+) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_search(
+        service: FilingSearchService,
+        query: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+    ) -> FilingSearchResult:
+        captured.update(
+            query=query,
+            limit=limit,
+            filing_id=filing_id,
+        )
+        return FilingSearchResult(
+            query=query,
+            matches=[
+                FilingSearchMatch(
+                    chunk_id=487,
+                    filing_id=3,
+                    accession_number="0001045810-26-000021",
+                    company_name="NVIDIA CORP",
+                    form_type="10-K",
+                    filing_date=date(2026, 2, 25),
+                    source_url="https://www.sec.gov/example.htm",
+                    item="1A",
+                    title="Risk Factors",
+                    text="Competition may adversely affect revenue.",
+                    distance=0.2,
+                    similarity=0.8,
+                )
+            ],
+        )
+
+    monkeypatch.setattr(FilingSearchService, "search", fake_search)
+
+    payload: dict[str, object] = {
+        "query": "revenue risks",
+        "limit": 3,
+    }
+    if filing_id is not None:
+        payload["filing_id"] = filing_id
+
+    response = client.post("/search", json=payload)
+
+    assert response.status_code == 200
+    assert captured == {
+        "query": "revenue risks",
+        "limit": 3,
+        "filing_id": filing_id,
+    }
+    assert response.json() == {
+        "query": "revenue risks",
+        "matches": [
+            {
+                "chunk_id": 487,
+                "filing_id": 3,
+                "accession_number": "0001045810-26-000021",
+                "company_name": "NVIDIA CORP",
+                "form_type": "10-K",
+                "filing_date": "2026-02-25",
+                "source_url": "https://www.sec.gov/example.htm",
+                "item": "1A",
+                "title": "Risk Factors",
+                "text": "Competition may adversely affect revenue.",
+                "distance": 0.2,
+                "similarity": 0.8,
+            }
+        ],
+    }
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"query": "   "},
+        {"query": "revenue", "limit": 0},
+        {"query": "revenue", "limit": 21},
+        {"query": "revenue", "filing_id": 0},
+    ],
+)
+def test_search_rejects_invalid_request(
+    client: TestClient,
+    payload: dict[str, object],
+) -> None:
+    response = client.post("/search", json=payload)
+
+    assert response.status_code == 422
