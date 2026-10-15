@@ -7,6 +7,7 @@ from finsight.embeddings import EmbeddingClient
 from finsight.repositories.filing_chunk import (
     FilingChunkRepository,
 )
+from finsight.schemas import SearchMode
 
 
 @dataclass(frozen=True)
@@ -21,13 +22,15 @@ class FilingSearchMatch:
     item: str
     title: str
     text: str
-    distance: float
-    similarity: float
+    score: float
+    distance: float | None = None
+    similarity: float | None = None
 
 
 @dataclass(frozen=True)
 class FilingSearchResult:
     query: str
+    mode: SearchMode
     matches: list[FilingSearchMatch]
 
 
@@ -43,6 +46,7 @@ class FilingSearchService:
     async def search(
         self,
         query: str,
+        mode: SearchMode = SearchMode.VECTOR,
         limit: int = 5,
         filing_id: int | None = None,
     ) -> FilingSearchResult:
@@ -54,35 +58,59 @@ class FilingSearchService:
         if limit < 1:
             raise ValueError("limit must be at least 1")
 
-        query_embeddings = await self._embedding_client.embed([normalized_query])
-        query_embedding = query_embeddings[0]
-
-        results = self._chunk_repository.search_similar(
-            query_embedding=query_embedding,
-            embedding_model=self._embedding_client.model,
-            limit=limit,
-            filing_id=filing_id,
-        )
-
-        matches = [
-            FilingSearchMatch(
-                chunk_id=result.chunk.id,
-                filing_id=result.filing.id,
-                accession_number=result.filing.accession_number,
-                company_name=result.filing.company_name,
-                form_type=result.filing.form_type,
-                filing_date=result.filing.filing_date,
-                source_url=result.filing.source_url,
-                item=result.section.item,
-                title=result.section.title,
-                text=result.chunk.text,
-                distance=result.distance,
-                similarity=1.0 - result.distance,
+        if mode is SearchMode.KEYWORD:
+            keyword_results = self._chunk_repository.search_keyword(
+                query=normalized_query,
+                limit=limit,
+                filing_id=filing_id,
             )
-            for result in results
-        ]
+            matches = [
+                FilingSearchMatch(
+                    chunk_id=result.chunk.id,
+                    filing_id=result.filing.id,
+                    accession_number=result.filing.accession_number,
+                    company_name=result.filing.company_name,
+                    form_type=result.filing.form_type,
+                    filing_date=result.filing.filing_date,
+                    source_url=result.filing.source_url,
+                    item=result.section.item,
+                    title=result.section.title,
+                    text=result.chunk.text,
+                    score=result.rank,
+                )
+                for result in keyword_results
+            ]
+        else:
+            query_embeddings = await self._embedding_client.embed([normalized_query])
+            query_embedding = query_embeddings[0]
+
+            vector_results = self._chunk_repository.search_similar(
+                query_embedding=query_embedding,
+                embedding_model=self._embedding_client.model,
+                limit=limit,
+                filing_id=filing_id,
+            )
+            matches = [
+                FilingSearchMatch(
+                    chunk_id=result.chunk.id,
+                    filing_id=result.filing.id,
+                    accession_number=result.filing.accession_number,
+                    company_name=result.filing.company_name,
+                    form_type=result.filing.form_type,
+                    filing_date=result.filing.filing_date,
+                    source_url=result.filing.source_url,
+                    item=result.section.item,
+                    title=result.section.title,
+                    text=result.chunk.text,
+                    score=1.0 - result.distance,
+                    distance=result.distance,
+                    similarity=1.0 - result.distance,
+                )
+                for result in vector_results
+            ]
 
         return FilingSearchResult(
             query=normalized_query,
+            mode=mode,
             matches=matches,
         )

@@ -13,6 +13,7 @@ from finsight.schemas.search import (
     FilingSearchMatchResponse,
     FilingSearchRequest,
     FilingSearchResponse,
+    SearchMode,
 )
 
 __all__ = [
@@ -26,4 +27,5 @@ __all__ = [
     "FilingSearchRequest",
     "FilingSearchResponse",
     "FilingSearchMatchResponse",
+    "SearchMode",
 ]

@@ -1,4 +1,5 @@
 from datetime import date
+from enum import StrEnum
 from typing import Annotated
 
 from pydantic import BaseModel, Field, StringConstraints
@@ -13,8 +14,14 @@ SearchQuery = Annotated[
 ]
 
 
+class SearchMode(StrEnum):
+    VECTOR = "vector"
+    KEYWORD = "keyword"
+
+
 class FilingSearchRequest(BaseModel):
     query: SearchQuery
+    mode: SearchMode = SearchMode.VECTOR
     filing_id: int | None = Field(default=None, ge=1)
     limit: int = Field(default=5, ge=1, le=20)
 
@@ -30,10 +37,12 @@ class FilingSearchMatchResponse(BaseModel):
     item: str
     title: str
     text: str
-    distance: float
-    similarity: float
+    score: float
+    distance: float | None = None
+    similarity: float | None = None
 
 
 class FilingSearchResponse(BaseModel):
     query: str
+    mode: SearchMode
     matches: list[FilingSearchMatchResponse]

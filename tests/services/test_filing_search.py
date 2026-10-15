@@ -7,9 +7,11 @@ from sqlalchemy.orm import Session
 
 from finsight.db.models import Filing, FilingChunkRecord, FilingSectionRecord
 from finsight.repositories.filing_chunk import (
+    FilingChunkKeywordSearchResult,
     FilingChunkRepository,
     FilingChunkSearchResult,
 )
+from finsight.schemas import SearchMode
 from finsight.services.filing_search import FilingSearchService
 
 
@@ -64,6 +66,16 @@ def create_repository_result() -> FilingChunkSearchResult:
         section=section,
         filing=filing,
         distance=0.2,
+    )
+
+
+def create_keyword_repository_result() -> FilingChunkKeywordSearchResult:
+    vector_result = create_repository_result()
+    return FilingChunkKeywordSearchResult(
+        chunk=vector_result.chunk,
+        section=vector_result.section,
+        filing=vector_result.filing,
+        rank=0.42,
     )
 
 
@@ -126,8 +138,61 @@ def test_search_embeds_query_and_maps_ranked_evidence(
     assert match.item == "1A"
     assert match.title == "Risk Factors"
     assert match.text == "Competition may adversely affect revenue."
+    assert match.score == pytest.approx(0.8)
     assert match.distance == pytest.approx(0.2)
     assert match.similarity == pytest.approx(0.8)
+
+
+def test_keyword_search_skips_embedding_and_maps_ranked_evidence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_search_keyword(
+        repository: FilingChunkRepository,
+        query: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+    ) -> list[FilingChunkKeywordSearchResult]:
+        captured.update(
+            query=query,
+            limit=limit,
+            filing_id=filing_id,
+        )
+        return [create_keyword_repository_result()]
+
+    monkeypatch.setattr(
+        FilingChunkRepository,
+        "search_keyword",
+        fake_search_keyword,
+    )
+
+    embedding_client = FakeEmbeddingClient()
+    service = FilingSearchService(
+        session=Session(),
+        embedding_client=embedding_client,
+    )
+
+    result = asyncio.run(
+        service.search(
+            query="  gaming revenue growth  ",
+            mode=SearchMode.KEYWORD,
+            limit=3,
+            filing_id=3,
+        )
+    )
+
+    assert embedding_client.calls == []
+    assert captured == {
+        "query": "gaming revenue growth",
+        "limit": 3,
+        "filing_id": 3,
+    }
+    assert result.mode is SearchMode.KEYWORD
+    assert len(result.matches) == 1
+    assert result.matches[0].score == pytest.approx(0.42)
+    assert result.matches[0].distance is None
+    assert result.matches[0].similarity is None
 
 
 @pytest.mark.parametrize("query", ["", "   ", "\n\t"])

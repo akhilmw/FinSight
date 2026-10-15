@@ -21,6 +21,7 @@ from finsight.db.base import Base
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
 from finsight.main import app
+from finsight.schemas import SearchMode
 from finsight.services.filing_search import (
     FilingSearchMatch,
     FilingSearchResult,
@@ -355,16 +356,19 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
     async def fake_search(
         service: FilingSearchService,
         query: str,
+        mode: SearchMode = SearchMode.VECTOR,
         limit: int = 5,
         filing_id: int | None = None,
     ) -> FilingSearchResult:
         captured.update(
             query=query,
+            mode=mode,
             limit=limit,
             filing_id=filing_id,
         )
         return FilingSearchResult(
             query=query,
+            mode=mode,
             matches=[
                 FilingSearchMatch(
                     chunk_id=487,
@@ -377,6 +381,7 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
                     item="1A",
                     title="Risk Factors",
                     text="Competition may adversely affect revenue.",
+                    score=0.8,
                     distance=0.2,
                     similarity=0.8,
                 )
@@ -387,6 +392,7 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
 
     payload: dict[str, object] = {
         "query": "revenue risks",
+        "mode": SearchMode.VECTOR,
         "limit": 3,
     }
     if filing_id is not None:
@@ -397,11 +403,13 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
     assert response.status_code == 200
     assert captured == {
         "query": "revenue risks",
+        "mode": SearchMode.VECTOR,
         "limit": 3,
         "filing_id": filing_id,
     }
     assert response.json() == {
         "query": "revenue risks",
+        "mode": "vector",
         "matches": [
             {
                 "chunk_id": 487,
@@ -414,6 +422,7 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
                 "item": "1A",
                 "title": "Risk Factors",
                 "text": "Competition may adversely affect revenue.",
+                "score": 0.8,
                 "distance": 0.2,
                 "similarity": 0.8,
             }

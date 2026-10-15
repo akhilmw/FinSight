@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 
-from sqlalchemy import delete, or_, select
+from sqlalchemy import delete, func, or_, select
 from sqlalchemy.orm import Session
 
 from finsight.db.models import (
@@ -17,6 +17,13 @@ class FilingChunkSearchResult:
     section: FilingSectionRecord
     filing: Filing
     distance: float
+
+@dataclass(frozen=True)
+class FilingChunkKeywordSearchResult:
+    chunk: FilingChunkRecord
+    section: FilingSectionRecord
+    filing: Filing
+    rank: float
 
 
 class FilingChunkRepository:
@@ -125,4 +132,61 @@ class FilingChunkRepository:
                 distance=float(distance_value),
             )
             for chunk, section, filing, distance_value in rows
+        ]
+
+    def search_keyword(
+        self,
+        query: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+    ) -> list[FilingChunkKeywordSearchResult]:
+        if limit < 1:
+            raise ValueError("limit must be at least 1")
+
+        search_vector = func.to_tsvector(
+            "english",
+            FilingChunkRecord.text,
+        )
+        search_query = func.websearch_to_tsquery(
+            "english",
+            query,
+        )
+        rank = func.ts_rank_cd(search_vector, search_query)
+
+        statement = (
+            select(
+                FilingChunkRecord,
+                FilingSectionRecord,
+                Filing,
+                rank.label("rank"),
+            )
+            .join(
+                FilingSectionRecord,
+                FilingChunkRecord.section_id == FilingSectionRecord.id,
+            )
+            .join(
+                Filing,
+                FilingSectionRecord.filing_id == Filing.id,
+            )
+            .where(search_vector.op("@@")(search_query))
+        )
+
+        if filing_id is not None:
+            statement = statement.where(Filing.id == filing_id)
+
+        statement = statement.order_by(
+            rank.desc(),
+            FilingChunkRecord.id,
+        ).limit(limit)
+
+        rows = self._session.execute(statement)
+
+        return [
+            FilingChunkKeywordSearchResult(
+                chunk=chunk,
+                section=section,
+                filing=filing,
+                rank=float(rank_value),
+            )
+            for chunk, section, filing, rank_value in rows
         ]

@@ -38,12 +38,14 @@ async def search_filings(
 
     result = await service.search(
         query=request.query,
+        mode=request.mode,
         filing_id=request.filing_id,
         limit=request.limit,
     )
 
     return FilingSearchResponse(
         query=result.query,
+        mode=result.mode,
         matches=[
             FilingSearchMatchResponse(
                 chunk_id=match.chunk_id,
@@ -56,6 +58,7 @@ async def search_filings(
                 item=match.item,
                 title=match.title,
                 text=match.text,
+                score=match.score,
                 distance=match.distance,
                 similarity=match.similarity,
             )
