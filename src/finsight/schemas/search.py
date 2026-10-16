@@ -4,6 +4,8 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field, StringConstraints
 
+from finsight.schemas.filing import FormType
+
 SearchQuery = Annotated[
     str,
     StringConstraints(
@@ -13,16 +15,29 @@ SearchQuery = Annotated[
     ),
 ]
 
+CompanyName = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True,
+        min_length=1,
+        max_length=255,
+    ),
+]
+
 
 class SearchMode(StrEnum):
     VECTOR = "vector"
     KEYWORD = "keyword"
+    HYBRID = "hybrid"
 
 
 class FilingSearchRequest(BaseModel):
     query: SearchQuery
     mode: SearchMode = SearchMode.VECTOR
     filing_id: int | None = Field(default=None, ge=1)
+    company_name: CompanyName | None = None
+    year: int | None = Field(default=None, ge=1900, le=2100)
+    form_type: FormType | None = None
     limit: int = Field(default=5, ge=1, le=20)
 
 

@@ -30,7 +30,10 @@ class FakeEmbeddingClient:
         return [[0.1, 0.2, 0.3] for _ in texts]
 
 
-def create_repository_result() -> FilingChunkSearchResult:
+def create_repository_result(
+    chunk_id: int = 487,
+    distance: float = 0.2,
+) -> FilingChunkSearchResult:
     filing = Filing(
         id=3,
         accession_number="0001045810-26-000021",
@@ -52,7 +55,7 @@ def create_repository_result() -> FilingChunkSearchResult:
         end_line=20,
     )
     chunk = FilingChunkRecord(
-        id=487,
+        id=chunk_id,
         section_id=section.id,
         chunk_index=0,
         text="Competition may adversely affect revenue.",
@@ -65,17 +68,20 @@ def create_repository_result() -> FilingChunkSearchResult:
         chunk=chunk,
         section=section,
         filing=filing,
-        distance=0.2,
+        distance=distance,
     )
 
 
-def create_keyword_repository_result() -> FilingChunkKeywordSearchResult:
-    vector_result = create_repository_result()
+def create_keyword_repository_result(
+    chunk_id: int = 487,
+    rank: float = 0.42,
+) -> FilingChunkKeywordSearchResult:
+    vector_result = create_repository_result(chunk_id=chunk_id)
     return FilingChunkKeywordSearchResult(
         chunk=vector_result.chunk,
         section=vector_result.section,
         filing=vector_result.filing,
-        rank=0.42,
+        rank=rank,
     )
 
 
@@ -90,12 +96,18 @@ def test_search_embeds_query_and_maps_ranked_evidence(
         embedding_model: str,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> list[FilingChunkSearchResult]:
         captured.update(
             query_embedding=query_embedding,
             embedding_model=embedding_model,
             limit=limit,
             filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
         )
         return [create_repository_result()]
 
@@ -116,6 +128,9 @@ def test_search_embeds_query_and_maps_ranked_evidence(
             query="  What threatens NVIDIA revenue?  ",
             limit=3,
             filing_id=3,
+            company_name="NVIDIA",
+            year=2026,
+            form_type="10-K",
         )
     )
 
@@ -125,6 +140,9 @@ def test_search_embeds_query_and_maps_ranked_evidence(
         "embedding_model": "text-embedding-3-small",
         "limit": 3,
         "filing_id": 3,
+        "company_name": "NVIDIA",
+        "year": 2026,
+        "form_type": "10-K",
     }
     assert result.query == "What threatens NVIDIA revenue?"
     assert len(result.matches) == 1
@@ -153,11 +171,17 @@ def test_keyword_search_skips_embedding_and_maps_ranked_evidence(
         query: str,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> list[FilingChunkKeywordSearchResult]:
         captured.update(
             query=query,
             limit=limit,
             filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
         )
         return [create_keyword_repository_result()]
 
@@ -179,6 +203,9 @@ def test_keyword_search_skips_embedding_and_maps_ranked_evidence(
             mode=SearchMode.KEYWORD,
             limit=3,
             filing_id=3,
+            company_name="NVIDIA",
+            year=2026,
+            form_type="10-K",
         )
     )
 
@@ -187,12 +214,130 @@ def test_keyword_search_skips_embedding_and_maps_ranked_evidence(
         "query": "gaming revenue growth",
         "limit": 3,
         "filing_id": 3,
+        "company_name": "NVIDIA",
+        "year": 2026,
+        "form_type": "10-K",
     }
     assert result.mode is SearchMode.KEYWORD
     assert len(result.matches) == 1
     assert result.matches[0].score == pytest.approx(0.42)
     assert result.matches[0].distance is None
     assert result.matches[0].similarity is None
+
+
+def test_hybrid_search_fuses_vector_and_keyword_rankings(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_search_similar(
+        repository: FilingChunkRepository,
+        query_embedding: list[float],
+        embedding_model: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ) -> list[FilingChunkSearchResult]:
+        captured.update(
+            vector_limit=limit,
+            vector_filing_id=filing_id,
+            query_embedding=query_embedding,
+            embedding_model=embedding_model,
+            vector_company_name=company_name,
+            vector_year=year,
+            vector_form_type=form_type,
+        )
+        return [
+            create_repository_result(chunk_id=10, distance=0.1),
+            create_repository_result(chunk_id=20, distance=0.2),
+            create_repository_result(chunk_id=30, distance=0.3),
+        ]
+
+    def fake_search_keyword(
+        repository: FilingChunkRepository,
+        query: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ) -> list[FilingChunkKeywordSearchResult]:
+        captured.update(
+            keyword_query=query,
+            keyword_limit=limit,
+            keyword_filing_id=filing_id,
+            keyword_company_name=company_name,
+            keyword_year=year,
+            keyword_form_type=form_type,
+        )
+        return [
+            create_keyword_repository_result(chunk_id=20),
+            create_keyword_repository_result(chunk_id=40),
+            create_keyword_repository_result(chunk_id=10),
+        ]
+
+    monkeypatch.setattr(
+        FilingChunkRepository,
+        "search_similar",
+        fake_search_similar,
+    )
+    monkeypatch.setattr(
+        FilingChunkRepository,
+        "search_keyword",
+        fake_search_keyword,
+    )
+
+    embedding_client = FakeEmbeddingClient()
+    service = FilingSearchService(
+        session=Session(),
+        embedding_client=embedding_client,
+    )
+
+    result = asyncio.run(
+        service.search(
+            query="  gaming revenue growth  ",
+            mode=SearchMode.HYBRID,
+            limit=4,
+            filing_id=3,
+            company_name="NVIDIA",
+            year=2026,
+            form_type="10-K",
+        )
+    )
+
+    assert embedding_client.calls == [["gaming revenue growth"]]
+    assert captured == {
+        "vector_limit": 20,
+        "vector_filing_id": 3,
+        "query_embedding": [0.1, 0.2, 0.3],
+        "embedding_model": "text-embedding-3-small",
+        "vector_company_name": "NVIDIA",
+        "vector_year": 2026,
+        "vector_form_type": "10-K",
+        "keyword_query": "gaming revenue growth",
+        "keyword_limit": 20,
+        "keyword_filing_id": 3,
+        "keyword_company_name": "NVIDIA",
+        "keyword_year": 2026,
+        "keyword_form_type": "10-K",
+    }
+    assert result.mode is SearchMode.HYBRID
+    assert [match.chunk_id for match in result.matches] == [20, 10, 40, 30]
+
+    overlapping_match = result.matches[0]
+    assert overlapping_match.score == pytest.approx((1 / 62) + (1 / 61))
+    assert overlapping_match.distance == pytest.approx(0.2)
+    assert overlapping_match.similarity == pytest.approx(0.8)
+
+    keyword_only_match = result.matches[2]
+    assert keyword_only_match.distance is None
+    assert keyword_only_match.similarity is None
+
+    vector_only_match = result.matches[3]
+    assert vector_only_match.distance == pytest.approx(0.3)
+    assert vector_only_match.similarity == pytest.approx(0.7)
 
 
 @pytest.mark.parametrize("query", ["", "   ", "\n\t"])

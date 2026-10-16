@@ -7,6 +7,7 @@ from finsight.embeddings import EmbeddingClient
 from finsight.repositories.filing_chunk import (
     FilingChunkRepository,
 )
+from finsight.retrieval.fusion import reciprocal_rank_fusion
 from finsight.schemas import SearchMode
 
 
@@ -43,12 +44,105 @@ class FilingSearchService:
         self._embedding_client = embedding_client
         self._chunk_repository = FilingChunkRepository(session)
 
+    async def _search_hybrid(
+        self,
+        query: str,
+        limit: int,
+        filing_id: int | None,
+        company_name: str | None,
+        year: int | None,
+        form_type: str | None,
+    ) -> list[FilingSearchMatch]:
+        candidate_limit = max(limit * 4, 20)
+
+        query_embeddings = await self._embedding_client.embed([query])
+        query_embedding = query_embeddings[0]
+
+        vector_results = self._chunk_repository.search_similar(
+            query_embedding=query_embedding,
+            embedding_model=self._embedding_client.model,
+            limit=candidate_limit,
+            filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
+        )
+        keyword_results = self._chunk_repository.search_keyword(
+            query=query,
+            limit=candidate_limit,
+            filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
+        )
+
+        vector_by_id = {
+            result.chunk.id: result
+            for result in vector_results
+        }
+        keyword_by_id = {
+            result.chunk.id: result
+            for result in keyword_results
+        }
+
+        scores = reciprocal_rank_fusion(
+            ranked_lists=[
+                [result.chunk.id for result in vector_results],
+                [result.chunk.id for result in keyword_results],
+            ],
+        )
+
+        ranked_chunk_ids = sorted(
+            scores,
+            key=lambda chunk_id: (-scores[chunk_id], chunk_id),
+        )[:limit]
+
+        matches: list[FilingSearchMatch] = []
+
+        for chunk_id in ranked_chunk_ids:
+            vector_result = vector_by_id.get(chunk_id)
+            result = vector_result or keyword_by_id[chunk_id]
+
+            distance = (
+                vector_result.distance
+                if vector_result is not None
+                else None
+            )
+            similarity = (
+                1.0 - distance
+                if distance is not None
+                else None
+            )
+
+            matches.append(
+                FilingSearchMatch(
+                    chunk_id=result.chunk.id,
+                    filing_id=result.filing.id,
+                    accession_number=result.filing.accession_number,
+                    company_name=result.filing.company_name,
+                    form_type=result.filing.form_type,
+                    filing_date=result.filing.filing_date,
+                    source_url=result.filing.source_url,
+                    item=result.section.item,
+                    title=result.section.title,
+                    text=result.chunk.text,
+                    score=scores[chunk_id],
+                    distance=distance,
+                    similarity=similarity,
+                )
+            )
+
+        return matches
+
     async def search(
         self,
         query: str,
         mode: SearchMode = SearchMode.VECTOR,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> FilingSearchResult:
         normalized_query = query.strip()
 
@@ -63,6 +157,9 @@ class FilingSearchService:
                 query=normalized_query,
                 limit=limit,
                 filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
             )
             matches = [
                 FilingSearchMatch(
@@ -80,6 +177,15 @@ class FilingSearchService:
                 )
                 for result in keyword_results
             ]
+        elif mode is SearchMode.HYBRID:
+            matches = await self._search_hybrid(
+                query=normalized_query,
+                limit=limit,
+                filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
+            )
         else:
             query_embeddings = await self._embedding_client.embed([normalized_query])
             query_embedding = query_embeddings[0]
@@ -89,6 +195,9 @@ class FilingSearchService:
                 embedding_model=self._embedding_client.model,
                 limit=limit,
                 filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
             )
             matches = [
                 FilingSearchMatch(

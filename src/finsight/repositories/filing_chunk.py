@@ -1,8 +1,10 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
+from datetime import date
 
 from sqlalchemy import delete, func, or_, select
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.elements import ColumnElement
 
 from finsight.db.models import (
     Filing,
@@ -24,6 +26,42 @@ class FilingChunkKeywordSearchResult:
     section: FilingSectionRecord
     filing: Filing
     rank: float
+
+
+def _filing_filter_conditions(
+    filing_id: int | None = None,
+    company_name: str | None = None,
+    year: int | None = None,
+    form_type: str | None = None,
+) -> list[ColumnElement[bool]]:
+    conditions: list[ColumnElement[bool]] = []
+
+    if filing_id is not None:
+        conditions.append(Filing.id == filing_id)
+
+    if company_name is not None:
+        normalized_company = company_name.strip()
+
+        if normalized_company:
+            conditions.append(
+                Filing.company_name.ilike(f"%{normalized_company}%")
+            )
+
+    if year is not None:
+        if not 1900 <= year <= 2100:
+            raise ValueError("year must be between 1900 and 2100")
+
+        conditions.extend(
+            [
+                Filing.filing_date >= date(year, 1, 1),
+                Filing.filing_date < date(year + 1, 1, 1),
+            ]
+        )
+
+    if form_type is not None:
+        conditions.append(Filing.form_type == form_type)
+
+    return conditions
 
 
 class FilingChunkRepository:
@@ -91,6 +129,9 @@ class FilingChunkRepository:
         embedding_model: str,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> list[FilingChunkSearchResult]:
         if limit < 1:
             raise ValueError("limit must be at least 1")
@@ -117,9 +158,14 @@ class FilingChunkRepository:
                 FilingChunkRecord.embedding_model == embedding_model,
             )
         )
-
-        if filing_id is not None:
-            statement = statement.where(Filing.id == filing_id)
+        statement = statement.where(
+            *_filing_filter_conditions(
+                filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
+            )
+        )
 
         statement = statement.order_by(distance).limit(limit)
         rows = self._session.execute(statement)
@@ -139,6 +185,9 @@ class FilingChunkRepository:
         query: str,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> list[FilingChunkKeywordSearchResult]:
         if limit < 1:
             raise ValueError("limit must be at least 1")
@@ -170,9 +219,14 @@ class FilingChunkRepository:
             )
             .where(search_vector.op("@@")(search_query))
         )
-
-        if filing_id is not None:
-            statement = statement.where(Filing.id == filing_id)
+        statement = statement.where(
+            *_filing_filter_conditions(
+                filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
+            )
+        )
 
         statement = statement.order_by(
             rank.desc(),

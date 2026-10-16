@@ -40,6 +40,9 @@ async def search_filings(
         query=request.query,
         mode=request.mode,
         filing_id=request.filing_id,
+        company_name=request.company_name,
+        year=request.year,
+        form_type=request.form_type,
         limit=request.limit,
     )
 

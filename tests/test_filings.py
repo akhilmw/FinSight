@@ -359,12 +359,18 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
         mode: SearchMode = SearchMode.VECTOR,
         limit: int = 5,
         filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
     ) -> FilingSearchResult:
         captured.update(
             query=query,
             mode=mode,
             limit=limit,
             filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
         )
         return FilingSearchResult(
             query=query,
@@ -394,6 +400,9 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
         "query": "revenue risks",
         "mode": SearchMode.VECTOR,
         "limit": 3,
+        "company_name": " NVIDIA ",
+        "year": 2026,
+        "form_type": "10-K",
     }
     if filing_id is not None:
         payload["filing_id"] = filing_id
@@ -406,6 +415,9 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
         "mode": SearchMode.VECTOR,
         "limit": 3,
         "filing_id": filing_id,
+        "company_name": "NVIDIA",
+        "year": 2026,
+        "form_type": "10-K",
     }
     assert response.json() == {
         "query": "revenue risks",
@@ -437,6 +449,10 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
         {"query": "revenue", "limit": 0},
         {"query": "revenue", "limit": 21},
         {"query": "revenue", "filing_id": 0},
+        {"query": "revenue", "company_name": "   "},
+        {"query": "revenue", "year": 1899},
+        {"query": "revenue", "year": 2101},
+        {"query": "revenue", "form_type": "8-K"},
     ],
 )
 def test_search_rejects_invalid_request(
