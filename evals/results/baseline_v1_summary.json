@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-16T04:55:24.556097+00:00",
+  "embedding_model": "text-embedding-3-small",
+  "question_count": 25,
+  "summaries": [
+    {
+      "mode": "vector",
+      "question_count": 25,
+      "mean_recall_at_5": 0.54,
+      "mean_recall_at_10": 0.6,
+      "mean_reciprocal_rank": 0.4696666666666667,
+      "mean_latency_ms": 447.60449656052515
+    },
+    {
+      "mode": "keyword",
+      "question_count": 25,
+      "mean_recall_at_5": 0.08,
+      "mean_recall_at_10": 0.08,
+      "mean_reciprocal_rank": 0.08,
+      "mean_latency_ms": 69.0181834436953
+    },
+    {
+      "mode": "hybrid",
+      "question_count": 25,
+      "mean_recall_at_5": 0.54,
+      "mean_recall_at_10": 0.6,
+      "mean_reciprocal_rank": 0.4696666666666667,
+      "mean_latency_ms": 458.07166171842255
+    }
+  ]
+}

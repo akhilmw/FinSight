@@ -1,3 +1,4 @@
+import re
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date
@@ -10,6 +11,10 @@ from finsight.db.models import (
     Filing,
     FilingChunkRecord,
     FilingSectionRecord,
+)
+
+_WEBSEARCH_TERM_PATTERN = re.compile(
+    r"[A-Za-z0-9]+(?:[.'-][A-Za-z0-9]+)*"
 )
 
 
@@ -26,6 +31,15 @@ class FilingChunkKeywordSearchResult:
     section: FilingSectionRecord
     filing: Filing
     rank: float
+
+
+def _build_disjunctive_websearch_query(query: str) -> str:
+    terms = _WEBSEARCH_TERM_PATTERN.findall(query)
+
+    if not terms:
+        raise ValueError("query must contain at least one searchable term")
+
+    return " OR ".join(f'"{term}"' for term in terms)
 
 
 def _filing_filter_conditions(
@@ -198,7 +212,7 @@ class FilingChunkRepository:
         )
         search_query = func.websearch_to_tsquery(
             "english",
-            query,
+            _build_disjunctive_websearch_query(query),
         )
         rank = func.ts_rank_cd(search_vector, search_query)
 

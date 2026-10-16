@@ -1,0 +1,1572 @@
+{
+  "generated_at": "2026-10-16T04:55:24.556097+00:00",
+  "embedding_model": "text-embedding-3-small",
+  "question_count": 25,
+  "result_count": 75,
+  "results": [
+    {
+      "evaluation_id": "fin-001",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        487,
+        489,
+        491,
+        493,
+        492,
+        490,
+        488,
+        494,
+        565,
+        495
+      ],
+      "relevant_chunk_ids": [
+        487
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1836.5332499961369
+    },
+    {
+      "evaluation_id": "fin-001",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        487
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 49.2069169995375
+    },
+    {
+      "evaluation_id": "fin-001",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        487,
+        489,
+        491,
+        493,
+        492,
+        490,
+        488,
+        494,
+        565,
+        495
+      ],
+      "relevant_chunk_ids": [
+        487
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 730.4525419895072
+    },
+    {
+      "evaluation_id": "fin-002",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        487,
+        488,
+        493,
+        490,
+        491,
+        489,
+        565,
+        494,
+        492,
+        495
+      ],
+      "relevant_chunk_ids": [
+        488
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 847.5540000072215
+    },
+    {
+      "evaluation_id": "fin-002",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        488
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 70.6962079857476
+    },
+    {
+      "evaluation_id": "fin-002",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        487,
+        488,
+        493,
+        490,
+        491,
+        489,
+        565,
+        494,
+        492,
+        495
+      ],
+      "relevant_chunk_ids": [
+        488
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 361.041958007263
+    },
+    {
+      "evaluation_id": "fin-003",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        637,
+        573,
+        638,
+        565,
+        490,
+        603,
+        639,
+        571,
+        572,
+        602
+      ],
+      "relevant_chunk_ids": [
+        490
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 797.2423340252135
+    },
+    {
+      "evaluation_id": "fin-003",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        565,
+        637,
+        573
+      ],
+      "relevant_chunk_ids": [
+        490
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 77.90708300308324
+    },
+    {
+      "evaluation_id": "fin-003",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        637,
+        565,
+        573,
+        638,
+        490,
+        603,
+        639,
+        571,
+        572,
+        602
+      ],
+      "relevant_chunk_ids": [
+        490
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 746.2483750132378
+    },
+    {
+      "evaluation_id": "fin-004",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        492,
+        565,
+        490,
+        493,
+        487,
+        489,
+        488,
+        603,
+        494,
+        491
+      ],
+      "relevant_chunk_ids": [
+        492
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 333.395041001495
+    },
+    {
+      "evaluation_id": "fin-004",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        492
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 83.30112500698306
+    },
+    {
+      "evaluation_id": "fin-004",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        492,
+        565,
+        490,
+        493,
+        487,
+        489,
+        488,
+        603,
+        494,
+        491
+      ],
+      "relevant_chunk_ids": [
+        492
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 420.60283399769105
+    },
+    {
+      "evaluation_id": "fin-005",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        494,
+        487,
+        493,
+        488,
+        491,
+        495,
+        490,
+        492,
+        489,
+        565
+      ],
+      "relevant_chunk_ids": [
+        493,
+        495
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 234.65766600565985
+    },
+    {
+      "evaluation_id": "fin-005",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        493,
+        495
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 65.46979199629277
+    },
+    {
+      "evaluation_id": "fin-005",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        494,
+        487,
+        493,
+        488,
+        491,
+        495,
+        490,
+        492,
+        489,
+        565
+      ],
+      "relevant_chunk_ids": [
+        493,
+        495
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 404.1305409919005
+    },
+    {
+      "evaluation_id": "fin-006",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        487,
+        490,
+        565,
+        491,
+        603,
+        488,
+        489,
+        492,
+        609,
+        494
+      ],
+      "relevant_chunk_ids": [
+        497
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 403.4486669988837
+    },
+    {
+      "evaluation_id": "fin-006",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        497
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 74.75462500588037
+    },
+    {
+      "evaluation_id": "fin-006",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        487,
+        490,
+        565,
+        491,
+        603,
+        488,
+        489,
+        492,
+        609,
+        494
+      ],
+      "relevant_chunk_ids": [
+        497
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 759.813334007049
+    },
+    {
+      "evaluation_id": "fin-007",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        498,
+        487,
+        490,
+        493,
+        512,
+        488,
+        492,
+        489,
+        494
+      ],
+      "relevant_chunk_ids": [
+        498
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 315.77304101665504
+    },
+    {
+      "evaluation_id": "fin-007",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        498
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 83.27129200915806
+    },
+    {
+      "evaluation_id": "fin-007",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        498,
+        487,
+        490,
+        493,
+        512,
+        488,
+        492,
+        489,
+        494
+      ],
+      "relevant_chunk_ids": [
+        498
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 386.0753329936415
+    },
+    {
+      "evaluation_id": "fin-008",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        501,
+        539,
+        500,
+        540,
+        538,
+        502,
+        544,
+        543,
+        499,
+        542
+      ],
+      "relevant_chunk_ids": [
+        501,
+        540
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 292.6240829983726
+    },
+    {
+      "evaluation_id": "fin-008",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        501,
+        540
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 50.25599998771213
+    },
+    {
+      "evaluation_id": "fin-008",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        501,
+        539,
+        500,
+        540,
+        538,
+        502,
+        544,
+        543,
+        499,
+        542
+      ],
+      "relevant_chunk_ids": [
+        501,
+        540
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 422.3859579942655
+    },
+    {
+      "evaluation_id": "fin-009",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        504,
+        565,
+        639,
+        637,
+        571,
+        640,
+        603,
+        573,
+        597,
+        638
+      ],
+      "relevant_chunk_ids": [
+        504
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 288.61445901566185
+    },
+    {
+      "evaluation_id": "fin-009",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        504
+      ],
+      "relevant_chunk_ids": [
+        504
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 52.28491700836457
+    },
+    {
+      "evaluation_id": "fin-009",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        504,
+        565,
+        639,
+        637,
+        571,
+        640,
+        603,
+        573,
+        597,
+        638
+      ],
+      "relevant_chunk_ids": [
+        504
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 503.13591700978577
+    },
+    {
+      "evaluation_id": "fin-010",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        567,
+        568,
+        572,
+        575,
+        574,
+        571,
+        639,
+        623,
+        573,
+        576
+      ],
+      "relevant_chunk_ids": [
+        568
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 454.0980830206536
+    },
+    {
+      "evaluation_id": "fin-010",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        568
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 77.61612502508797
+    },
+    {
+      "evaluation_id": "fin-010",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        567,
+        568,
+        572,
+        575,
+        574,
+        571,
+        639,
+        623,
+        573,
+        576
+      ],
+      "relevant_chunk_ids": [
+        568
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 494.76199998753145
+    },
+    {
+      "evaluation_id": "fin-011",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        572,
+        638,
+        573,
+        637,
+        639,
+        640,
+        567,
+        568,
+        617,
+        574
+      ],
+      "relevant_chunk_ids": [
+        572
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 278.4847079892643
+    },
+    {
+      "evaluation_id": "fin-011",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        572,
+        573,
+        638,
+        565,
+        637
+      ],
+      "relevant_chunk_ids": [
+        572
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 51.30716701387428
+    },
+    {
+      "evaluation_id": "fin-011",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        572,
+        573,
+        638,
+        637,
+        565,
+        639,
+        640,
+        567,
+        568,
+        617
+      ],
+      "relevant_chunk_ids": [
+        572
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 545.3109169902746
+    },
+    {
+      "evaluation_id": "fin-012",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        630,
+        573,
+        627,
+        571,
+        637,
+        617,
+        638,
+        623,
+        639
+      ],
+      "relevant_chunk_ids": [
+        566
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 287.16766598518007
+    },
+    {
+      "evaluation_id": "fin-012",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        566
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 87.09062499110587
+    },
+    {
+      "evaluation_id": "fin-012",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        630,
+        573,
+        627,
+        571,
+        637,
+        617,
+        638,
+        623,
+        639
+      ],
+      "relevant_chunk_ids": [
+        566
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 424.89870797726326
+    },
+    {
+      "evaluation_id": "fin-013",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        603,
+        487,
+        627,
+        624,
+        490,
+        602,
+        488,
+        618,
+        625
+      ],
+      "relevant_chunk_ids": [
+        567
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 917.311791999964
+    },
+    {
+      "evaluation_id": "fin-013",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        567
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 86.54733400908299
+    },
+    {
+      "evaluation_id": "fin-013",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        603,
+        487,
+        627,
+        624,
+        490,
+        602,
+        488,
+        618,
+        625
+      ],
+      "relevant_chunk_ids": [
+        567
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 343.472209002357
+    },
+    {
+      "evaluation_id": "fin-014",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        573,
+        565,
+        639,
+        512,
+        490,
+        603,
+        487,
+        543,
+        509,
+        638
+      ],
+      "relevant_chunk_ids": [
+        530,
+        573
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 387.5462919822894
+    },
+    {
+      "evaluation_id": "fin-014",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        530,
+        573
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 79.82324998010881
+    },
+    {
+      "evaluation_id": "fin-014",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        573,
+        565,
+        639,
+        512,
+        490,
+        603,
+        487,
+        543,
+        509,
+        638
+      ],
+      "relevant_chunk_ids": [
+        530,
+        573
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 435.3874590015039
+    },
+    {
+      "evaluation_id": "fin-015",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        618,
+        619,
+        621,
+        598,
+        620,
+        601,
+        599,
+        637,
+        640,
+        617
+      ],
+      "relevant_chunk_ids": [
+        577
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 308.88154200511053
+    },
+    {
+      "evaluation_id": "fin-015",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        577
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 73.2830410124734
+    },
+    {
+      "evaluation_id": "fin-015",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        618,
+        619,
+        621,
+        598,
+        620,
+        601,
+        599,
+        637,
+        640,
+        617
+      ],
+      "relevant_chunk_ids": [
+        577
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 432.5372910243459
+    },
+    {
+      "evaluation_id": "fin-016",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        561,
+        616,
+        615,
+        601,
+        565,
+        571,
+        599,
+        603,
+        637,
+        612
+      ],
+      "relevant_chunk_ids": [
+        578
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 250.75054200715385
+    },
+    {
+      "evaluation_id": "fin-016",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        578
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 55.9010420111008
+    },
+    {
+      "evaluation_id": "fin-016",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        561,
+        616,
+        615,
+        601,
+        565,
+        571,
+        599,
+        603,
+        637,
+        612
+      ],
+      "relevant_chunk_ids": [
+        578
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 392.9273749818094
+    },
+    {
+      "evaluation_id": "fin-017",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        571,
+        573,
+        639,
+        638,
+        637,
+        640,
+        492,
+        623,
+        632
+      ],
+      "relevant_chunk_ids": [
+        575
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 268.8237499969546
+    },
+    {
+      "evaluation_id": "fin-017",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        575
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 70.41108401608653
+    },
+    {
+      "evaluation_id": "fin-017",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        571,
+        573,
+        639,
+        638,
+        637,
+        640,
+        492,
+        623,
+        632
+      ],
+      "relevant_chunk_ids": [
+        575
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 395.9787090134341
+    },
+    {
+      "evaluation_id": "fin-018",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        510,
+        512,
+        513,
+        565,
+        515,
+        511,
+        543,
+        609,
+        516,
+        509
+      ],
+      "relevant_chunk_ids": [
+        511,
+        512
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 245.7697920035571
+    },
+    {
+      "evaluation_id": "fin-018",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        511,
+        512
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 63.85070801479742
+    },
+    {
+      "evaluation_id": "fin-018",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        510,
+        512,
+        513,
+        565,
+        515,
+        511,
+        543,
+        609,
+        516,
+        509
+      ],
+      "relevant_chunk_ids": [
+        511,
+        512
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 359.74799998803064
+    },
+    {
+      "evaluation_id": "fin-019",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        514,
+        512,
+        513,
+        509,
+        571,
+        573,
+        515,
+        603,
+        604
+      ],
+      "relevant_chunk_ids": [
+        514
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 390.16891599749215
+    },
+    {
+      "evaluation_id": "fin-019",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        514
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 52.20945901237428
+    },
+    {
+      "evaluation_id": "fin-019",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        514,
+        512,
+        513,
+        509,
+        571,
+        573,
+        515,
+        603,
+        604
+      ],
+      "relevant_chunk_ids": [
+        514
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 332.5194999924861
+    },
+    {
+      "evaluation_id": "fin-020",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        521,
+        487,
+        489,
+        565,
+        523,
+        512,
+        494,
+        490,
+        534,
+        488
+      ],
+      "relevant_chunk_ids": [
+        521,
+        522
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 386.6482079902198
+    },
+    {
+      "evaluation_id": "fin-020",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        521,
+        522
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 46.09987500589341
+    },
+    {
+      "evaluation_id": "fin-020",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        521,
+        487,
+        489,
+        565,
+        523,
+        512,
+        494,
+        490,
+        534,
+        488
+      ],
+      "relevant_chunk_ids": [
+        521,
+        522
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 321.12970799789764
+    },
+    {
+      "evaluation_id": "fin-021",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        523,
+        534,
+        556,
+        603,
+        487,
+        490,
+        627,
+        609,
+        543
+      ],
+      "relevant_chunk_ids": [
+        556,
+        557
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 494.8459579900373
+    },
+    {
+      "evaluation_id": "fin-021",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        556,
+        557
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 73.55337499757297
+    },
+    {
+      "evaluation_id": "fin-021",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        523,
+        534,
+        556,
+        603,
+        487,
+        490,
+        627,
+        609,
+        543
+      ],
+      "relevant_chunk_ids": [
+        556,
+        557
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 360.5784999963362
+    },
+    {
+      "evaluation_id": "fin-022",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        512,
+        565,
+        515,
+        543,
+        534,
+        510,
+        542,
+        490,
+        509,
+        537
+      ],
+      "relevant_chunk_ids": [
+        526
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 261.69029099401087
+    },
+    {
+      "evaluation_id": "fin-022",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        526
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 78.96149999578483
+    },
+    {
+      "evaluation_id": "fin-022",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        512,
+        565,
+        515,
+        543,
+        534,
+        510,
+        542,
+        490,
+        509,
+        537
+      ],
+      "relevant_chunk_ids": [
+        526
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 382.50779200461693
+    },
+    {
+      "evaluation_id": "fin-023",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        565,
+        487,
+        528,
+        488,
+        490,
+        534,
+        512,
+        489,
+        494,
+        493
+      ],
+      "relevant_chunk_ids": [
+        528,
+        567
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 244.06620897934772
+    },
+    {
+      "evaluation_id": "fin-023",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        528,
+        567
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 47.40612499881536
+    },
+    {
+      "evaluation_id": "fin-023",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        565,
+        487,
+        528,
+        488,
+        490,
+        534,
+        512,
+        489,
+        494,
+        493
+      ],
+      "relevant_chunk_ids": [
+        528,
+        567
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 345.6055000133347
+    },
+    {
+      "evaluation_id": "fin-024",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        609,
+        606,
+        565,
+        624,
+        623,
+        618,
+        619,
+        581,
+        630,
+        571
+      ],
+      "relevant_chunk_ids": [
+        580,
+        581
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.125,
+      "latency_ms": 359.5900410145987
+    },
+    {
+      "evaluation_id": "fin-024",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        580,
+        581
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 83.43937498284504
+    },
+    {
+      "evaluation_id": "fin-024",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        609,
+        606,
+        565,
+        624,
+        623,
+        618,
+        619,
+        581,
+        630,
+        571
+      ],
+      "relevant_chunk_ids": [
+        580,
+        581
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.125,
+      "latency_ms": 570.0875829788856
+    },
+    {
+      "evaluation_id": "fin-025",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        585,
+        565,
+        543,
+        609,
+        627,
+        630,
+        593,
+        534,
+        523,
+        590
+      ],
+      "relevant_chunk_ids": [
+        584,
+        585
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 304.4260829919949
+    },
+    {
+      "evaluation_id": "fin-025",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [],
+      "relevant_chunk_ids": [
+        584,
+        585
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 90.8065420226194
+    },
+    {
+      "evaluation_id": "fin-025",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        585,
+        565,
+        543,
+        609,
+        627,
+        630,
+        593,
+        534,
+        523,
+        590
+      ],
+      "relevant_chunk_ids": [
+        584,
+        585
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 580.4535000061151
+    }
+  ]
+}

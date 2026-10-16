@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-10-16T05:11:36.795542+00:00",
+  "source_filing_id": 3,
+  "embedding_model": "text-embedding-3-small",
+  "embedding_dimensions": 1536,
+  "embedding_batch_size": 64,
+  "sections": 23,
+  "chunks": 162,
+  "embedded_chunks": 162,
+  "embedding_batches": 3,
+  "processing_ms": 350.2292080083862,
+  "chunking_ms": 580.5764999822713,
+  "embedding_and_storage_ms": 5089.0744170174,
+  "total_indexing_ms": 6019.884333014488,
+  "chunks_per_second": 26.91081606195541
+}
