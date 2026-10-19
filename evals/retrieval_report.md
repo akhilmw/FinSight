@@ -1,11 +1,14 @@
-# FinSight Week 2 Retrieval Evaluation
+# FinSight Retrieval and Reranking Evaluation
 
-Date: October 16, 2026
+Initial retrieval baseline: October 16, 2026
+
+Cross-encoder reranking update: October 18, 2026
 
 ## Objective
 
-Evaluate vector, PostgreSQL full-text, and hybrid reciprocal-rank-fusion
-retrieval over SEC filing chunks before adding answer generation or reranking.
+Evaluate vector, PostgreSQL full-text, hybrid reciprocal-rank-fusion, and
+cross-encoder-reranked retrieval over SEC filing chunks before adding answer
+generation.
 
 ## Evaluation set
 
@@ -40,6 +43,17 @@ The relevance labels were not changed between evaluation runs.
 - Reciprocal rank fusion with rank constant 60.
 - Candidate pool size: `max(limit * 4, 20)`.
 
+### Hybrid plus cross-encoder reranking
+
+- Hybrid retrieval produces the initial candidate pool.
+- `cross-encoder/ms-marco-MiniLM-L-6-v2` jointly scores each question and
+  candidate chunk.
+- Candidates are reordered by cross-encoder score before applying the final
+  result limit.
+- The original RRF score is preserved separately from the reranker score.
+- Model inference runs outside the FastAPI event loop and the model instance is
+  cached per application process.
+
 ## Baseline failure and correction
 
 The first keyword implementation passed each full natural-language question to
@@ -59,10 +73,32 @@ construction; the evaluation questions and labels remained fixed.
 | Keyword OR v2 | Vector | 0.540 | 0.600 | 0.470 | 328.6 ms |
 | Keyword OR v2 | Keyword | **0.620** | **0.760** | 0.456 | **120.3 ms** |
 | Keyword OR v2 | Hybrid | 0.560 | 0.700 | **0.531** | 512.0 ms |
+| Reranker v3 | Vector | 0.540 | 0.600 | 0.470 | 437.2 ms |
+| Reranker v3 | Keyword | 0.620 | 0.760 | 0.456 | **115.7 ms** |
+| Reranker v3 | Hybrid | 0.560 | 0.700 | 0.531 | 521.3 ms |
+| Reranker v3 | Hybrid + reranking | **0.860** | **0.980** | **0.786** | 1,405.3 ms |
 
 Latency differences between runs include external embedding-service and local
 system variability and should not be interpreted as a controlled performance
 improvement.
+
+## Reranking impact
+
+The controlled comparison below uses the hybrid and reranked-hybrid results
+from the same evaluation run.
+
+| Metric | Hybrid | Hybrid + reranking | Absolute change |
+|---|---:|---:|---:|
+| Recall@5 | 0.560 | **0.860** | **+0.300** |
+| Recall@10 | 0.700 | **0.980** | **+0.280** |
+| MRR | 0.531 | **0.786** | **+0.255** |
+| Mean latency | 521.3 ms | 1,405.3 ms | +884.0 ms |
+
+Reranking increased Recall@10 from 70% to 98% and MRR from 0.531 to
+0.786. Mean retrieval latency increased by approximately 884 ms, or 2.7 times
+the original hybrid latency. The evaluation requests ten results and therefore
+reranks 40 candidates; the default API request for five results reranks 20
+candidates and may be faster.
 
 ## Results by query type
 
@@ -88,8 +124,10 @@ improvement.
 - Hybrid substantially improved semantic-query MRR to 0.616.
 - Equal-weight RRF sometimes pushed keyword-only relevant evidence below the
   top-ten cutoff, particularly for exact questions.
-- The results support using a larger hybrid candidate pool followed by a
-  learned reranker rather than repeatedly tuning RRF weights on this small set.
+- Cross-encoder reranking produced the strongest Recall@5, Recall@10, and MRR
+  by a substantial margin.
+- The quality improvement supports using the slower reranked mode for final RAG
+  answer generation while retaining the faster modes as measurable baselines.
 
 ## Recorded failure cases
 
@@ -115,6 +153,14 @@ document.
 
 Some relevant keyword candidates entered the fusion pool but fell below the
 final top-ten cutoff after equal-weight rank fusion.
+
+### Reranked-hybrid remaining failure cases
+
+Only `fin-014` had incomplete recall at ten. It has two relevant chunk labels;
+one ranked first while the other remained outside the top ten, producing
+Recall@10 of 0.5. `fin-006`, `fin-012`, `fin-018`, and `fin-024` had incomplete
+Recall@5 but complete Recall@10, showing that the larger candidate window found
+their evidence even when not every relevant chunk reached the first five.
 
 ## Indexing benchmark
 
@@ -145,15 +191,19 @@ stable benchmark.
 - The 25 questions and relevance labels were manually created.
 - Query-type subsets are small.
 - Timing results come from a single local run.
+- Cross-encoder results use one local reranker model and one candidate-pool
+  configuration; model size and candidate count were not tuned.
 - Retrieval metrics measure evidence discovery, not answer groundedness or
   citation correctness.
 - Multiple chunking strategies were not benchmarked; the selected strategy is
   section-aware, token-bounded natural-boundary chunking with a 600-token maximum
   and 100-token overlap.
 
-## Week 2 conclusion
+## Conclusion
 
 FinSight now provides vector, keyword, and hybrid retrieval; metadata filtering;
 indexed PostgreSQL search; a labeled evaluation dataset; automated retrieval
-metrics; saved baselines; failure-case analysis; and an indexing benchmark.
-Cross-encoder reranking is the next planned retrieval improvement.
+metrics; saved baselines; failure-case analysis; an indexing benchmark; and
+cross-encoder reranking. The reranking milestone is complete. The next system
+stage is evidence-grounded answer generation with citations and insufficient-
+evidence behavior.

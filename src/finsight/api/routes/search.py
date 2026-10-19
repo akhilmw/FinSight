@@ -3,9 +3,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from finsight.api.dependencies import get_embedding_client
+from finsight.api.dependencies import get_embedding_client, get_reranker
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
+from finsight.reranking import Reranker
 from finsight.schemas import (
     FilingSearchMatchResponse,
     FilingSearchRequest,
@@ -20,6 +21,10 @@ EmbeddingClientDependency = Annotated[
     EmbeddingClient,
     Depends(get_embedding_client),
 ]
+RerankerDependency = Annotated[
+    Reranker,
+    Depends(get_reranker),
+]
 
 
 @router.post(
@@ -30,10 +35,12 @@ async def search_filings(
     request: FilingSearchRequest,
     session: DatabaseSession,
     embedding_client: EmbeddingClientDependency,
+    reranker: RerankerDependency,
 ) -> FilingSearchResponse:
     service = FilingSearchService(
         session=session,
         embedding_client=embedding_client,
+        reranker=reranker,
     )
 
     result = await service.search(
@@ -62,6 +69,8 @@ async def search_filings(
                 title=match.title,
                 text=match.text,
                 score=match.score,
+                retrieval_score=match.retrieval_score,
+                rerank_score=match.rerank_score,
                 distance=match.distance,
                 similarity=match.similarity,
             )

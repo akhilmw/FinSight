@@ -14,6 +14,7 @@ from sqlalchemy.pool import StaticPool
 from finsight.api.dependencies import (
     get_document_store,
     get_embedding_client,
+    get_reranker,
     get_sec_client,
 )
 from finsight.clients.sec import SecClient, SecCompany, SecFiling
@@ -21,6 +22,7 @@ from finsight.db.base import Base
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
 from finsight.main import app
+from finsight.reranking import Reranker
 from finsight.schemas import SearchMode
 from finsight.services.filing_search import (
     FilingSearchMatch,
@@ -48,6 +50,15 @@ class FakeEmbeddingClient:
         texts: Sequence[str],
     ) -> list[list[float]]:
         return [[0.1] * self.dimensions for _ in texts]
+
+
+class FakeReranker:
+    def rerank(
+        self,
+        query: str,
+        documents: list[str],
+    ) -> list[float]:
+        return [0.0 for _ in documents]
 
 
 @pytest.fixture
@@ -103,10 +114,14 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
     async def override_get_embedding_client() -> EmbeddingClient:
         return fake_embedding_client
 
+    def override_get_reranker() -> Reranker:
+        return FakeReranker()
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_sec_client] = override_get_sec_client
     app.dependency_overrides[get_document_store] = override_get_document_store
     app.dependency_overrides[get_embedding_client] = override_get_embedding_client
+    app.dependency_overrides[get_reranker] = override_get_reranker
 
     with TestClient(app) as test_client:
         yield test_client
@@ -435,6 +450,8 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
                 "title": "Risk Factors",
                 "text": "Competition may adversely affect revenue.",
                 "score": 0.8,
+                "retrieval_score": None,
+                "rerank_score": None,
                 "distance": 0.2,
                 "similarity": 0.8,
             }

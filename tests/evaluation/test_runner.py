@@ -90,6 +90,7 @@ class FakeSearchService:
             SearchMode.VECTOR: [100, 101, 102, 103, 104, 10, 20],
             SearchMode.KEYWORD: [10],
             SearchMode.HYBRID: [20, 10],
+            SearchMode.HYBRID_RERANK: [10, 20],
         }
 
         return FilingSearchResult(
@@ -113,12 +114,13 @@ def test_runner_executes_all_cases_in_every_retrieval_mode() -> None:
         )
     )
 
-    assert len(results) == 75
-    assert len(service.calls) == 75
-    assert [result.mode for result in results[:3]] == [
+    assert len(results) == 100
+    assert len(service.calls) == 100
+    assert [result.mode for result in results[:4]] == [
         SearchMode.VECTOR,
         SearchMode.KEYWORD,
         SearchMode.HYBRID,
+        SearchMode.HYBRID_RERANK,
     ]
     assert all(call["limit"] == 10 for call in service.calls)
     assert all(call["company_name"] == "NVIDIA" for call in service.calls)
@@ -136,7 +138,7 @@ def test_runner_calculates_metrics_for_each_mode() -> None:
         )
     )
 
-    vector, keyword, hybrid = results
+    vector, keyword, hybrid, hybrid_rerank = results
 
     assert vector.recall_at_5 == pytest.approx(0.0)
     assert vector.recall_at_10 == pytest.approx(1.0)
@@ -149,6 +151,10 @@ def test_runner_calculates_metrics_for_each_mode() -> None:
     assert hybrid.recall_at_5 == pytest.approx(1.0)
     assert hybrid.recall_at_10 == pytest.approx(1.0)
     assert hybrid.reciprocal_rank == pytest.approx(1.0)
+
+    assert hybrid_rerank.recall_at_5 == pytest.approx(1.0)
+    assert hybrid_rerank.recall_at_10 == pytest.approx(1.0)
+    assert hybrid_rerank.reciprocal_rank == pytest.approx(1.0)
 
     assert all(result.latency_ms >= 0 for result in results)
 

@@ -30,6 +30,20 @@ class FakeEmbeddingClient:
         return [[0.1, 0.2, 0.3] for _ in texts]
 
 
+class FakeReranker:
+    def __init__(self, scores: list[float]) -> None:
+        self._scores = scores
+        self.calls: list[tuple[str, list[str]]] = []
+
+    def rerank(
+        self,
+        query: str,
+        documents: list[str],
+    ) -> list[float]:
+        self.calls.append((query, documents))
+        return self._scores
+
+
 def create_repository_result(
     chunk_id: int = 487,
     distance: float = 0.2,
@@ -328,6 +342,8 @@ def test_hybrid_search_fuses_vector_and_keyword_rankings(
 
     overlapping_match = result.matches[0]
     assert overlapping_match.score == pytest.approx((1 / 62) + (1 / 61))
+    assert overlapping_match.retrieval_score == pytest.approx((1 / 62) + (1 / 61))
+    assert overlapping_match.rerank_score is None
     assert overlapping_match.distance == pytest.approx(0.2)
     assert overlapping_match.similarity == pytest.approx(0.8)
 
@@ -338,6 +354,86 @@ def test_hybrid_search_fuses_vector_and_keyword_rankings(
     vector_only_match = result.matches[3]
     assert vector_only_match.distance == pytest.approx(0.3)
     assert vector_only_match.similarity == pytest.approx(0.7)
+
+
+def test_hybrid_rerank_reorders_candidates_and_preserves_retrieval_score(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, object] = {}
+
+    def fake_search_similar(
+        repository: FilingChunkRepository,
+        query_embedding: list[float],
+        embedding_model: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ) -> list[FilingChunkSearchResult]:
+        captured["vector_limit"] = limit
+        return [
+            create_repository_result(chunk_id=10, distance=0.1),
+            create_repository_result(chunk_id=20, distance=0.2),
+            create_repository_result(chunk_id=30, distance=0.3),
+        ]
+
+    def fake_search_keyword(
+        repository: FilingChunkRepository,
+        query: str,
+        limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ) -> list[FilingChunkKeywordSearchResult]:
+        captured["keyword_limit"] = limit
+        return [
+            create_keyword_repository_result(chunk_id=20),
+            create_keyword_repository_result(chunk_id=40),
+            create_keyword_repository_result(chunk_id=10),
+        ]
+
+    monkeypatch.setattr(
+        FilingChunkRepository,
+        "search_similar",
+        fake_search_similar,
+    )
+    monkeypatch.setattr(
+        FilingChunkRepository,
+        "search_keyword",
+        fake_search_keyword,
+    )
+
+    reranker = FakeReranker(scores=[0.2, 0.9, 0.7, 0.1])
+    service = FilingSearchService(
+        session=Session(),
+        embedding_client=FakeEmbeddingClient(),
+        reranker=reranker,
+    )
+
+    result = asyncio.run(
+        service.search(
+            query="gaming revenue growth",
+            mode=SearchMode.HYBRID_RERANK,
+            limit=3,
+        )
+    )
+
+    assert captured == {
+        "vector_limit": 20,
+        "keyword_limit": 20,
+    }
+    assert len(reranker.calls) == 1
+    assert reranker.calls[0][0] == "gaming revenue growth"
+    assert len(reranker.calls[0][1]) == 4
+    assert result.mode is SearchMode.HYBRID_RERANK
+    assert [match.chunk_id for match in result.matches] == [10, 40, 20]
+
+    best_match = result.matches[0]
+    assert best_match.score == pytest.approx(0.9)
+    assert best_match.rerank_score == pytest.approx(0.9)
+    assert best_match.retrieval_score == pytest.approx((1 / 61) + (1 / 63))
 
 
 @pytest.mark.parametrize("query", ["", "   ", "\n\t"])

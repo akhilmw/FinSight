@@ -18,6 +18,7 @@ from finsight.evaluation.runner import (
     RetrievalEvalResult,
     run_retrieval_evaluation,
 )
+from finsight.reranking import CrossEncoderReranker
 from finsight.services.filing_search import FilingSearchService
 
 
@@ -120,7 +121,7 @@ def write_results(
 def print_summary(summaries: list[RetrievalModeSummary]) -> None:
     print()
     print(
-        f"{'Mode':<10} "
+        f"{'Mode':<15} "
         f"{'Questions':>9} "
         f"{'Recall@5':>10} "
         f"{'Recall@10':>11} "
@@ -131,7 +132,7 @@ def print_summary(summaries: list[RetrievalModeSummary]) -> None:
 
     for summary in summaries:
         print(
-            f"{summary.mode.value:<10} "
+            f"{summary.mode.value:<15} "
             f"{summary.question_count:>9} "
             f"{summary.mean_recall_at_5:>10.3f} "
             f"{summary.mean_recall_at_10:>11.3f} "
@@ -161,9 +162,14 @@ async def evaluate(
         )
 
         with SessionLocal() as session:
+            reranker = CrossEncoderReranker(
+                model_name=settings.reranker_model,
+            )
+
             search_service = FilingSearchService(
                 session=session,
                 embedding_client=embedding_client,
+                reranker=reranker,
             )
             results = await run_retrieval_evaluation(
                 cases=cases,

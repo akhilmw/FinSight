@@ -38,6 +38,7 @@ RETRIEVAL_MODES = (
     SearchMode.VECTOR,
     SearchMode.KEYWORD,
     SearchMode.HYBRID,
+    SearchMode.HYBRID_RERANK,
 )
 
 

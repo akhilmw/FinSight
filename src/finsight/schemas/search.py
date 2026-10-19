@@ -29,6 +29,7 @@ class SearchMode(StrEnum):
     VECTOR = "vector"
     KEYWORD = "keyword"
     HYBRID = "hybrid"
+    HYBRID_RERANK = "hybrid_rerank"
 
 
 class FilingSearchRequest(BaseModel):
@@ -53,6 +54,8 @@ class FilingSearchMatchResponse(BaseModel):
     title: str
     text: str
     score: float
+    retrieval_score: float | None = None
+    rerank_score: float | None = None
     distance: float | None = None
     similarity: float | None = None
 

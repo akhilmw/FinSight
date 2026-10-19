@@ -75,9 +75,17 @@ def test_summarizes_results_by_retrieval_mode() -> None:
     assert keyword.mean_latency_ms == pytest.approx(10.0)
 
 
-def test_summary_uses_vector_keyword_hybrid_order() -> None:
+def test_summary_uses_configured_retrieval_mode_order() -> None:
     summaries = summarize_retrieval_results(
         [
+            create_result(
+                "fin-001",
+                SearchMode.HYBRID_RERANK,
+                1.0,
+                1.0,
+                1.0,
+                120.0,
+            ),
             create_result("fin-001", SearchMode.HYBRID, 1.0, 1.0, 1.0, 90.0),
             create_result("fin-001", SearchMode.KEYWORD, 1.0, 1.0, 1.0, 10.0),
             create_result("fin-001", SearchMode.VECTOR, 1.0, 1.0, 1.0, 80.0),
@@ -88,6 +96,7 @@ def test_summary_uses_vector_keyword_hybrid_order() -> None:
         SearchMode.VECTOR,
         SearchMode.KEYWORD,
         SearchMode.HYBRID,
+        SearchMode.HYBRID_RERANK,
     ]
 
 

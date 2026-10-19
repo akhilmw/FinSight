@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+import asyncio
+from dataclasses import dataclass, replace
 from datetime import date
 
 from sqlalchemy.orm import Session
@@ -7,6 +8,7 @@ from finsight.embeddings import EmbeddingClient
 from finsight.repositories.filing_chunk import (
     FilingChunkRepository,
 )
+from finsight.reranking import Reranker
 from finsight.retrieval.fusion import reciprocal_rank_fusion
 from finsight.schemas import SearchMode
 
@@ -24,6 +26,8 @@ class FilingSearchMatch:
     title: str
     text: str
     score: float
+    retrieval_score: float | None = None
+    rerank_score: float | None = None
     distance: float | None = None
     similarity: float | None = None
 
@@ -40,9 +44,46 @@ class FilingSearchService:
         self,
         session: Session,
         embedding_client: EmbeddingClient,
+        reranker: Reranker | None = None,
     ) -> None:
         self._embedding_client = embedding_client
+        self._reranker = reranker
         self._chunk_repository = FilingChunkRepository(session)
+
+    async def _rerank_matches(
+        self,
+        query: str,
+        matches: list[FilingSearchMatch],
+        limit: int,
+    ) -> list[FilingSearchMatch]:
+        if self._reranker is None:
+            raise RuntimeError("reranker is not configured")
+
+        scores = await asyncio.to_thread(
+            self._reranker.rerank,
+            query,
+            [match.text for match in matches],
+        )
+
+        if len(scores) != len(matches):
+            raise RuntimeError(
+                "reranker returned a different number of scores than documents"
+            )
+
+        ranked = sorted(
+            zip(matches, scores, strict=True),
+            key=lambda result: (-result[1], result[0].chunk_id),
+        )
+
+        return [
+            replace(
+                match,
+                score=rerank_score,
+                retrieval_score=match.score,
+                rerank_score=rerank_score,
+            )
+            for match, rerank_score in ranked[:limit]
+        ]
 
     async def _search_hybrid(
         self,
@@ -52,8 +93,9 @@ class FilingSearchService:
         company_name: str | None,
         year: int | None,
         form_type: str | None,
+        candidate_limit: int | None = None,
     ) -> list[FilingSearchMatch]:
-        candidate_limit = max(limit * 4, 20)
+        retrieval_limit = candidate_limit or max(limit * 4, 20)
 
         query_embeddings = await self._embedding_client.embed([query])
         query_embedding = query_embeddings[0]
@@ -61,7 +103,7 @@ class FilingSearchService:
         vector_results = self._chunk_repository.search_similar(
             query_embedding=query_embedding,
             embedding_model=self._embedding_client.model,
-            limit=candidate_limit,
+            limit=retrieval_limit,
             filing_id=filing_id,
             company_name=company_name,
             year=year,
@@ -69,7 +111,7 @@ class FilingSearchService:
         )
         keyword_results = self._chunk_repository.search_keyword(
             query=query,
-            limit=candidate_limit,
+            limit=retrieval_limit,
             filing_id=filing_id,
             company_name=company_name,
             year=year,
@@ -127,6 +169,7 @@ class FilingSearchService:
                     title=result.section.title,
                     text=result.chunk.text,
                     score=scores[chunk_id],
+                    retrieval_score=scores[chunk_id],
                     distance=distance,
                     similarity=similarity,
                 )
@@ -177,6 +220,22 @@ class FilingSearchService:
                 )
                 for result in keyword_results
             ]
+        elif mode is SearchMode.HYBRID_RERANK:
+            candidate_limit = max(limit * 4, 20)
+            candidates = await self._search_hybrid(
+                query=normalized_query,
+                limit=candidate_limit,
+                filing_id=filing_id,
+                company_name=company_name,
+                year=year,
+                form_type=form_type,
+                candidate_limit=candidate_limit,
+            )
+            matches = await self._rerank_matches(
+                query=normalized_query,
+                matches=candidates,
+                limit=limit,
+            )
         elif mode is SearchMode.HYBRID:
             matches = await self._search_hybrid(
                 query=normalized_query,

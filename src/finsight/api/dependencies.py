@@ -1,4 +1,5 @@
 from collections.abc import AsyncIterator
+from functools import lru_cache
 
 from fastapi import HTTPException, status
 from openai import AsyncOpenAI
@@ -9,6 +10,7 @@ from finsight.embeddings import (
     EmbeddingClient,
     OpenAIEmbeddingClient,
 )
+from finsight.reranking import CrossEncoderReranker, Reranker
 from finsight.storage.local import LocalDocumentStore
 
 
@@ -37,3 +39,9 @@ async def get_embedding_client() -> AsyncIterator[EmbeddingClient]:
             model=settings.embedding_model,
             dimensions=settings.embedding_dimensions,
         )
+
+
+@lru_cache(maxsize=1)
+def get_reranker() -> Reranker:
+    settings = get_settings()
+    return CrossEncoderReranker(model_name=settings.reranker_model)
