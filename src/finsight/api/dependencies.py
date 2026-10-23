@@ -10,6 +10,7 @@ from finsight.embeddings import (
     EmbeddingClient,
     OpenAIEmbeddingClient,
 )
+from finsight.generation import AnswerGenerator, OpenAIAnswerGenerator
 from finsight.reranking import CrossEncoderReranker, Reranker
 from finsight.storage.local import LocalDocumentStore
 
@@ -38,6 +39,22 @@ async def get_embedding_client() -> AsyncIterator[EmbeddingClient]:
             client=sdk_client,
             model=settings.embedding_model,
             dimensions=settings.embedding_dimensions,
+        )
+
+
+async def get_answer_generator() -> AsyncIterator[AnswerGenerator]:
+    settings = get_settings()
+
+    if settings.openai_api_key is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="The answer generation service is not configured",
+        )
+
+    async with AsyncOpenAI(api_key=settings.openai_api_key.get_secret_value()) as sdk_client:
+        yield OpenAIAnswerGenerator(
+            client=sdk_client,
+            model=settings.answer_model,
         )
 
 

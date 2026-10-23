@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from finsight.api.dependencies import (
+    get_answer_generator,
     get_document_store,
     get_embedding_client,
     get_reranker,
@@ -21,9 +22,24 @@ from finsight.clients.sec import SecClient, SecCompany, SecFiling
 from finsight.db.base import Base
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
+from finsight.generation import (
+    AnswerEvidence,
+    AnswerGenerator,
+    AnswerStreamCompleted,
+    AnswerTextDelta,
+    GeneratedAnswer,
+)
 from finsight.main import app
 from finsight.reranking import Reranker
 from finsight.schemas import SearchMode
+from finsight.services.filing_answer import (
+    AnswerCitation,
+    FilingAnswerCompleted,
+    FilingAnswerResult,
+    FilingAnswerRetrieval,
+    FilingAnswerService,
+    FilingAnswerTextDelta,
+)
 from finsight.services.filing_search import (
     FilingSearchMatch,
     FilingSearchResult,
@@ -59,6 +75,32 @@ class FakeReranker:
         documents: list[str],
     ) -> list[float]:
         return [0.0 for _ in documents]
+
+
+class FakeAnswerGenerator:
+    async def generate(
+        self,
+        question: str,
+        evidence: list[AnswerEvidence],
+    ) -> GeneratedAnswer:
+        return GeneratedAnswer(
+            answer="The available filing evidence is insufficient.",
+            sufficient_evidence=False,
+            cited_chunk_ids=[],
+        )
+
+    async def stream(
+        self,
+        question: str,
+        evidence: list[AnswerEvidence],
+    ):
+        answer = GeneratedAnswer(
+            answer="The available filing evidence is insufficient.",
+            sufficient_evidence=False,
+            cited_chunk_ids=[],
+        )
+        yield AnswerTextDelta(answer.answer)
+        yield AnswerStreamCompleted(answer)
 
 
 @pytest.fixture
@@ -117,11 +159,15 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
     def override_get_reranker() -> Reranker:
         return FakeReranker()
 
+    async def override_get_answer_generator() -> AnswerGenerator:
+        return FakeAnswerGenerator()
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_sec_client] = override_get_sec_client
     app.dependency_overrides[get_document_store] = override_get_document_store
     app.dependency_overrides[get_embedding_client] = override_get_embedding_client
     app.dependency_overrides[get_reranker] = override_get_reranker
+    app.dependency_overrides[get_answer_generator] = override_get_answer_generator
 
     with TestClient(app) as test_client:
         yield test_client
@@ -457,6 +503,172 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
             }
         ],
     }
+
+
+def test_answer_returns_grounded_response_with_trusted_citations(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, object] = {}
+
+    async def fake_answer(
+        service: FilingAnswerService,
+        question: str,
+        evidence_limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ) -> FilingAnswerResult:
+        captured.update(
+            question=question,
+            evidence_limit=evidence_limit,
+            filing_id=filing_id,
+            company_name=company_name,
+            year=year,
+            form_type=form_type,
+        )
+        return FilingAnswerResult(
+            question=question,
+            answer="Export controls may restrict NVIDIA's sales.",
+            sufficient_evidence=True,
+            citations=[
+                AnswerCitation(
+                    chunk_id=487,
+                    filing_id=3,
+                    accession_number="0001045810-26-000021",
+                    company_name="NVIDIA CORP",
+                    form_type="10-K",
+                    filing_date=date(2026, 2, 25),
+                    source_url="https://www.sec.gov/example.htm",
+                    item="1A",
+                    title="Risk Factors",
+                )
+            ],
+        )
+
+    monkeypatch.setattr(FilingAnswerService, "answer", fake_answer)
+
+    response = client.post(
+        "/answers",
+        json={
+            "question": " What could restrict NVIDIA sales? ",
+            "evidence_limit": 5,
+            "filing_id": 3,
+            "company_name": " NVIDIA ",
+            "year": 2026,
+            "form_type": "10-K",
+        },
+    )
+
+    assert response.status_code == 200
+    assert captured == {
+        "question": "What could restrict NVIDIA sales?",
+        "evidence_limit": 5,
+        "filing_id": 3,
+        "company_name": "NVIDIA",
+        "year": 2026,
+        "form_type": "10-K",
+    }
+    assert response.json() == {
+        "question": "What could restrict NVIDIA sales?",
+        "answer": "Export controls may restrict NVIDIA's sales.",
+        "sufficient_evidence": True,
+        "citations": [
+            {
+                "chunk_id": 487,
+                "filing_id": 3,
+                "accession_number": "0001045810-26-000021",
+                "company_name": "NVIDIA CORP",
+                "form_type": "10-K",
+                "filing_date": "2026-02-25",
+                "source_url": "https://www.sec.gov/example.htm",
+                "item": "1A",
+                "title": "Risk Factors",
+                "page_number": None,
+            }
+        ],
+    }
+
+
+def test_stream_answer_returns_typed_sse_events(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    async def fake_stream_answer(
+        service: FilingAnswerService,
+        question: str,
+        evidence_limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ):
+        yield FilingAnswerRetrieval(chunk_ids=[487])
+        yield FilingAnswerTextDelta("Export controls ")
+        yield FilingAnswerTextDelta("may restrict sales.")
+        yield FilingAnswerCompleted(
+            FilingAnswerResult(
+                question=question,
+                answer="Export controls may restrict sales.",
+                sufficient_evidence=True,
+                citations=[
+                    AnswerCitation(
+                        chunk_id=487,
+                        filing_id=3,
+                        accession_number="0001045810-26-000021",
+                        company_name="NVIDIA CORP",
+                        form_type="10-K",
+                        filing_date=date(2026, 2, 25),
+                        source_url="https://www.sec.gov/example.htm",
+                        item="1A",
+                        title="Risk Factors",
+                    )
+                ],
+            )
+        )
+
+    monkeypatch.setattr(
+        FilingAnswerService,
+        "stream_answer",
+        fake_stream_answer,
+    )
+
+    response = client.post(
+        "/answers/stream",
+        json={"question": "What could restrict sales?"},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/event-stream")
+    assert response.headers["cache-control"] == "no-cache"
+    assert "event: retrieval\ndata: {\"evidence_count\":1,\"chunk_ids\":[487]}\n\n" in response.text
+    assert "event: answer_delta\ndata: {\"text\":\"Export controls \"}\n\n" in response.text
+    assert "event: answer_delta\ndata: {\"text\":\"may restrict sales.\"}\n\n" in response.text
+    assert 'event: citations\ndata: {"sufficient_evidence":true' in response.text
+    assert 'event: done\ndata: {"question":"What could restrict sales?"' in response.text
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"question": "   "},
+        {"question": "What changed?", "evidence_limit": 0},
+        {"question": "What changed?", "evidence_limit": 11},
+        {"question": "What changed?", "filing_id": 0},
+        {"question": "What changed?", "company_name": "   "},
+        {"question": "What changed?", "year": 1899},
+        {"question": "What changed?", "year": 2101},
+        {"question": "What changed?", "form_type": "8-K"},
+    ],
+)
+def test_answer_rejects_invalid_request(
+    client: TestClient,
+    payload: dict[str, object],
+) -> None:
+    response = client.post("/answers", json=payload)
+
+    assert response.status_code == 422
 
 
 @pytest.mark.parametrize(
