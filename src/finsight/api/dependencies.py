@@ -1,9 +1,12 @@
 from collections.abc import AsyncIterator
 from functools import lru_cache
+from typing import Annotated, cast
 
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from openai import AsyncOpenAI
+from redis.asyncio import Redis
 
+from finsight.cache import RedisAnswerCache
 from finsight.clients.sec import SecClient
 from finsight.core.config import get_settings
 from finsight.embeddings import (
@@ -62,3 +65,22 @@ async def get_answer_generator() -> AsyncIterator[AnswerGenerator]:
 def get_reranker() -> Reranker:
     settings = get_settings()
     return CrossEncoderReranker(model_name=settings.reranker_model)
+
+
+def get_redis_client(request: Request) -> Redis:
+    return cast(Redis, request.app.state.redis_client)
+
+
+def get_answer_cache(
+    redis_client: Annotated[
+        Redis,
+        Depends(get_redis_client),
+    ],
+) -> RedisAnswerCache:
+    settings = get_settings()
+
+    return RedisAnswerCache(
+        client=redis_client,
+        ttl_seconds=settings.answer_cache_ttl_seconds,
+        answer_model=settings.answer_model,
+    )

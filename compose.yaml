@@ -28,5 +28,20 @@ services:
 
     restart: unless-stopped
 
+  redis:
+    image: redis:7.4-alpine
+    container_name: finsight-redis
+
+    ports:
+      - "${REDIS_PORT}:6379"
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    restart: unless-stopped
+
 volumes:
   finsight_postgres_data:

@@ -5,13 +5,16 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
+from redis.exceptions import RedisError
 from sqlalchemy.orm import Session
 
 from finsight.api.dependencies import (
+    get_answer_cache,
     get_answer_generator,
     get_embedding_client,
     get_reranker,
 )
+from finsight.cache import RedisAnswerCache
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
 from finsight.generation import (
@@ -49,6 +52,10 @@ AnswerGeneratorDependency = Annotated[
     AnswerGenerator,
     Depends(get_answer_generator),
 ]
+AnswerCacheDependency = Annotated[
+    RedisAnswerCache,
+    Depends(get_answer_cache),
+]
 
 
 @router.post(
@@ -61,7 +68,17 @@ async def answer_filing_question(
     embedding_client: EmbeddingClientDependency,
     reranker: RerankerDependency,
     answer_generator: AnswerGeneratorDependency,
+    answer_cache: AnswerCacheDependency,
 ) -> FilingAnswerResponse:
+    try:
+        cached_response = await answer_cache.get(request)
+    except RedisError:
+        logger.warning("Answer cache read failed", exc_info=True)
+        cached_response = None
+
+    if cached_response is not None:
+        return cached_response
+
     search_service = FilingSearchService(
         session=session,
         embedding_client=embedding_client,
@@ -87,7 +104,7 @@ async def answer_filing_question(
             detail=str(exc),
         ) from exc
 
-    return FilingAnswerResponse(
+    response = FilingAnswerResponse(
         question=result.question,
         answer=result.answer,
         sufficient_evidence=result.sufficient_evidence,
@@ -108,6 +125,13 @@ async def answer_filing_question(
         ],
     )
 
+    try:
+        await answer_cache.set(request, response)
+    except RedisError:
+        logger.warning("Answer cache write failed", exc_info=True)
+
+    return response
+
 
 @router.post("/stream")
 async def stream_filing_answer(
@@ -117,6 +141,7 @@ async def stream_filing_answer(
     embedding_client: EmbeddingClientDependency,
     reranker: RerankerDependency,
     answer_generator: AnswerGeneratorDependency,
+    answer_cache: AnswerCacheDependency,
 ) -> StreamingResponse:
     search_service = FilingSearchService(
         session=session,
@@ -130,6 +155,42 @@ async def stream_filing_answer(
 
     async def event_stream() -> AsyncIterator[str]:
         try:
+            try:
+                cached_response = await answer_cache.get(request)
+            except RedisError:
+                logger.warning(
+                    "Streaming answer cache read failed",
+                    exc_info=True,
+                )
+                cached_response = None
+
+            if cached_response is not None:
+                yield encode_sse(
+                    "answer_delta",
+                    {"text": cached_response.answer},
+                )
+
+                yield encode_sse(
+                    "citations",
+                    {
+                        "sufficient_evidence": cached_response.sufficient_evidence,
+                        "citations": [
+                            citation.model_dump(mode="json")
+                            for citation in cached_response.citations
+                        ],
+                    },
+                )
+
+                yield encode_sse(
+                    "done",
+                    {
+                        "question": cached_response.question,
+                        "sufficient_evidence": cached_response.sufficient_evidence,
+                    },
+                )
+
+                return
+
             async for event in answer_service.stream_answer(
                 question=request.question,
                 evidence_limit=request.evidence_limit,
@@ -155,35 +216,53 @@ async def stream_filing_answer(
                         {"text": event.text},
                     )
                 elif isinstance(event, FilingAnswerCompleted):
-                    citations = [
-                        AnswerCitationResponse(
-                            chunk_id=citation.chunk_id,
-                            filing_id=citation.filing_id,
-                            accession_number=citation.accession_number,
-                            company_name=citation.company_name,
-                            form_type=citation.form_type,
-                            filing_date=citation.filing_date,
-                            source_url=citation.source_url,
-                            item=citation.item,
-                            title=citation.title,
-                            page_number=citation.page_number,
-                        ).model_dump(mode="json")
-                        for citation in event.result.citations
-                    ]
+                    response = FilingAnswerResponse(
+                        question=event.result.question,
+                        answer=event.result.answer,
+                        sufficient_evidence=event.result.sufficient_evidence,
+                        citations=[
+                            AnswerCitationResponse(
+                                chunk_id=citation.chunk_id,
+                                filing_id=citation.filing_id,
+                                accession_number=citation.accession_number,
+                                company_name=citation.company_name,
+                                form_type=citation.form_type,
+                                filing_date=citation.filing_date,
+                                source_url=citation.source_url,
+                                item=citation.item,
+                                title=citation.title,
+                                page_number=citation.page_number,
+                            )
+                            for citation in event.result.citations
+                        ],
+                    )
+                    try:
+                        await answer_cache.set(request, response)
+                    except RedisError:
+                        logger.warning(
+                            "Streaming answer cache write failed",
+                            exc_info=True,
+                        )
+
                     yield encode_sse(
                         "citations",
                         {
-                            "sufficient_evidence": event.result.sufficient_evidence,
-                            "citations": citations,
+                            "sufficient_evidence": response.sufficient_evidence,
+                            "citations": [
+                                citation.model_dump(mode="json")
+                                for citation in response.citations
+                            ],
                         },
                     )
+
                     yield encode_sse(
                         "done",
                         {
-                            "question": event.result.question,
-                            "sufficient_evidence": event.result.sufficient_evidence,
+                            "question": response.question,
+                            "sufficient_evidence": response.sufficient_evidence,
                         },
                     )
+
         except Exception:
             logger.exception("Streaming answer generation failed")
             yield encode_sse(

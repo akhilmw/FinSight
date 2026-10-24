@@ -3,21 +3,24 @@ from datetime import date
 from hashlib import sha256
 from pathlib import Path
 from typing import cast
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
+from redis.exceptions import RedisError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from finsight.api.dependencies import (
+    get_answer_cache,
     get_answer_generator,
     get_document_store,
     get_embedding_client,
     get_reranker,
     get_sec_client,
 )
+from finsight.cache import RedisAnswerCache
 from finsight.clients.sec import SecClient, SecCompany, SecFiling
 from finsight.db.base import Base
 from finsight.db.session import get_db
@@ -31,7 +34,11 @@ from finsight.generation import (
 )
 from finsight.main import app
 from finsight.reranking import Reranker
-from finsight.schemas import SearchMode
+from finsight.schemas import (
+    FilingAnswerRequest,
+    FilingAnswerResponse,
+    SearchMode,
+)
 from finsight.services.filing_answer import (
     AnswerCitation,
     FilingAnswerCompleted,
@@ -103,8 +110,48 @@ class FakeAnswerGenerator:
         yield AnswerStreamCompleted(answer)
 
 
+class FakeAnswerCache:
+    def __init__(
+        self,
+        cached_response: FilingAnswerResponse | None = None,
+    ) -> None:
+        self.cached_response = cached_response
+        self.get_error: RedisError | None = None
+        self.set_error: RedisError | None = None
+        self.get_calls: list[FilingAnswerRequest] = []
+        self.set_calls: list[
+            tuple[FilingAnswerRequest, FilingAnswerResponse]
+        ] = []
+
+    async def get(
+        self,
+        request: FilingAnswerRequest,
+    ) -> FilingAnswerResponse | None:
+        self.get_calls.append(request)
+        if self.get_error is not None:
+            raise self.get_error
+        return self.cached_response
+
+    async def set(
+        self,
+        request: FilingAnswerRequest,
+        response: FilingAnswerResponse,
+    ) -> None:
+        self.set_calls.append((request, response))
+        if self.set_error is not None:
+            raise self.set_error
+
+
 @pytest.fixture
-def client(tmp_path: Path) -> Iterator[TestClient]:
+def answer_cache() -> FakeAnswerCache:
+    return FakeAnswerCache()
+
+
+@pytest.fixture
+def client(
+    tmp_path: Path,
+    answer_cache: FakeAnswerCache,
+) -> Iterator[TestClient]:
     engine = create_engine(
         "sqlite://",
         connect_args={"check_same_thread": False},
@@ -162,12 +209,16 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
     async def override_get_answer_generator() -> AnswerGenerator:
         return FakeAnswerGenerator()
 
+    def override_get_answer_cache() -> RedisAnswerCache:
+        return cast(RedisAnswerCache, answer_cache)
+
     app.dependency_overrides[get_db] = override_get_db
     app.dependency_overrides[get_sec_client] = override_get_sec_client
     app.dependency_overrides[get_document_store] = override_get_document_store
     app.dependency_overrides[get_embedding_client] = override_get_embedding_client
     app.dependency_overrides[get_reranker] = override_get_reranker
     app.dependency_overrides[get_answer_generator] = override_get_answer_generator
+    app.dependency_overrides[get_answer_cache] = override_get_answer_cache
 
     with TestClient(app) as test_client:
         yield test_client
@@ -508,6 +559,7 @@ def test_search_returns_ranked_evidence_with_optional_filing_filter(
 def test_answer_returns_grounded_response_with_trusted_citations(
     client: TestClient,
     monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
 ) -> None:
     captured: dict[str, object] = {}
 
@@ -589,11 +641,76 @@ def test_answer_returns_grounded_response_with_trusted_citations(
             }
         ],
     }
+    assert len(answer_cache.get_calls) == 1
+    assert answer_cache.get_calls[0].question == "What could restrict NVIDIA sales?"
+    assert len(answer_cache.set_calls) == 1
+    cached_request, cached_response = answer_cache.set_calls[0]
+    assert cached_request == answer_cache.get_calls[0]
+    assert cached_response == FilingAnswerResponse.model_validate(response.json())
+
+
+def test_answer_cache_hit_skips_generation(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
+) -> None:
+    answer_cache.cached_response = FilingAnswerResponse(
+        question="What could restrict NVIDIA sales?",
+        answer="This response came from Redis.",
+        sufficient_evidence=False,
+        citations=[],
+    )
+    answer = AsyncMock()
+    monkeypatch.setattr(FilingAnswerService, "answer", answer)
+
+    response = client.post(
+        "/answers",
+        json={
+            "question": "What could restrict NVIDIA sales?",
+            "filing_id": 3,
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json()["answer"] == "This response came from Redis."
+    assert len(answer_cache.get_calls) == 1
+    assert answer_cache.set_calls == []
+    answer.assert_not_awaited()
+
+
+def test_answer_continues_when_cache_read_and_write_fail(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
+) -> None:
+    answer_cache.get_error = RedisError("Redis is unavailable")
+    answer_cache.set_error = RedisError("Redis is unavailable")
+    answer = AsyncMock(
+        return_value=FilingAnswerResult(
+            question="What could restrict sales?",
+            answer="The generated answer is still returned.",
+            sufficient_evidence=False,
+            citations=[],
+        )
+    )
+    monkeypatch.setattr(FilingAnswerService, "answer", answer)
+
+    response = client.post(
+        "/answers",
+        json={"question": "What could restrict sales?"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["answer"] == "The generated answer is still returned."
+    assert len(answer_cache.get_calls) == 1
+    assert len(answer_cache.set_calls) == 1
+    answer.assert_awaited_once()
 
 
 def test_stream_answer_returns_typed_sse_events(
     client: TestClient,
     monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
 ) -> None:
     async def fake_stream_answer(
         service: FilingAnswerService,
@@ -647,6 +764,97 @@ def test_stream_answer_returns_typed_sse_events(
     assert "event: answer_delta\ndata: {\"text\":\"may restrict sales.\"}\n\n" in response.text
     assert 'event: citations\ndata: {"sufficient_evidence":true' in response.text
     assert 'event: done\ndata: {"question":"What could restrict sales?"' in response.text
+    assert len(answer_cache.get_calls) == 1
+    assert len(answer_cache.set_calls) == 1
+    cached_request, cached_response = answer_cache.set_calls[0]
+    assert cached_request == answer_cache.get_calls[0]
+    assert cached_response.answer == "Export controls may restrict sales."
+    assert cached_response.citations[0].chunk_id == 487
+
+
+def test_stream_answer_cache_hit_skips_generation(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
+) -> None:
+    answer_cache.cached_response = FilingAnswerResponse(
+        question="What could restrict NVIDIA sales?",
+        answer="This streamed response came from Redis.",
+        sufficient_evidence=False,
+        citations=[],
+    )
+    stream_answer = MagicMock()
+    monkeypatch.setattr(
+        FilingAnswerService,
+        "stream_answer",
+        stream_answer,
+    )
+
+    response = client.post(
+        "/answers/stream",
+        json={
+            "question": "What could restrict NVIDIA sales?",
+            "filing_id": 3,
+        },
+    )
+
+    assert response.status_code == 200
+    assert "event: retrieval" not in response.text
+    assert (
+        'event: answer_delta\ndata: {"text":"This streamed response came from Redis."}'
+        in response.text
+    )
+    assert 'event: citations\ndata: {"sufficient_evidence":false' in response.text
+    assert 'event: done\ndata: {"question":"What could restrict NVIDIA sales?"' in response.text
+    assert len(answer_cache.get_calls) == 1
+    assert answer_cache.set_calls == []
+    stream_answer.assert_not_called()
+
+
+def test_stream_answer_continues_when_cache_read_and_write_fail(
+    client: TestClient,
+    monkeypatch: pytest.MonkeyPatch,
+    answer_cache: FakeAnswerCache,
+) -> None:
+    answer_cache.get_error = RedisError("Redis is unavailable")
+    answer_cache.set_error = RedisError("Redis is unavailable")
+
+    async def fake_stream_answer(
+        service: FilingAnswerService,
+        question: str,
+        evidence_limit: int = 5,
+        filing_id: int | None = None,
+        company_name: str | None = None,
+        year: int | None = None,
+        form_type: str | None = None,
+    ):
+        yield FilingAnswerTextDelta("The streamed answer still works.")
+        yield FilingAnswerCompleted(
+            FilingAnswerResult(
+                question=question,
+                answer="The streamed answer still works.",
+                sufficient_evidence=False,
+                citations=[],
+            )
+        )
+
+    monkeypatch.setattr(
+        FilingAnswerService,
+        "stream_answer",
+        fake_stream_answer,
+    )
+
+    response = client.post(
+        "/answers/stream",
+        json={"question": "What could restrict sales?"},
+    )
+
+    assert response.status_code == 200
+    assert 'event: answer_delta\ndata: {"text":"The streamed answer still works."}' in response.text
+    assert "event: done" in response.text
+    assert "event: error" not in response.text
+    assert len(answer_cache.get_calls) == 1
+    assert len(answer_cache.set_calls) == 1
 
 
 @pytest.mark.parametrize(

@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     embedding_batch_size: int = 64
     reranker_model: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
     answer_model: str = "gpt-4o-mini"
+    redis_url: str
+    answer_cache_ttl_seconds: int = 86400
 
     model_config = SettingsConfigDict(
         env_file=".env",
