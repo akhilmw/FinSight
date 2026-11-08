@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     answer_model: str = "gpt-4o-mini"
     redis_url: str
     answer_cache_ttl_seconds: int = 86400
+    celery_broker_url: str
+    celery_result_backend: str
 
     model_config = SettingsConfigDict(
         env_file=".env",
