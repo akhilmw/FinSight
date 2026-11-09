@@ -15,7 +15,8 @@ from finsight.embeddings import (
     OpenAIEmbeddingClient,
 )
 from finsight.generation import AnswerGenerator, OpenAIAnswerGenerator
-from finsight.reranking import CrossEncoderReranker, Reranker
+from finsight.reranking.base import Reranker
+from finsight.reranking.cross_encoder import CrossEncoderReranker
 from finsight.storage.local import LocalDocumentStore
 from finsight.workers.celery_app import celery_app
 

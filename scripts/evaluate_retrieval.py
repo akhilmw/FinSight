@@ -21,7 +21,7 @@ from finsight.evaluation.runner import (
     RetrievalEvalResult,
     run_retrieval_evaluation,
 )
-from finsight.reranking import CrossEncoderReranker
+from finsight.reranking.cross_encoder import CrossEncoderReranker
 from finsight.services.filing_search import FilingSearchService
 
 

@@ -7,6 +7,7 @@ ITEM_HEADING_PATTERN = compile(
     r"^item\s+(?P<item>\d{1,2}[a-z]?)\.?\s*(?P<title>.*)$",
     IGNORECASE,
 )
+MAX_SECTION_TITLE_LENGTH = 500
 
 
 @dataclass(frozen=True)
@@ -49,7 +50,11 @@ class SecSectionDetector:
                 title = lines[index + 1].strip()
                 heading_end_line = index + 1
 
-            if not title or title.isdigit():
+            if (
+                not title
+                or title.isdigit()
+                or len(title) > MAX_SECTION_TITLE_LENGTH
+            ):
                 continue
 
             headings.append(

@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import SecretStr
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -26,6 +26,19 @@ class Settings(BaseSettings):
     mlflow_tracing_enabled: bool = False
     mlflow_tracking_uri: str = "http://127.0.0.1:5000"
     mlflow_experiment_name: str = "finsight"
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def use_psycopg_driver(cls, value: object) -> object:
+        """Use SQLAlchemy's psycopg 3 dialect for provider connection URLs."""
+        if not isinstance(value, str):
+            return value
+
+        for prefix in ("postgresql://", "postgres://"):
+            if value.startswith(prefix):
+                return f"postgresql+psycopg://{value.removeprefix(prefix)}"
+
+        return value
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -8,7 +8,7 @@ from finsight.embeddings import EmbeddingClient
 from finsight.repositories.filing_chunk import (
     FilingChunkRepository,
 )
-from finsight.reranking import Reranker
+from finsight.reranking.base import Reranker
 from finsight.retrieval.fusion import reciprocal_rank_fusion
 from finsight.schemas import SearchMode
 

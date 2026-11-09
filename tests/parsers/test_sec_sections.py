@@ -101,3 +101,15 @@ def test_extract_sections_returns_empty_list_without_headings() -> None:
     )
 
     assert SecSectionDetector().extract_sections(filing) == []
+
+
+def test_find_candidates_rejects_paragraphs_misidentified_as_headings() -> None:
+    filing = ParsedFiling(
+        title="Example filing",
+        text=(
+            "Item 8. " + "This is filing content, not a heading. " * 20 + "\n"
+            "Actual filing content."
+        ),
+    )
+
+    assert SecSectionDetector().find_candidates(filing) == []

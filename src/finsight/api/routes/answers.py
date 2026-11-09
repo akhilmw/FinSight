@@ -21,7 +21,7 @@ from finsight.generation import (
     AnswerGenerator,
     InvalidAnswerResponseError,
 )
-from finsight.reranking import Reranker
+from finsight.reranking.base import Reranker
 from finsight.schemas import (
     AnswerCitationResponse,
     FilingAnswerRequest,

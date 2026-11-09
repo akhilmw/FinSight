@@ -24,8 +24,12 @@ streaming, caching, and background workers.
 - Celery worker for durable, asynchronous filing processing
 - MLflow traces with model latency, token usage, and estimated cost
 - Adversarial evidence filtering for document prompt-injection attempts
+- Streamlit research interface with filing selection, streaming answers, query
+  history, source previews, and direct SEC links
+- Portfolio corpus covering the latest 10-K and 10-Q for ten major technology
+  companies
 - Measured retrieval quality, latency, and indexing performance
-- 170 automated tests across ingestion, retrieval, generation, evaluation, API,
+- 178 automated tests across ingestion, retrieval, generation, evaluation, API,
   cache, observability, security, and worker layers
 
 ## Architecture
@@ -163,6 +167,7 @@ citations.
 | Observability | MLflow OpenAI tracing |
 | HTTP and streaming | HTTPX, Server-Sent Events |
 | Tooling | uv, Ruff, Pyright, pytest, Docker Compose |
+| User interface | Streamlit |
 
 ## Data model
 
@@ -229,7 +234,18 @@ uv run uvicorn finsight.main:app --reload
 The interactive API documentation is available at
 <http://127.0.0.1:8000/docs>.
 
-### 4. Start the background worker
+### 4. Start the Streamlit application
+
+```bash
+uv run streamlit run streamlit_app.py
+```
+
+The research interface is available at <http://127.0.0.1:8501>. It reads
+embedded filings directly from PostgreSQL and streams generated answer tokens
+from the same application process. The FastAPI SSE endpoint remains available
+for external API clients.
+
+### 5. Start the background worker
 
 For local development on macOS:
 
@@ -240,7 +256,7 @@ uv run celery -A finsight.workers.celery_app:celery_app worker --loglevel=INFO -
 On Linux, Celery's default prefork pool can process multiple filings
 concurrently.
 
-### 5. Enable MLflow tracing (optional)
+### 6. Enable MLflow tracing (optional)
 
 Start a local tracking server:
 
@@ -388,6 +404,24 @@ uv run pyright
 uv run pytest -q
 ```
 
+## Cloud deployment
+
+The portfolio deployment uses Streamlit Community Cloud for the application,
+Neon for PostgreSQL with pgvector, and Upstash for Redis. The app does not need
+a separately hosted FastAPI service because the Streamlit process imports the
+retrieval and generation services directly.
+
+1. Create a Neon project and copy its pooled PostgreSQL connection string.
+2. Point `FINSIGHT_DATABASE_URL` at Neon and run `uv run alembic upgrade head`.
+3. Populate the cloud database with `uv run python scripts/index_portfolio.py`.
+4. Create an Upstash Redis database and copy its TLS `rediss://` URL.
+5. Deploy `streamlit_app.py` from this repository in Streamlit Community Cloud.
+6. Copy `.streamlit/secrets.example.toml` into the deployment's Advanced
+   settings and replace every placeholder with the real secret.
+
+Never commit `.env` or `.streamlit/secrets.toml`. Production credentials belong
+only in the hosting provider's encrypted secret manager.
+
 ## Repository layout
 
 ```text
@@ -406,7 +440,9 @@ FinSight/
 │   ├── observability/       # MLflow tracing configuration
 │   ├── repositories/        # Database access and retrieval queries
 │   ├── services/            # Pipeline, retrieval, generation, and cache logic
+│   ├── ui/                  # Streamlit catalog and answer experience
 │   └── workers/             # Celery application and tasks
+├── streamlit_app.py         # Streamlit Community Cloud entry point
 └── tests/                   # Unit and integration tests
 ```
 
@@ -426,17 +462,14 @@ FinSight/
 - **Background work separated from web requests:** Celery owns long-running
   ingestion while FastAPI remains responsive.
 
-## Current scope and roadmap
+## Current scope
 
-The complete Week 3 backend is implemented: ingestion, indexing, retrieval,
-reranking, answer generation, citations, insufficient-evidence handling,
-streaming, caching, background jobs, MLflow tracing, 50-question evaluation,
-and adversarial-document testing.
-
-The next milestones are:
-
-- Streamlit research interface with source previews and query history
-- Load testing, deployment, architecture assets, and a recorded product demo
+FinSight includes the complete ingestion, indexing, retrieval, reranking,
+generation, citation, streaming, caching, background-job, observability,
+evaluation, and adversarial-testing pipeline. Its Streamlit interface exposes
+the latest indexed 10-K and 10-Q for NVIDIA, Microsoft, Apple, Amazon, Alphabet,
+Meta, Netflix, AMD, Palantir, and Cisco. Remaining portfolio work is limited to
+cloud deployment, the final architecture asset, and the recorded product demo.
 
 ## Evaluation limitations
 

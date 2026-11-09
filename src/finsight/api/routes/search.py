@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from finsight.api.dependencies import get_embedding_client, get_reranker
 from finsight.db.session import get_db
 from finsight.embeddings import EmbeddingClient
-from finsight.reranking import Reranker
+from finsight.reranking.base import Reranker
 from finsight.schemas import (
     FilingSearchMatchResponse,
     FilingSearchRequest,

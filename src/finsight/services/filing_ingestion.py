@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from sqlalchemy.orm import Session
 
@@ -13,6 +13,7 @@ class IngestionResult:
     discovered: int
     created: int
     skipped: int
+    filing_ids: tuple[int, ...] = field(default=(), repr=False)
 
 
 class FilingIngestionService:
@@ -41,6 +42,7 @@ class FilingIngestionService:
 
         created = 0
         skipped = 0
+        filings: list[Filing] = []
 
         try:
             for sec_filing in sec_filings:
@@ -49,10 +51,12 @@ class FilingIngestionService:
 
                 if existing is not None:
                     skipped += 1
+                    filings.append(existing)
                     continue
 
                 filing = self._to_model(sec_filing)
                 self._repository.add(filing)
+                filings.append(filing)
                 created += 1
 
             self._session.commit()
@@ -65,6 +69,7 @@ class FilingIngestionService:
             discovered=len(sec_filings),
             created=created,
             skipped=skipped,
+            filing_ids=tuple(filing.id for filing in filings),
         )
 
     @staticmethod

@@ -21,7 +21,7 @@ from finsight.evaluation.dataset import (
 from finsight.generation import OpenAIAnswerGenerator
 from finsight.observability import configure_mlflow_tracing
 from finsight.repositories.filing_chunk import FilingChunkRepository
-from finsight.reranking import CrossEncoderReranker
+from finsight.reranking.cross_encoder import CrossEncoderReranker
 from finsight.services.filing_answer import FilingAnswerService
 from finsight.services.filing_search import FilingSearchService
 

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-09T00:23:30.362431+00:00",
+  "generated_at": "2026-11-09T21:10:14.769358+00:00",
   "experiment_name": "finsight",
-  "trace_count": 150,
-  "input_tokens": 237226,
-  "output_tokens": 15533,
-  "total_tokens": 252759,
-  "input_cost_usd": 0.035583899999999974,
-  "output_cost_usd": 0.009319800000000003,
-  "total_cost_usd": 0.04490370000000003,
-  "total_trace_duration_ms": 374115
+  "trace_count": 156,
+  "input_tokens": 247545,
+  "output_tokens": 16175,
+  "total_tokens": 263720,
+  "input_cost_usd": 0.03713174999999997,
+  "output_cost_usd": 0.009705,
+  "total_cost_usd": 0.04683675000000003,
+  "total_trace_duration_ms": 392036
 }
