@@ -1,6 +1,6 @@
 # Retrieval evaluation dataset
 
-`retrieval_questions.jsonl` contains the initial manually labeled retrieval set.
+`retrieval_questions.jsonl` contains 50 manually labeled retrieval questions.
 
 Each JSON line contains:
 
@@ -17,7 +17,17 @@ A relevance label is primarily identified by this stable tuple:
 (accession_number, item, section_title, chunk_index)
 ```
 
-`current_chunk_id` is included for convenient evaluation against the current local
-database, but it may change if the filing is deleted and re-ingested. Evaluators
-should prefer the stable tuple when resolving labels.
+`current_chunk_id` is included for convenient inspection, but it can change when
+a filing is processed again. The evaluator resolves the stable tuple against the
+current database before each run, so reprocessing does not silently invalidate
+the benchmark.
+
+Additional evaluation artifacts:
+
+- `prompt_injection_cases.jsonl`: adversarial instructions embedded in evidence.
+- `results/retrieval_summary.json`: four-mode retrieval comparison.
+- `results/answer_evaluation.json`: groundedness and citation-quality results.
+- `results/prompt_injection_evaluation.json`: adversarial pass/fail details.
+- `results/mlflow_trace_summary.json`: aggregated tokens, model cost, and trace
+  duration from the answer evaluation.
 

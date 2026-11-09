@@ -2,6 +2,10 @@ from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, Field, ValidationError
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from finsight.db.models import Filing, FilingChunkRecord, FilingSectionRecord
 
 
 class RetrievalEvalFilters(BaseModel):
@@ -68,3 +72,50 @@ def load_retrieval_eval_cases(
         raise ValueError("Evaluation dataset must not be empty")
 
     return cases
+
+
+def resolve_retrieval_eval_cases(
+    cases: list[RetrievalEvalCase],
+    session: Session,
+) -> list[RetrievalEvalCase]:
+    """Resolve durable labels to IDs in the current database.
+
+    Chunk IDs can change when a filing is processed again. The accession
+    number, section metadata, and chunk index are the stable evaluation label.
+    """
+    resolved_cases: list[RetrievalEvalCase] = []
+
+    for case in cases:
+        resolved_labels: list[RelevantChunkLabel] = []
+
+        for label in case.relevant_chunks:
+            statement = (
+                select(FilingChunkRecord.id)
+                .join(FilingSectionRecord)
+                .join(Filing)
+                .where(
+                    Filing.accession_number == label.accession_number,
+                    FilingSectionRecord.item == label.item,
+                    FilingSectionRecord.title == label.section_title,
+                    FilingChunkRecord.chunk_index == label.chunk_index,
+                )
+            )
+            chunk_id = session.scalar(statement)
+            if chunk_id is None:
+                raise ValueError(
+                    "Could not resolve evaluation label "
+                    f"{case.id}: {label.accession_number} / "
+                    f"{label.item} / {label.chunk_index}"
+                )
+
+            resolved_labels.append(
+                label.model_copy(update={"current_chunk_id": chunk_id})
+            )
+
+        resolved_cases.append(
+            case.model_copy(
+                update={"relevant_chunks": tuple(resolved_labels)}
+            )
+        )
+
+    return resolved_cases

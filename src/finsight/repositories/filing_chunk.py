@@ -98,6 +98,26 @@ class FilingChunkRepository:
 
         return self._session.scalars(statement).all()
 
+    def list_by_ids(
+        self,
+        chunk_ids: list[int],
+    ) -> Sequence[FilingChunkRecord]:
+        if not chunk_ids:
+            return []
+
+        statement = select(FilingChunkRecord).where(
+            FilingChunkRecord.id.in_(chunk_ids)
+        )
+        chunks_by_id = {
+            chunk.id: chunk
+            for chunk in self._session.scalars(statement).all()
+        }
+        return [
+            chunks_by_id[chunk_id]
+            for chunk_id in chunk_ids
+            if chunk_id in chunks_by_id
+        ]
+
     def delete_by_filing_id(self, filing_id: int) -> None:
         section_ids = select(FilingSectionRecord.id).where(
             FilingSectionRecord.filing_id == filing_id

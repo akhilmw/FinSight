@@ -1,2444 +1,4848 @@
 {
-  "generated_at": "2026-10-19T00:41:31.063393+00:00",
+  "generated_at": "2026-11-09T00:07:15.449594+00:00",
   "embedding_model": "text-embedding-3-small",
-  "question_count": 25,
-  "result_count": 100,
+  "question_count": 50,
+  "result_count": 200,
   "results": [
     {
       "evaluation_id": "fin-001",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        487,
-        489,
-        491,
-        493,
-        492,
-        490,
-        488,
-        494,
-        565,
-        495
+        811,
+        813,
+        815,
+        817,
+        816,
+        814,
+        812,
+        818,
+        889,
+        819
       ],
       "relevant_chunk_ids": [
-        487
+        811
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1214.9070000000393
+      "latency_ms": 3514.683249988593
     },
     {
       "evaluation_id": "fin-001",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        491,
-        487,
-        494,
-        490,
-        489,
-        493,
-        488,
-        565,
-        492,
-        628
+        815,
+        811,
+        818,
+        814,
+        813,
+        817,
+        812,
+        889,
+        816,
+        952
       ],
       "relevant_chunk_ids": [
-        487
+        811
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 122.3776669999097
+      "latency_ms": 163.88183401431888
     },
     {
       "evaluation_id": "fin-001",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        487,
-        491,
-        489,
-        490,
-        493,
-        494,
-        492,
-        488,
-        565,
-        495
+        811,
+        815,
+        813,
+        814,
+        817,
+        818,
+        816,
+        812,
+        889,
+        819
       ],
       "relevant_chunk_ids": [
-        487
+        811
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 994.338666999738
+      "latency_ms": 799.2957920068875
     },
     {
       "evaluation_id": "fin-001",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        487,
-        491,
-        493,
-        494,
-        495,
-        488,
-        490,
-        489,
-        565,
-        492
+        811,
+        815,
+        817,
+        818,
+        819,
+        812,
+        814,
+        813,
+        889,
+        816
       ],
       "relevant_chunk_ids": [
-        487
+        811
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 2991.6826250000668
+      "latency_ms": 3674.735167005565
     },
     {
       "evaluation_id": "fin-002",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        487,
-        488,
-        493,
-        490,
-        491,
-        489,
-        565,
-        494,
-        492,
-        495
+        811,
+        812,
+        817,
+        814,
+        815,
+        813,
+        889,
+        818,
+        816,
+        819
       ],
       "relevant_chunk_ids": [
-        488
+        812
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 779.2317910002566
+      "latency_ms": 781.5493749803863
     },
     {
       "evaluation_id": "fin-002",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        493,
-        488,
-        487,
-        489,
-        618,
-        492,
-        494,
-        565,
-        605,
-        608
+        817,
+        812,
+        811,
+        813,
+        942,
+        816,
+        818,
+        889,
+        929,
+        932
       ],
       "relevant_chunk_ids": [
-        488
+        812
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 117.27662500015867
+      "latency_ms": 103.30112499650568
     },
     {
       "evaluation_id": "fin-002",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        487,
-        493,
-        488,
-        489,
-        492,
-        494,
-        565,
-        491,
-        490,
-        495
+        811,
+        817,
+        812,
+        813,
+        816,
+        818,
+        889,
+        815,
+        814,
+        819
       ],
       "relevant_chunk_ids": [
-        488
+        812
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 978.90150000012
+      "latency_ms": 556.5230840002187
     },
     {
       "evaluation_id": "fin-002",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        488,
-        493,
-        487,
-        490,
-        494,
-        489,
-        565,
-        509,
-        492,
-        495
+        812,
+        817,
+        811,
+        814,
+        818,
+        813,
+        889,
+        833,
+        816,
+        819
       ],
       "relevant_chunk_ids": [
-        488
+        812
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1419.4961660000445
+      "latency_ms": 1865.0502089876682
     },
     {
       "evaluation_id": "fin-003",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        637,
-        573,
-        638,
-        565,
-        490,
-        603,
-        639,
-        571,
-        572,
-        602
+        961,
+        897,
+        962,
+        889,
+        814,
+        927,
+        963,
+        895,
+        896,
+        926
       ],
       "relevant_chunk_ids": [
-        490
+        814
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.2,
-      "latency_ms": 801.7254589999538
+      "latency_ms": 441.3572499761358
     },
     {
       "evaluation_id": "fin-003",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        637,
-        572,
-        584,
-        638,
-        524,
-        532,
-        505,
-        573,
-        610,
-        628
+        961,
+        896,
+        908,
+        962,
+        848,
+        856,
+        829,
+        897,
+        934,
+        952
       ],
       "relevant_chunk_ids": [
-        490
+        814
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 125.38399999993999
+      "latency_ms": 104.1354580083862
     },
     {
       "evaluation_id": "fin-003",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        637,
-        638,
-        573,
-        572,
-        565,
-        490,
-        603,
-        640,
-        571,
-        610
+        961,
+        962,
+        897,
+        896,
+        889,
+        814,
+        927,
+        964,
+        895,
+        934
       ],
       "relevant_chunk_ids": [
-        490
+        814
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.16666666666666666,
-      "latency_ms": 484.36204199970234
+      "latency_ms": 508.1200000131503
     },
     {
       "evaluation_id": "fin-003",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        573,
-        565,
-        490,
-        637,
-        640,
-        603,
-        638,
-        572,
-        487,
-        639
+        897,
+        889,
+        814,
+        961,
+        964,
+        927,
+        962,
+        896,
+        811,
+        963
       ],
       "relevant_chunk_ids": [
-        490
+        814
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 1789.4515840002896
+      "latency_ms": 1247.8515410330147
     },
     {
       "evaluation_id": "fin-004",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        492,
-        565,
-        490,
-        493,
-        487,
-        489,
-        488,
-        603,
-        494,
-        491
+        816,
+        889,
+        814,
+        817,
+        811,
+        813,
+        812,
+        927,
+        818,
+        815
       ],
       "relevant_chunk_ids": [
-        492
+        816
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 794.2035000000942
+      "latency_ms": 389.9477499653585
     },
     {
       "evaluation_id": "fin-004",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        492,
-        507,
-        517,
-        510,
-        544,
-        542,
-        513,
-        515,
-        537,
-        518
+        816,
+        831,
+        841,
+        834,
+        868,
+        866,
+        837,
+        839,
+        861,
+        842
       ],
       "relevant_chunk_ids": [
-        492
+        816
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 121.54933400006485
+      "latency_ms": 100.3050830331631
     },
     {
       "evaluation_id": "fin-004",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        492,
-        565,
-        490,
-        489,
-        509,
-        498,
-        497,
-        488,
-        513,
-        604
+        816,
+        889,
+        814,
+        813,
+        833,
+        822,
+        821,
+        812,
+        837,
+        928
       ],
       "relevant_chunk_ids": [
-        492
+        816
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 551.1147080001138
+      "latency_ms": 767.0912079629488
     },
     {
       "evaluation_id": "fin-004",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        490,
-        565,
-        492,
-        487,
-        488,
-        494,
-        489,
-        510,
-        512,
-        497
+        814,
+        889,
+        816,
+        811,
+        812,
+        818,
+        813,
+        834,
+        836,
+        821
       ],
       "relevant_chunk_ids": [
-        492
+        816
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 1272.9060409997146
+      "latency_ms": 1562.6269170315936
     },
     {
       "evaluation_id": "fin-005",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        494,
-        487,
-        493,
-        488,
-        491,
-        495,
-        490,
-        492,
-        489,
-        565
+        818,
+        811,
+        817,
+        812,
+        815,
+        819,
+        814,
+        816,
+        813,
+        889
       ],
       "relevant_chunk_ids": [
-        493,
-        495
+        817,
+        819
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 381.0800000001109
+      "latency_ms": 442.67337501514703
     },
     {
       "evaluation_id": "fin-005",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        493,
-        494,
-        490,
-        488,
-        491,
-        489,
-        495,
-        628,
-        487,
-        565
+        817,
+        818,
+        814,
+        812,
+        815,
+        813,
+        819,
+        952,
+        811,
+        889
       ],
       "relevant_chunk_ids": [
-        493,
-        495
+        817,
+        819
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 78.60595800002557
+      "latency_ms": 76.65958296274766
     },
     {
       "evaluation_id": "fin-005",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        494,
-        493,
-        488,
-        490,
-        491,
-        487,
-        495,
-        489,
-        492,
-        565
+        818,
+        817,
+        812,
+        814,
+        815,
+        811,
+        819,
+        813,
+        816,
+        889
       ],
       "relevant_chunk_ids": [
-        493,
-        495
+        817,
+        819
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 459.0447079999649
+      "latency_ms": 415.69212498143315
     },
     {
       "evaluation_id": "fin-005",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        495,
-        488,
-        490,
-        493,
-        494,
-        487,
-        489,
-        565,
-        492,
-        509
+        819,
+        812,
+        814,
+        817,
+        818,
+        811,
+        813,
+        889,
+        816,
+        833
       ],
       "relevant_chunk_ids": [
-        493,
-        495
+        817,
+        819
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1162.721416000295
+      "latency_ms": 1272.395542007871
     },
     {
       "evaluation_id": "fin-006",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        487,
-        490,
-        565,
-        491,
-        603,
-        488,
-        489,
-        492,
-        609,
-        494
+        811,
+        814,
+        889,
+        815,
+        927,
+        812,
+        813,
+        816,
+        933,
+        818
       ],
       "relevant_chunk_ids": [
-        497
+        821
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 461.0375839997687
+      "latency_ms": 331.9887919933535
     },
     {
       "evaluation_id": "fin-006",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        513,
-        517,
-        497,
-        516,
-        515,
-        510,
-        514,
-        604,
-        499,
-        542
+        837,
+        841,
+        821,
+        840,
+        839,
+        834,
+        838,
+        928,
+        823,
+        866
       ],
       "relevant_chunk_ids": [
-        497
+        821
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 120.958000000428
+      "latency_ms": 149.61537503404543
     },
     {
       "evaluation_id": "fin-006",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        497,
-        515,
-        510,
-        491,
-        565,
-        489,
-        498,
-        487,
-        603,
-        492
+        821,
+        839,
+        834,
+        815,
+        889,
+        813,
+        822,
+        811,
+        927,
+        816
       ],
       "relevant_chunk_ids": [
-        497
+        821
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 499.1477499997927
+      "latency_ms": 872.7173340157606
     },
     {
       "evaluation_id": "fin-006",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        509,
-        510,
-        490,
-        609,
-        565,
-        487,
-        497,
-        543,
-        537,
-        499
+        833,
+        834,
+        814,
+        933,
+        889,
+        811,
+        821,
+        867,
+        861,
+        823
       ],
       "relevant_chunk_ids": [
-        497
+        821
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.14285714285714285,
-      "latency_ms": 1303.7795830000505
+      "latency_ms": 1262.6037079608068
     },
     {
       "evaluation_id": "fin-007",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        498,
-        487,
-        490,
-        493,
-        512,
-        488,
-        492,
-        489,
-        494
+        889,
+        822,
+        811,
+        814,
+        817,
+        836,
+        812,
+        816,
+        813,
+        818
       ],
       "relevant_chunk_ids": [
-        498
+        822
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 447.3825420000139
+      "latency_ms": 250.99345797207206
     },
     {
       "evaluation_id": "fin-007",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        510,
-        615,
-        618,
-        628,
-        488,
-        489,
-        487,
-        492,
-        519,
-        490
+        834,
+        939,
+        942,
+        952,
+        812,
+        813,
+        811,
+        816,
+        843,
+        814
       ],
       "relevant_chunk_ids": [
-        498
+        822
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 110.34508400007326
+      "latency_ms": 111.16058303741738
     },
     {
       "evaluation_id": "fin-007",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        487,
-        488,
-        490,
-        489,
-        492,
-        565,
-        493,
-        510,
-        494,
-        491
+        811,
+        812,
+        814,
+        813,
+        816,
+        889,
+        817,
+        834,
+        818,
+        815
       ],
       "relevant_chunk_ids": [
-        498
+        822
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 439.2284999998992
+      "latency_ms": 526.8304999917746
     },
     {
       "evaluation_id": "fin-007",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        512,
-        510,
-        565,
-        498,
-        487,
-        489,
-        543,
-        488,
-        490,
-        509
+        836,
+        834,
+        889,
+        822,
+        811,
+        813,
+        867,
+        812,
+        814,
+        833
       ],
       "relevant_chunk_ids": [
-        498
+        822
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.25,
-      "latency_ms": 1345.4230420002204
+      "latency_ms": 1223.7002500332892
     },
     {
       "evaluation_id": "fin-008",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        501,
-        539,
-        500,
-        540,
-        538,
-        502,
-        544,
-        543,
-        499,
-        542
+        825,
+        863,
+        824,
+        864,
+        862,
+        826,
+        868,
+        867,
+        823,
+        866
       ],
       "relevant_chunk_ids": [
-        501,
-        540
+        825,
+        864
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 434.09520800014434
+      "latency_ms": 295.5639580031857
     },
     {
       "evaluation_id": "fin-008",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        502,
-        500,
-        539,
-        501,
-        573,
-        541,
-        639,
-        566,
-        538,
-        540
+        826,
+        824,
+        863,
+        825,
+        897,
+        865,
+        963,
+        890,
+        862,
+        864
       ],
       "relevant_chunk_ids": [
-        501,
-        540
+        825,
+        864
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.25,
-      "latency_ms": 94.26704199995584
+      "latency_ms": 102.26329101715237
     },
     {
       "evaluation_id": "fin-008",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        501,
-        500,
-        539,
-        502,
-        540,
-        538,
-        541,
-        544,
-        566,
-        537
+        825,
+        824,
+        863,
+        826,
+        864,
+        862,
+        865,
+        868,
+        890,
+        861
       ],
       "relevant_chunk_ids": [
-        501,
-        540
+        825,
+        864
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 440.82708399992043
+      "latency_ms": 425.42095796670765
     },
     {
       "evaluation_id": "fin-008",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        501,
-        540,
-        539,
-        500,
-        566,
-        538,
-        502,
-        542,
-        541,
-        518
+        825,
+        864,
+        863,
+        824,
+        890,
+        862,
+        826,
+        866,
+        865,
+        842
       ],
       "relevant_chunk_ids": [
-        501,
-        540
+        825,
+        864
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1232.4976250001782
+      "latency_ms": 1247.789458022453
     },
     {
       "evaluation_id": "fin-009",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        504,
-        565,
-        639,
-        637,
-        571,
-        640,
-        603,
-        573,
-        597,
-        638
+        828,
+        889,
+        963,
+        961,
+        895,
+        964,
+        927,
+        897,
+        921,
+        962
       ],
       "relevant_chunk_ids": [
-        504
+        828
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 274.93879199982985
+      "latency_ms": 278.0187079915777
     },
     {
       "evaluation_id": "fin-009",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        577,
-        568,
-        574,
-        576,
-        575,
-        636,
-        641,
-        573,
-        578,
-        603
+        901,
+        892,
+        898,
+        900,
+        899,
+        960,
+        965,
+        897,
+        902,
+        927
       ],
       "relevant_chunk_ids": [
-        504
+        828
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 123.16662500006714
+      "latency_ms": 113.69295901386067
     },
     {
       "evaluation_id": "fin-009",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        639,
-        573,
-        504,
-        603,
-        565,
-        571,
-        640,
-        617,
-        623,
-        637
+        963,
+        897,
+        828,
+        927,
+        889,
+        895,
+        964,
+        941,
+        947,
+        961
       ],
       "relevant_chunk_ids": [
-        504
+        828
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 572.912333000204
+      "latency_ms": 900.0482080155052
     },
     {
       "evaluation_id": "fin-009",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        504,
-        627,
-        639,
-        637,
-        641,
-        573,
-        568,
-        640,
-        575,
-        623
+        828,
+        951,
+        963,
+        961,
+        965,
+        897,
+        892,
+        964,
+        899,
+        947
       ],
       "relevant_chunk_ids": [
-        504
+        828
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1336.466042000211
+      "latency_ms": 1420.8741670008749
     },
     {
       "evaluation_id": "fin-010",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        567,
-        568,
-        572,
-        575,
-        574,
-        571,
-        639,
-        623,
-        573,
-        576
+        891,
+        892,
+        896,
+        899,
+        898,
+        895,
+        963,
+        947,
+        897,
+        900
       ],
       "relevant_chunk_ids": [
-        568
+        892
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 321.5190409996467
+      "latency_ms": 404.8859999747947
     },
     {
       "evaluation_id": "fin-010",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        573,
-        574,
-        639,
-        568,
-        623,
-        577,
-        572,
-        640,
-        576,
-        575
+        897,
+        898,
+        963,
+        892,
+        947,
+        901,
+        896,
+        964,
+        900,
+        899
       ],
       "relevant_chunk_ids": [
-        568
+        892
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.25,
-      "latency_ms": 96.24141699987376
+      "latency_ms": 122.62937502237037
     },
     {
       "evaluation_id": "fin-010",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        568,
-        574,
-        573,
-        572,
-        639,
-        567,
-        623,
-        575,
-        576,
-        577
+        892,
+        898,
+        897,
+        896,
+        963,
+        891,
+        947,
+        899,
+        900,
+        901
       ],
       "relevant_chunk_ids": [
-        568
+        892
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 423.02604199994676
+      "latency_ms": 399.19783402001485
     },
     {
       "evaluation_id": "fin-010",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        568,
-        573,
-        503,
-        639,
-        637,
-        640,
-        574,
-        572,
-        492,
-        575
+        892,
+        897,
+        827,
+        963,
+        961,
+        964,
+        898,
+        896,
+        816,
+        899
       ],
       "relevant_chunk_ids": [
-        568
+        892
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1247.925000000123
+      "latency_ms": 1348.570165981073
     },
     {
       "evaluation_id": "fin-011",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        572,
-        638,
-        573,
-        637,
-        639,
-        640,
-        567,
-        568,
-        617,
-        574
+        896,
+        962,
+        897,
+        961,
+        963,
+        964,
+        891,
+        892,
+        941,
+        898
       ],
       "relevant_chunk_ids": [
-        572
+        896
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 282.40870799982076
+      "latency_ms": 322.1054999739863
     },
     {
       "evaluation_id": "fin-011",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        573,
-        639,
-        637,
-        572,
-        574,
-        623,
-        638,
-        568,
-        640,
-        490
+        897,
+        963,
+        961,
+        896,
+        898,
+        947,
+        962,
+        892,
+        964,
+        814
       ],
       "relevant_chunk_ids": [
-        572
+        896
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.25,
-      "latency_ms": 137.1539169999778
+      "latency_ms": 124.00229199556634
     },
     {
       "evaluation_id": "fin-011",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        573,
-        572,
-        639,
-        637,
-        638,
-        574,
-        640,
-        568,
-        623,
-        617
+        897,
+        896,
+        963,
+        961,
+        962,
+        898,
+        964,
+        892,
+        947,
+        941
       ],
       "relevant_chunk_ids": [
-        572
+        896
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 388.3895419999135
+      "latency_ms": 614.9069580133073
     },
     {
       "evaluation_id": "fin-011",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        573,
-        640,
-        639,
-        637,
-        572,
-        638,
-        565,
-        568,
-        617,
-        491
+        897,
+        964,
+        963,
+        961,
+        896,
+        962,
+        889,
+        892,
+        941,
+        815
       ],
       "relevant_chunk_ids": [
-        572
+        896
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.2,
-      "latency_ms": 1213.9897090000886
+      "latency_ms": 1300.0890830298886
     },
     {
       "evaluation_id": "fin-012",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        630,
-        573,
-        627,
-        571,
-        637,
-        617,
-        638,
-        623,
-        639
+        889,
+        954,
+        897,
+        951,
+        895,
+        961,
+        941,
+        962,
+        947,
+        963
       ],
       "relevant_chunk_ids": [
-        566
+        890
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 237.95091700003468
+      "latency_ms": 471.6636249795556
     },
     {
       "evaluation_id": "fin-012",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        574,
-        577,
-        568,
-        626,
-        636,
-        623,
-        573,
-        578,
-        576,
-        641
+        898,
+        901,
+        892,
+        950,
+        960,
+        947,
+        897,
+        902,
+        900,
+        965
       ],
       "relevant_chunk_ids": [
-        566
+        890
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 106.01225000027625
+      "latency_ms": 110.50633399281651
     },
     {
       "evaluation_id": "fin-012",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        573,
-        623,
-        617,
-        626,
-        639,
-        641,
-        568,
-        574,
-        565,
-        571
+        897,
+        947,
+        941,
+        950,
+        963,
+        965,
+        892,
+        898,
+        889,
+        895
       ],
       "relevant_chunk_ids": [
-        566
+        890
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 499.7554169999603
+      "latency_ms": 426.05158302467316
     },
     {
       "evaluation_id": "fin-012",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        573,
-        623,
-        627,
-        641,
-        639,
-        622,
-        566,
-        613,
-        640,
-        626
+        897,
+        947,
+        951,
+        965,
+        963,
+        946,
+        890,
+        937,
+        964,
+        950
       ],
       "relevant_chunk_ids": [
-        566
+        890
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.14285714285714285,
-      "latency_ms": 1277.566792000016
+      "latency_ms": 1322.7402920019813
     },
     {
       "evaluation_id": "fin-013",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        603,
-        487,
-        627,
-        624,
-        490,
-        602,
-        488,
-        618,
-        625
+        889,
+        927,
+        811,
+        951,
+        948,
+        814,
+        926,
+        812,
+        942,
+        949
       ],
       "relevant_chunk_ids": [
-        567
+        891
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 357.28612499997325
+      "latency_ms": 353.91016700305045
     },
     {
       "evaluation_id": "fin-013",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        527,
-        528,
-        567,
-        505,
-        628,
-        491,
-        612,
-        498,
-        565,
-        566
+        851,
+        852,
+        891,
+        829,
+        952,
+        815,
+        936,
+        822,
+        889,
+        890
       ],
       "relevant_chunk_ids": [
-        567
+        891
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 166.46408399992652
+      "latency_ms": 127.17883300501853
     },
     {
       "evaluation_id": "fin-013",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        565,
-        487,
-        612,
-        490,
-        491,
-        603,
-        627,
-        488,
-        602,
-        494
+        889,
+        811,
+        936,
+        814,
+        815,
+        927,
+        951,
+        812,
+        926,
+        818
       ],
       "relevant_chunk_ids": [
-        567
+        891
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 508.4599580000031
+      "latency_ms": 748.2318749534898
     },
     {
       "evaluation_id": "fin-013",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        567,
-        625,
-        602,
-        601,
-        627,
-        618,
-        563,
-        565,
-        487,
-        509
+        891,
+        949,
+        926,
+        925,
+        951,
+        942,
+        887,
+        889,
+        811,
+        833
       ],
       "relevant_chunk_ids": [
-        567
+        891
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1284.0797089997977
+      "latency_ms": 1260.3169580106623
     },
     {
       "evaluation_id": "fin-014",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        573,
-        565,
-        639,
-        512,
-        490,
-        603,
-        487,
-        543,
-        509,
-        638
+        897,
+        889,
+        963,
+        836,
+        814,
+        927,
+        811,
+        867,
+        833,
+        962
       ],
       "relevant_chunk_ids": [
-        530,
-        573
+        854,
+        897
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 500.5700000001525
+      "latency_ms": 298.29700000118464
     },
     {
       "evaluation_id": "fin-014",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        573,
-        639,
-        529,
-        507,
-        604,
-        544,
-        623,
-        530,
-        509,
-        518
+        897,
+        963,
+        853,
+        831,
+        928,
+        868,
+        947,
+        854,
+        833,
+        842
       ],
       "relevant_chunk_ids": [
-        530,
-        573
+        854,
+        897
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 139.95191699996212
+      "latency_ms": 94.47154199006036
     },
     {
       "evaluation_id": "fin-014",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        573,
-        639,
-        565,
-        604,
-        509,
-        603,
-        529,
-        510,
-        512,
-        623
+        897,
+        963,
+        889,
+        928,
+        833,
+        927,
+        853,
+        834,
+        836,
+        947
       ],
       "relevant_chunk_ids": [
-        530,
-        573
+        854,
+        897
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 506.7282499999237
+      "latency_ms": 521.3466660352424
     },
     {
       "evaluation_id": "fin-014",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        573,
-        639,
-        604,
-        565,
-        510,
-        509,
-        640,
-        603,
-        512,
-        623
+        897,
+        963,
+        928,
+        889,
+        834,
+        833,
+        964,
+        927,
+        836,
+        947
       ],
       "relevant_chunk_ids": [
-        530,
-        573
+        854,
+        897
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1256.571792000159
+      "latency_ms": 1267.1664169756696
     },
     {
       "evaluation_id": "fin-015",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        618,
-        619,
-        621,
-        598,
-        620,
-        601,
-        599,
-        637,
-        640,
-        617
+        942,
+        943,
+        945,
+        922,
+        944,
+        925,
+        923,
+        961,
+        964,
+        941
       ],
       "relevant_chunk_ids": [
-        577
+        901
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 442.329041999983
+      "latency_ms": 273.750583990477
     },
     {
       "evaluation_id": "fin-015",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        577,
-        619,
-        576,
-        618,
-        608,
-        620,
-        602,
-        575,
-        574,
-        601
+        901,
+        943,
+        900,
+        942,
+        932,
+        944,
+        926,
+        899,
+        898,
+        925
       ],
       "relevant_chunk_ids": [
-        577
+        901
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 106.0597499999858
+      "latency_ms": 119.66570903314278
     },
     {
       "evaluation_id": "fin-015",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        619,
-        618,
-        620,
-        601,
-        621,
-        602,
-        603,
-        598,
-        641,
-        623
+        943,
+        942,
+        944,
+        925,
+        945,
+        926,
+        927,
+        922,
+        965,
+        947
       ],
       "relevant_chunk_ids": [
-        577
+        901
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 464.32837499969537
+      "latency_ms": 481.79329198319465
     },
     {
       "evaluation_id": "fin-015",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        618,
-        619,
-        602,
-        577,
-        601,
-        603,
-        598,
-        576,
-        620,
-        627
+        942,
+        943,
+        926,
+        901,
+        925,
+        927,
+        922,
+        900,
+        944,
+        951
       ],
       "relevant_chunk_ids": [
-        577
+        901
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.25,
-      "latency_ms": 1287.8792079995947
+      "latency_ms": 1316.0893330350518
     },
     {
       "evaluation_id": "fin-016",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        561,
-        616,
-        615,
-        601,
-        565,
-        571,
-        599,
-        603,
-        637,
-        612
+        885,
+        940,
+        939,
+        925,
+        889,
+        895,
+        923,
+        927,
+        961,
+        936
       ],
       "relevant_chunk_ids": [
-        578
+        902
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 252.42358400009834
+      "latency_ms": 301.8427910283208
     },
     {
       "evaluation_id": "fin-016",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        578,
-        561,
-        577,
-        636,
-        576,
-        562,
-        616,
-        574,
-        584,
-        568
+        902,
+        885,
+        901,
+        960,
+        900,
+        886,
+        940,
+        898,
+        908,
+        892
       ],
       "relevant_chunk_ids": [
-        578
+        902
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 91.33533300018826
+      "latency_ms": 92.28808298939839
     },
     {
       "evaluation_id": "fin-016",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        561,
-        616,
-        615,
-        617,
-        603,
-        562,
-        565,
-        577,
-        599,
-        626
+        885,
+        940,
+        939,
+        941,
+        927,
+        886,
+        889,
+        901,
+        923,
+        950
       ],
       "relevant_chunk_ids": [
-        578
+        902
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 517.820292000124
+      "latency_ms": 420.5878750071861
     },
     {
       "evaluation_id": "fin-016",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        578,
-        561,
-        616,
-        627,
-        577,
-        636,
-        603,
-        562,
-        602,
-        601
+        902,
+        885,
+        940,
+        951,
+        901,
+        960,
+        927,
+        886,
+        926,
+        925
       ],
       "relevant_chunk_ids": [
-        578
+        902
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1446.5479580003375
+      "latency_ms": 1254.4888749835081
     },
     {
       "evaluation_id": "fin-017",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        571,
-        573,
-        639,
-        638,
-        637,
-        640,
-        492,
-        623,
-        632
+        889,
+        895,
+        897,
+        963,
+        962,
+        961,
+        964,
+        816,
+        947,
+        956
       ],
       "relevant_chunk_ids": [
-        575
+        899
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 298.4682920000523
+      "latency_ms": 333.97487498587
     },
     {
       "evaluation_id": "fin-017",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        574,
-        575,
-        577,
-        568,
-        576,
-        573,
-        636,
-        641,
-        626,
-        638
+        898,
+        899,
+        901,
+        892,
+        900,
+        897,
+        960,
+        965,
+        950,
+        962
       ],
       "relevant_chunk_ids": [
-        575
+        899
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 131.20104199970228
+      "latency_ms": 121.43358401954174
     },
     {
       "evaluation_id": "fin-017",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        573,
-        639,
-        638,
-        571,
-        574,
-        565,
-        632,
-        623,
-        575,
-        492
+        897,
+        963,
+        962,
+        895,
+        898,
+        889,
+        956,
+        947,
+        899,
+        816
       ],
       "relevant_chunk_ids": [
-        575
+        899
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.1111111111111111,
-      "latency_ms": 502.74199999967095
+      "latency_ms": 423.84262499399483
     },
     {
       "evaluation_id": "fin-017",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        575,
-        573,
-        633,
-        571,
-        641,
-        632,
-        626,
-        574,
-        639,
-        576
+        899,
+        897,
+        957,
+        895,
+        965,
+        956,
+        950,
+        898,
+        963,
+        900
       ],
       "relevant_chunk_ids": [
-        575
+        899
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1323.6144170000443
+      "latency_ms": 1268.3388339937665
     },
     {
       "evaluation_id": "fin-018",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        510,
-        512,
-        513,
-        565,
-        515,
-        511,
-        543,
-        609,
-        516,
-        509
+        834,
+        836,
+        837,
+        889,
+        839,
+        835,
+        867,
+        933,
+        840,
+        833
       ],
       "relevant_chunk_ids": [
-        511,
-        512
+        835,
+        836
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 287.9891249999673
+      "latency_ms": 289.18354195775464
     },
     {
       "evaluation_id": "fin-018",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        609,
-        569,
-        596,
-        510,
-        511,
-        507,
-        574,
-        526,
-        556,
-        568
+        933,
+        893,
+        920,
+        834,
+        835,
+        831,
+        898,
+        850,
+        880,
+        892
       ],
       "relevant_chunk_ids": [
-        511,
-        512
+        835,
+        836
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 0.2,
-      "latency_ms": 119.48325000003024
+      "latency_ms": 150.3797090263106
     },
     {
       "evaluation_id": "fin-018",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        510,
-        609,
-        511,
-        513,
-        565,
-        512,
-        514,
-        610,
-        517,
-        523
+        834,
+        933,
+        835,
+        837,
+        889,
+        836,
+        838,
+        934,
+        841,
+        847
       ],
       "relevant_chunk_ids": [
-        511,
-        512
+        835,
+        836
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 476.19658299981893
+      "latency_ms": 426.3683329918422
     },
     {
       "evaluation_id": "fin-018",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        511,
-        510,
-        513,
-        519,
-        625,
-        569,
-        512,
-        507,
-        626,
-        543
+        835,
+        834,
+        837,
+        843,
+        949,
+        893,
+        836,
+        831,
+        950,
+        867
       ],
       "relevant_chunk_ids": [
-        511,
-        512
+        835,
+        836
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1290.2013329999136
+      "latency_ms": 1267.3738340381533
     },
     {
       "evaluation_id": "fin-019",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        514,
-        512,
-        513,
-        509,
-        571,
-        573,
-        515,
-        603,
-        604
+        889,
+        838,
+        836,
+        837,
+        833,
+        895,
+        897,
+        839,
+        927,
+        928
       ],
       "relevant_chunk_ids": [
-        514
+        838
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 268.78879200012307
+      "latency_ms": 251.54212501365691
     },
     {
       "evaluation_id": "fin-019",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        513,
-        514,
-        573,
-        639,
-        604,
-        515,
-        529,
-        517,
-        565,
-        566
+        837,
+        838,
+        897,
+        963,
+        928,
+        839,
+        853,
+        841,
+        889,
+        890
       ],
       "relevant_chunk_ids": [
-        514
+        838
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 121.79004200015697
+      "latency_ms": 97.6855419576168
     },
     {
       "evaluation_id": "fin-019",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        514,
-        513,
-        565,
-        573,
-        515,
-        604,
-        509,
-        512,
-        639,
-        603
+        838,
+        837,
+        889,
+        897,
+        839,
+        928,
+        833,
+        836,
+        963,
+        927
       ],
       "relevant_chunk_ids": [
-        514
+        838
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 615.7497079998393
+      "latency_ms": 406.1057500075549
     },
     {
       "evaluation_id": "fin-019",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        514,
-        512,
-        565,
-        509,
-        566,
-        510,
-        639,
-        604,
-        623,
-        529
+        838,
+        836,
+        889,
+        833,
+        890,
+        834,
+        963,
+        928,
+        947,
+        853
       ],
       "relevant_chunk_ids": [
-        514
+        838
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1196.3996659997065
+      "latency_ms": 1306.4138339832425
     },
     {
       "evaluation_id": "fin-020",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        521,
-        487,
-        489,
-        565,
-        523,
-        512,
-        494,
-        490,
-        534,
-        488
+        845,
+        811,
+        813,
+        889,
+        847,
+        836,
+        818,
+        814,
+        858,
+        812
       ],
       "relevant_chunk_ids": [
-        521,
-        522
+        845,
+        846
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 406.79170899966266
+      "latency_ms": 313.3656670106575
     },
     {
       "evaluation_id": "fin-020",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        550,
-        523,
-        520,
-        507,
-        549,
-        491,
-        548,
-        490,
-        521,
-        524
+        874,
+        847,
+        844,
+        831,
+        873,
+        815,
+        872,
+        814,
+        845,
+        848
       ],
       "relevant_chunk_ids": [
-        521,
-        522
+        845,
+        846
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.5,
       "reciprocal_rank": 0.1111111111111111,
-      "latency_ms": 102.82266700005493
+      "latency_ms": 115.29483302729204
     },
     {
       "evaluation_id": "fin-020",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        523,
-        521,
-        487,
-        490,
-        565,
-        491,
-        489,
-        488,
-        522,
-        494
+        847,
+        845,
+        811,
+        814,
+        889,
+        815,
+        813,
+        812,
+        846,
+        818
       ],
       "relevant_chunk_ids": [
-        521,
-        522
+        845,
+        846
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 442.0604580000145
+      "latency_ms": 614.6162500372157
     },
     {
       "evaluation_id": "fin-020",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        521,
-        522,
-        523,
-        520,
-        487,
-        488,
-        510,
-        494,
-        490,
-        543
+        845,
+        846,
+        847,
+        844,
+        811,
+        812,
+        834,
+        818,
+        814,
+        867
       ],
       "relevant_chunk_ids": [
-        521,
-        522
+        845,
+        846
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1228.7098749998222
+      "latency_ms": 1266.3133749738336
     },
     {
       "evaluation_id": "fin-021",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        523,
-        534,
-        556,
-        603,
-        487,
-        490,
-        627,
-        609,
-        543
+        889,
+        847,
+        858,
+        880,
+        927,
+        811,
+        814,
+        951,
+        933,
+        867
       ],
       "relevant_chunk_ids": [
-        556,
-        557
+        880,
+        881
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 0.25,
-      "latency_ms": 326.24016699992353
+      "latency_ms": 319.0834579872899
     },
     {
       "evaluation_id": "fin-021",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        556,
-        628,
-        595,
-        503,
-        505,
-        507,
-        557,
-        597,
-        565,
-        584
+        880,
+        952,
+        919,
+        827,
+        829,
+        831,
+        881,
+        921,
+        889,
+        908
       ],
       "relevant_chunk_ids": [
-        556,
-        557
+        880,
+        881
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 128.53175000009287
+      "latency_ms": 110.47470901394263
     },
     {
       "evaluation_id": "fin-021",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        556,
-        565,
-        603,
-        487,
-        523,
-        627,
-        628,
-        489,
-        494,
-        630
+        880,
+        889,
+        927,
+        811,
+        847,
+        951,
+        952,
+        813,
+        818,
+        954
       ],
       "relevant_chunk_ids": [
-        556,
-        557
+        880,
+        881
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 402.355291999811
+      "latency_ms": 407.7394590131007
     },
     {
       "evaluation_id": "fin-021",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        556,
-        557,
-        534,
-        565,
-        523,
-        630,
-        521,
-        603,
-        487,
-        490
+        880,
+        881,
+        858,
+        889,
+        847,
+        954,
+        845,
+        927,
+        811,
+        814
       ],
       "relevant_chunk_ids": [
-        556,
-        557
+        880,
+        881
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1640.8506249999846
+      "latency_ms": 1317.8183329873718
     },
     {
       "evaluation_id": "fin-022",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        512,
-        565,
-        515,
-        543,
-        534,
-        510,
-        542,
-        490,
-        509,
-        537
+        836,
+        889,
+        839,
+        867,
+        858,
+        834,
+        866,
+        814,
+        833,
+        861
       ],
       "relevant_chunk_ids": [
-        526
+        850
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 498.35862500003714
+      "latency_ms": 424.6970000094734
     },
     {
       "evaluation_id": "fin-022",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        515,
-        513,
-        517,
-        511,
-        514,
-        512,
-        516,
-        537,
-        507,
-        510
+        839,
+        837,
+        841,
+        835,
+        838,
+        836,
+        840,
+        861,
+        831,
+        834
       ],
       "relevant_chunk_ids": [
-        526
+        850
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 127.46370900003967
+      "latency_ms": 116.92045797826722
     },
     {
       "evaluation_id": "fin-022",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        515,
-        512,
-        513,
-        510,
-        565,
-        537,
-        542,
-        511,
-        543,
-        517
+        839,
+        836,
+        837,
+        834,
+        889,
+        861,
+        866,
+        835,
+        867,
+        841
       ],
       "relevant_chunk_ids": [
-        526
+        850
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.0,
       "reciprocal_rank": 0.0,
-      "latency_ms": 550.7917499999166
+      "latency_ms": 562.5155000016093
     },
     {
       "evaluation_id": "fin-022",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        526,
-        512,
-        537,
-        510,
-        565,
-        525,
-        511,
-        543,
-        518,
-        515
+        850,
+        836,
+        861,
+        834,
+        889,
+        849,
+        835,
+        867,
+        842,
+        839
       ],
       "relevant_chunk_ids": [
-        526
+        850
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1295.4025419999198
+      "latency_ms": 1330.4778339806944
     },
     {
       "evaluation_id": "fin-023",
       "query_type": "semantic",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        565,
-        487,
-        528,
-        488,
-        490,
-        534,
-        512,
-        489,
-        494,
-        493
+        889,
+        811,
+        852,
+        812,
+        814,
+        858,
+        836,
+        813,
+        818,
+        817
       ],
       "relevant_chunk_ids": [
-        528,
-        567
+        852,
+        891
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 286.3105410001481
+      "latency_ms": 214.7737499908544
     },
     {
       "evaluation_id": "fin-023",
       "query_type": "semantic",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        494,
-        527,
-        528,
-        489,
-        556,
-        488,
-        491,
-        487,
-        565,
-        567
+        818,
+        851,
+        852,
+        813,
+        880,
+        812,
+        815,
+        811,
+        889,
+        891
       ],
       "relevant_chunk_ids": [
-        528,
-        567
+        852,
+        891
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 107.85816699990391
+      "latency_ms": 102.65200003050268
     },
     {
       "evaluation_id": "fin-023",
       "query_type": "semantic",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        528,
-        494,
-        565,
-        487,
-        488,
-        489,
-        490,
-        527,
-        491,
-        493
+        852,
+        818,
+        889,
+        811,
+        812,
+        813,
+        814,
+        851,
+        815,
+        817
       ],
       "relevant_chunk_ids": [
-        528,
-        567
+        852,
+        891
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 440.8793340003285
+      "latency_ms": 450.8179579861462
     },
     {
       "evaluation_id": "fin-023",
       "query_type": "semantic",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        567,
-        565,
-        528,
-        512,
-        510,
-        487,
-        509,
-        490,
-        489,
-        493
+        891,
+        889,
+        852,
+        836,
+        834,
+        811,
+        833,
+        814,
+        813,
+        817
       ],
       "relevant_chunk_ids": [
-        528,
-        567
+        852,
+        891
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1274.0937919998032
+      "latency_ms": 1186.298665998038
     },
     {
       "evaluation_id": "fin-024",
       "query_type": "exact",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        609,
-        606,
-        565,
-        624,
-        623,
-        618,
-        619,
-        581,
-        630,
-        571
+        933,
+        930,
+        889,
+        948,
+        947,
+        942,
+        943,
+        905,
+        895,
+        954
       ],
       "relevant_chunk_ids": [
-        580,
-        581
+        904,
+        905
       ],
       "recall_at_5": 0.0,
       "recall_at_10": 0.5,
       "reciprocal_rank": 0.125,
-      "latency_ms": 310.2980410003511
+      "latency_ms": 347.73854102240875
     },
     {
       "evaluation_id": "fin-024",
       "query_type": "exact",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        527,
-        624,
-        580,
-        528,
-        567,
-        628,
-        607,
-        612,
-        581,
-        504
+        851,
+        948,
+        904,
+        852,
+        891,
+        952,
+        931,
+        936,
+        905,
+        828
       ],
       "relevant_chunk_ids": [
-        580,
-        581
+        904,
+        905
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.3333333333333333,
-      "latency_ms": 96.62308300039513
+      "latency_ms": 102.31275000842288
     },
     {
       "evaluation_id": "fin-024",
       "query_type": "exact",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        624,
-        580,
-        581,
-        607,
-        619,
-        612,
-        606,
-        620,
-        512,
-        534
+        948,
+        904,
+        905,
+        931,
+        943,
+        936,
+        930,
+        944,
+        836,
+        858
       ],
       "relevant_chunk_ids": [
-        580,
-        581
+        904,
+        905
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 0.5,
-      "latency_ms": 427.5456669997766
+      "latency_ms": 440.809374966193
     },
     {
       "evaluation_id": "fin-024",
       "query_type": "exact",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        580,
-        635,
-        625,
-        607,
-        630,
-        602,
-        627,
-        581,
-        620,
-        618
+        904,
+        959,
+        949,
+        931,
+        954,
+        926,
+        951,
+        905,
+        944,
+        942
       ],
       "relevant_chunk_ids": [
-        580,
-        581
+        904,
+        905
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1268.4770840000965
+      "latency_ms": 1286.1815000069328
     },
     {
       "evaluation_id": "fin-025",
       "query_type": "mixed",
       "mode": "vector",
       "retrieved_chunk_ids": [
-        585,
-        565,
-        543,
-        609,
-        627,
-        630,
-        593,
-        534,
-        523,
-        590
+        909,
+        889,
+        867,
+        933,
+        951,
+        954,
+        917,
+        858,
+        847,
+        914
       ],
       "relevant_chunk_ids": [
-        584,
-        585
+        908,
+        909
       ],
       "recall_at_5": 0.5,
       "recall_at_10": 0.5,
       "reciprocal_rank": 1.0,
-      "latency_ms": 263.4563749998051
+      "latency_ms": 303.8168750354089
     },
     {
       "evaluation_id": "fin-025",
       "query_type": "mixed",
       "mode": "keyword",
       "retrieved_chunk_ids": [
-        584,
-        543,
-        585,
-        594,
-        595,
-        556,
-        628,
-        537,
-        597,
-        545
+        908,
+        867,
+        909,
+        918,
+        919,
+        880,
+        952,
+        861,
+        921,
+        869
       ],
       "relevant_chunk_ids": [
-        584,
-        585
+        908,
+        909
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 100.7421669996802
+      "latency_ms": 97.5822500186041
     },
     {
       "evaluation_id": "fin-025",
       "query_type": "mixed",
       "mode": "hybrid",
       "retrieved_chunk_ids": [
-        585,
-        543,
-        584,
-        565,
-        628,
-        556,
-        597,
-        629,
-        595,
-        603
+        909,
+        867,
+        908,
+        889,
+        952,
+        880,
+        921,
+        953,
+        919,
+        927
       ],
       "relevant_chunk_ids": [
-        584,
-        585
+        908,
+        909
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 446.9442499998877
+      "latency_ms": 573.6626670113765
     },
     {
       "evaluation_id": "fin-025",
       "query_type": "mixed",
       "mode": "hybrid_rerank",
       "retrieved_chunk_ids": [
-        584,
-        585,
-        594,
-        595,
-        596,
-        593,
-        603,
-        543,
-        597,
-        629
+        908,
+        909,
+        918,
+        919,
+        920,
+        917,
+        927,
+        867,
+        921,
+        953
       ],
       "relevant_chunk_ids": [
-        584,
-        585
+        908,
+        909
       ],
       "recall_at_5": 1.0,
       "recall_at_10": 1.0,
       "reciprocal_rank": 1.0,
-      "latency_ms": 1744.698624999728
+      "latency_ms": 1308.9178750524297
+    },
+    {
+      "evaluation_id": "fin-026",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        811,
+        813,
+        817,
+        818,
+        812,
+        814,
+        815,
+        816,
+        819,
+        889
+      ],
+      "relevant_chunk_ids": [
+        818
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 356.0777090024203
+    },
+    {
+      "evaluation_id": "fin-026",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        818,
+        813,
+        812,
+        815,
+        811,
+        814,
+        816,
+        817,
+        952,
+        889
+      ],
+      "relevant_chunk_ids": [
+        818
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 99.94741599075496
+    },
+    {
+      "evaluation_id": "fin-026",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        813,
+        818,
+        811,
+        812,
+        817,
+        815,
+        814,
+        816,
+        889,
+        819
+      ],
+      "relevant_chunk_ids": [
+        818
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 461.25087497057393
+    },
+    {
+      "evaluation_id": "fin-026",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        811,
+        818,
+        814,
+        815,
+        813,
+        812,
+        834,
+        833,
+        889,
+        816
+      ],
+      "relevant_chunk_ids": [
+        818
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1221.9990840530954
+    },
+    {
+      "evaluation_id": "fin-027",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        816,
+        815,
+        812,
+        897,
+        813,
+        895,
+        818,
+        951,
+        811
+      ],
+      "relevant_chunk_ids": [
+        815
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 314.4219579990022
+    },
+    {
+      "evaluation_id": "fin-027",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        841,
+        838,
+        837,
+        928,
+        816,
+        839,
+        840,
+        933,
+        813,
+        889
+      ],
+      "relevant_chunk_ids": [
+        815
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 111.17483302950859
+    },
+    {
+      "evaluation_id": "fin-027",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        816,
+        889,
+        815,
+        813,
+        837,
+        933,
+        812,
+        928,
+        890,
+        951
+      ],
+      "relevant_chunk_ids": [
+        815
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 499.18883404461667
+    },
+    {
+      "evaluation_id": "fin-027",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        816,
+        889,
+        897,
+        813,
+        895,
+        951,
+        963,
+        950,
+        890,
+        928
+      ],
+      "relevant_chunk_ids": [
+        815
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 1201.5801669913344
+    },
+    {
+      "evaluation_id": "fin-028",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        813,
+        811,
+        812,
+        817,
+        818,
+        816,
+        815,
+        814,
+        819,
+        889
+      ],
+      "relevant_chunk_ids": [
+        820
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 527.0709170144983
+    },
+    {
+      "evaluation_id": "fin-028",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        813,
+        818,
+        897,
+        815,
+        812,
+        963,
+        814,
+        816,
+        811,
+        817
+      ],
+      "relevant_chunk_ids": [
+        820
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 95.92920896830037
+    },
+    {
+      "evaluation_id": "fin-028",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        813,
+        818,
+        812,
+        811,
+        815,
+        817,
+        816,
+        814,
+        897,
+        820
+      ],
+      "relevant_chunk_ids": [
+        820
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.1,
+      "latency_ms": 425.37300003459677
+    },
+    {
+      "evaluation_id": "fin-028",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        814,
+        813,
+        817,
+        816,
+        815,
+        818,
+        811,
+        812,
+        820,
+        833
+      ],
+      "relevant_chunk_ids": [
+        820
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.1111111111111111,
+      "latency_ms": 1191.8349170009606
+    },
+    {
+      "evaluation_id": "fin-029",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        836,
+        816,
+        814,
+        927,
+        951,
+        895,
+        837,
+        897,
+        820
+      ],
+      "relevant_chunk_ids": [
+        821
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 267.9025839897804
+    },
+    {
+      "evaluation_id": "fin-029",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        816,
+        952,
+        818,
+        821,
+        856,
+        811,
+        812,
+        815,
+        820,
+        889
+      ],
+      "relevant_chunk_ids": [
+        821
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 127.11275002220646
+    },
+    {
+      "evaluation_id": "fin-029",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        816,
+        889,
+        811,
+        814,
+        820,
+        821,
+        951,
+        812,
+        927,
+        813
+      ],
+      "relevant_chunk_ids": [
+        821
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.16666666666666666,
+      "latency_ms": 390.0190000422299
+    },
+    {
+      "evaluation_id": "fin-029",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        821,
+        816,
+        889,
+        820,
+        814,
+        836,
+        818,
+        833,
+        834,
+        954
+      ],
+      "relevant_chunk_ids": [
+        821
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1389.9057499947958
+    },
+    {
+      "evaluation_id": "fin-030",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        951,
+        889,
+        927,
+        830,
+        954,
+        933,
+        823,
+        934,
+        858,
+        953
+      ],
+      "relevant_chunk_ids": [
+        823
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.14285714285714285,
+      "latency_ms": 322.9845000314526
+    },
+    {
+      "evaluation_id": "fin-030",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        823,
+        952,
+        930,
+        829,
+        871,
+        951,
+        818,
+        923,
+        927,
+        934
+      ],
+      "relevant_chunk_ids": [
+        823
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 107.1629169746302
+    },
+    {
+      "evaluation_id": "fin-030",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        951,
+        823,
+        927,
+        930,
+        952,
+        934,
+        889,
+        953,
+        811,
+        871
+      ],
+      "relevant_chunk_ids": [
+        823
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 407.2194169857539
+    },
+    {
+      "evaluation_id": "fin-030",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        951,
+        935,
+        952,
+        823,
+        927,
+        959,
+        833,
+        953,
+        830,
+        871
+      ],
+      "relevant_chunk_ids": [
+        823
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 1189.5885420381092
+    },
+    {
+      "evaluation_id": "fin-031",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        867,
+        836,
+        866,
+        889,
+        963,
+        868,
+        862,
+        814,
+        825,
+        861
+      ],
+      "relevant_chunk_ids": [
+        827,
+        868
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.16666666666666666,
+      "latency_ms": 428.64516703411937
+    },
+    {
+      "evaluation_id": "fin-031",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        839,
+        837,
+        816,
+        893,
+        838,
+        840,
+        868,
+        836,
+        866,
+        841
+      ],
+      "relevant_chunk_ids": [
+        827,
+        868
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.14285714285714285,
+      "latency_ms": 121.18933402234688
+    },
+    {
+      "evaluation_id": "fin-031",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        836,
+        866,
+        868,
+        889,
+        839,
+        867,
+        837,
+        816,
+        861,
+        826
+      ],
+      "relevant_chunk_ids": [
+        827,
+        868
+      ],
+      "recall_at_5": 0.5,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 526.7207500291988
+    },
+    {
+      "evaluation_id": "fin-031",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        827,
+        868,
+        867,
+        861,
+        836,
+        866,
+        889,
+        864,
+        837,
+        826
+      ],
+      "relevant_chunk_ids": [
+        827,
+        868
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1296.851749997586
+    },
+    {
+      "evaluation_id": "fin-032",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        847,
+        846,
+        841,
+        845,
+        858,
+        869,
+        889,
+        870,
+        836,
+        839
+      ],
+      "relevant_chunk_ids": [
+        841
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 382.6597919687629
+    },
+    {
+      "evaluation_id": "fin-032",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        815,
+        818,
+        814,
+        811,
+        812,
+        813,
+        889,
+        817,
+        816,
+        831
+      ],
+      "relevant_chunk_ids": [
+        841
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 123.03033302305266
+    },
+    {
+      "evaluation_id": "fin-032",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        841,
+        889,
+        811,
+        847,
+        869,
+        814,
+        870,
+        813,
+        812,
+        872
+      ],
+      "relevant_chunk_ids": [
+        841
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 610.4399159667082
+    },
+    {
+      "evaluation_id": "fin-032",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        846,
+        841,
+        811,
+        889,
+        834,
+        847,
+        812,
+        858,
+        833,
+        814
+      ],
+      "relevant_chunk_ids": [
+        841
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1216.3298330269754
+    },
+    {
+      "evaluation_id": "fin-033",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        951,
+        841,
+        889,
+        847,
+        858,
+        867,
+        836,
+        834,
+        839,
+        927
+      ],
+      "relevant_chunk_ids": [
+        842
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 390.76670905342326
+    },
+    {
+      "evaluation_id": "fin-033",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        841,
+        837,
+        838,
+        839,
+        840,
+        928,
+        866,
+        893,
+        823,
+        833
+      ],
+      "relevant_chunk_ids": [
+        842
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 118.64349996903911
+    },
+    {
+      "evaluation_id": "fin-033",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        841,
+        839,
+        951,
+        837,
+        889,
+        866,
+        928,
+        833,
+        834,
+        952
+      ],
+      "relevant_chunk_ids": [
+        842
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 770.6724579911679
+    },
+    {
+      "evaluation_id": "fin-033",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        842,
+        841,
+        833,
+        889,
+        816,
+        834,
+        951,
+        836,
+        867,
+        954
+      ],
+      "relevant_chunk_ids": [
+        842
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1419.2461660131812
+    },
+    {
+      "evaluation_id": "fin-034",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        847,
+        858,
+        951,
+        836,
+        867,
+        839,
+        949,
+        927,
+        933
+      ],
+      "relevant_chunk_ids": [
+        843
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 392.07395794801414
+    },
+    {
+      "evaluation_id": "fin-034",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        831,
+        847,
+        843,
+        848,
+        851,
+        856,
+        952,
+        832,
+        841,
+        871
+      ],
+      "relevant_chunk_ids": [
+        843
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 109.27908401936293
+    },
+    {
+      "evaluation_id": "fin-034",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        847,
+        889,
+        843,
+        834,
+        833,
+        952,
+        851,
+        927,
+        836,
+        951
+      ],
+      "relevant_chunk_ids": [
+        843
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 488.24916599551216
+    },
+    {
+      "evaluation_id": "fin-034",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        843,
+        834,
+        833,
+        927,
+        954,
+        831,
+        889,
+        842,
+        855,
+        867
+      ],
+      "relevant_chunk_ids": [
+        843
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1347.1801250125282
+    },
+    {
+      "evaluation_id": "fin-035",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        963,
+        897,
+        889,
+        962,
+        927,
+        895,
+        947,
+        961,
+        964,
+        930
+      ],
+      "relevant_chunk_ids": [
+        844
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 316.1139170406386
+    },
+    {
+      "evaluation_id": "fin-035",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        963,
+        897,
+        898,
+        947,
+        892,
+        901,
+        968,
+        960,
+        844,
+        952
+      ],
+      "relevant_chunk_ids": [
+        844
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.1111111111111111,
+      "latency_ms": 126.96033297106624
+    },
+    {
+      "evaluation_id": "fin-035",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        963,
+        897,
+        947,
+        927,
+        889,
+        962,
+        964,
+        958,
+        895,
+        948
+      ],
+      "relevant_chunk_ids": [
+        844
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 446.7907919897698
+    },
+    {
+      "evaluation_id": "fin-035",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        963,
+        898,
+        927,
+        889,
+        947,
+        897,
+        844,
+        964,
+        951,
+        901
+      ],
+      "relevant_chunk_ids": [
+        844
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.14285714285714285,
+      "latency_ms": 1278.2442920142785
+    },
+    {
+      "evaluation_id": "fin-036",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        847,
+        858,
+        867,
+        951,
+        878,
+        889,
+        866,
+        846,
+        953,
+        952
+      ],
+      "relevant_chunk_ids": [
+        847
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 264.7416660329327
+    },
+    {
+      "evaluation_id": "fin-036",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        847,
+        912,
+        845,
+        831,
+        851,
+        880,
+        952,
+        848,
+        872,
+        846
+      ],
+      "relevant_chunk_ids": [
+        847
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 114.75804098881781
+    },
+    {
+      "evaluation_id": "fin-036",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        847,
+        845,
+        952,
+        889,
+        846,
+        953,
+        858,
+        866,
+        872,
+        836
+      ],
+      "relevant_chunk_ids": [
+        847
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 396.99354203185067
+    },
+    {
+      "evaluation_id": "fin-036",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        847,
+        954,
+        953,
+        871,
+        846,
+        836,
+        845,
+        878,
+        951,
+        858
+      ],
+      "relevant_chunk_ids": [
+        847
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1254.7329590306617
+    },
+    {
+      "evaluation_id": "fin-037",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        867,
+        889,
+        963,
+        814,
+        897,
+        858,
+        836,
+        811,
+        933,
+        866
+      ],
+      "relevant_chunk_ids": [
+        848
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 270.4059159732424
+    },
+    {
+      "evaluation_id": "fin-037",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        848,
+        831,
+        880,
+        850,
+        889,
+        952,
+        829,
+        852,
+        849,
+        856
+      ],
+      "relevant_chunk_ids": [
+        848
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 141.2312919856049
+    },
+    {
+      "evaluation_id": "fin-037",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        889,
+        897,
+        867,
+        962,
+        961,
+        811,
+        858,
+        813,
+        927,
+        827
+      ],
+      "relevant_chunk_ids": [
+        848
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 444.60987503407523
+    },
+    {
+      "evaluation_id": "fin-037",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        889,
+        848,
+        897,
+        867,
+        927,
+        814,
+        963,
+        849,
+        813,
+        850
+      ],
+      "relevant_chunk_ids": [
+        848
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1245.3782089869492
+    },
+    {
+      "evaluation_id": "fin-038",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        849,
+        827,
+        860,
+        867,
+        814,
+        951,
+        811,
+        858,
+        927
+      ],
+      "relevant_chunk_ids": [
+        849
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 265.45700000133365
+    },
+    {
+      "evaluation_id": "fin-038",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        848,
+        849,
+        856,
+        952,
+        831,
+        829,
+        965,
+        934,
+        961,
+        827
+      ],
+      "relevant_chunk_ids": [
+        849
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 146.84733300236985
+    },
+    {
+      "evaluation_id": "fin-038",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        849,
+        889,
+        827,
+        961,
+        927,
+        811,
+        828,
+        895,
+        951,
+        847
+      ],
+      "relevant_chunk_ids": [
+        849
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 474.27658300148323
+    },
+    {
+      "evaluation_id": "fin-038",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        849,
+        848,
+        827,
+        889,
+        867,
+        834,
+        833,
+        953,
+        964,
+        866
+      ],
+      "relevant_chunk_ids": [
+        849
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1421.7783329659142
+    },
+    {
+      "evaluation_id": "fin-039",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        851,
+        836,
+        833,
+        811,
+        858,
+        814,
+        817,
+        867,
+        927
+      ],
+      "relevant_chunk_ids": [
+        851
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 284.67795799952
+    },
+    {
+      "evaluation_id": "fin-039",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        851,
+        852,
+        831,
+        850,
+        860,
+        952,
+        813,
+        861,
+        847,
+        811
+      ],
+      "relevant_chunk_ids": [
+        851
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 102.77829197002575
+    },
+    {
+      "evaluation_id": "fin-039",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        851,
+        811,
+        889,
+        833,
+        850,
+        852,
+        836,
+        847,
+        812,
+        813
+      ],
+      "relevant_chunk_ids": [
+        851
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 482.55233297822997
+    },
+    {
+      "evaluation_id": "fin-039",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        851,
+        833,
+        834,
+        836,
+        889,
+        831,
+        852,
+        813,
+        867,
+        861
+      ],
+      "relevant_chunk_ids": [
+        851
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1317.4210420111194
+    },
+    {
+      "evaluation_id": "fin-040",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        889,
+        828,
+        811,
+        836,
+        814,
+        829,
+        830,
+        817,
+        813,
+        827
+      ],
+      "relevant_chunk_ids": [
+        855
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 284.99983402434736
+    },
+    {
+      "evaluation_id": "fin-040",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        855,
+        828,
+        952,
+        827,
+        816,
+        829,
+        951,
+        815,
+        939,
+        811
+      ],
+      "relevant_chunk_ids": [
+        855
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 117.77604202507064
+    },
+    {
+      "evaluation_id": "fin-040",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        828,
+        829,
+        811,
+        827,
+        889,
+        816,
+        813,
+        812,
+        814,
+        815
+      ],
+      "relevant_chunk_ids": [
+        855
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 434.08600002294406
+    },
+    {
+      "evaluation_id": "fin-040",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        855,
+        889,
+        836,
+        831,
+        834,
+        811,
+        833,
+        951,
+        828,
+        814
+      ],
+      "relevant_chunk_ids": [
+        855
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1229.7631669789553
+    },
+    {
+      "evaluation_id": "fin-041",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        909,
+        847,
+        858,
+        889,
+        856,
+        855,
+        867,
+        834,
+        930,
+        836
+      ],
+      "relevant_chunk_ids": [
+        856
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 324.746124970261
+    },
+    {
+      "evaluation_id": "fin-041",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        831,
+        851,
+        855,
+        848,
+        856,
+        880,
+        847,
+        850,
+        868,
+        832
+      ],
+      "relevant_chunk_ids": [
+        856
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 130.3529579890892
+    },
+    {
+      "evaluation_id": "fin-041",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        847,
+        855,
+        856,
+        851,
+        834,
+        889,
+        858,
+        832,
+        842,
+        869
+      ],
+      "relevant_chunk_ids": [
+        856
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 561.2815829808824
+    },
+    {
+      "evaluation_id": "fin-041",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        856,
+        889,
+        855,
+        834,
+        833,
+        954,
+        927,
+        836,
+        847,
+        867
+      ],
+      "relevant_chunk_ids": [
+        856
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1727.934374997858
+    },
+    {
+      "evaluation_id": "fin-042",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        858,
+        859,
+        873,
+        811,
+        872,
+        860,
+        813,
+        818,
+        812,
+        870
+      ],
+      "relevant_chunk_ids": [
+        859
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 253.90449998667464
+    },
+    {
+      "evaluation_id": "fin-042",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        818,
+        813,
+        859,
+        872,
+        812,
+        816,
+        952,
+        815,
+        873,
+        811
+      ],
+      "relevant_chunk_ids": [
+        859
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 122.95512499986216
+    },
+    {
+      "evaluation_id": "fin-042",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        859,
+        818,
+        813,
+        872,
+        873,
+        811,
+        812,
+        816,
+        860,
+        815
+      ],
+      "relevant_chunk_ids": [
+        859
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 739.0485829673707
+    },
+    {
+      "evaluation_id": "fin-042",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        859,
+        865,
+        873,
+        833,
+        889,
+        836,
+        867,
+        860,
+        811,
+        954
+      ],
+      "relevant_chunk_ids": [
+        859
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1860.8867500443012
+    },
+    {
+      "evaluation_id": "fin-043",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        862,
+        951,
+        953,
+        858,
+        823,
+        867,
+        889,
+        822,
+        954,
+        952
+      ],
+      "relevant_chunk_ids": [
+        862
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 475.0183749711141
+    },
+    {
+      "evaluation_id": "fin-043",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        952,
+        862,
+        950,
+        861,
+        812,
+        818,
+        858,
+        868,
+        811,
+        813
+      ],
+      "relevant_chunk_ids": [
+        862
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 95.57079098885879
+    },
+    {
+      "evaluation_id": "fin-043",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        862,
+        952,
+        858,
+        861,
+        951,
+        953,
+        889,
+        868,
+        927,
+        867
+      ],
+      "relevant_chunk_ids": [
+        862
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 479.96745799900964
+    },
+    {
+      "evaluation_id": "fin-043",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        862,
+        861,
+        867,
+        954,
+        952,
+        927,
+        858,
+        953,
+        951,
+        949
+      ],
+      "relevant_chunk_ids": [
+        862
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1299.9859169940464
+    },
+    {
+      "evaluation_id": "fin-044",
+      "query_type": "semantic",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        867,
+        865,
+        866,
+        861,
+        826,
+        858,
+        860,
+        889,
+        823,
+        833
+      ],
+      "relevant_chunk_ids": [
+        865
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 444.54529200447723
+    },
+    {
+      "evaluation_id": "fin-044",
+      "query_type": "semantic",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        952,
+        826,
+        827,
+        829,
+        865,
+        812,
+        818,
+        828,
+        811,
+        822
+      ],
+      "relevant_chunk_ids": [
+        865
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 95.78637505182996
+    },
+    {
+      "evaluation_id": "fin-044",
+      "query_type": "semantic",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        826,
+        865,
+        858,
+        822,
+        834,
+        833,
+        811,
+        864,
+        889,
+        863
+      ],
+      "relevant_chunk_ids": [
+        865
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 524.5120000327006
+    },
+    {
+      "evaluation_id": "fin-044",
+      "query_type": "semantic",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        865,
+        867,
+        864,
+        863,
+        834,
+        826,
+        861,
+        866,
+        833,
+        825
+      ],
+      "relevant_chunk_ids": [
+        865
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1472.5261669955216
+    },
+    {
+      "evaluation_id": "fin-045",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        867,
+        866,
+        836,
+        868,
+        889,
+        860,
+        858,
+        861,
+        862,
+        826
+      ],
+      "relevant_chunk_ids": [
+        868
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 285.4235830018297
+    },
+    {
+      "evaluation_id": "fin-045",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        837,
+        839,
+        841,
+        893,
+        838,
+        816,
+        835,
+        836,
+        868,
+        861
+      ],
+      "relevant_chunk_ids": [
+        868
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.1111111111111111,
+      "latency_ms": 133.17774998722598
+    },
+    {
+      "evaluation_id": "fin-045",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        836,
+        866,
+        868,
+        861,
+        837,
+        867,
+        889,
+        860,
+        839,
+        816
+      ],
+      "relevant_chunk_ids": [
+        868
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 503.7062090123072
+    },
+    {
+      "evaluation_id": "fin-045",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        867,
+        868,
+        861,
+        836,
+        889,
+        866,
+        814,
+        837,
+        864,
+        890
+      ],
+      "relevant_chunk_ids": [
+        868
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.5,
+      "latency_ms": 1296.5244590304792
+    },
+    {
+      "evaluation_id": "fin-046",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        882,
+        964,
+        889,
+        814,
+        927,
+        961,
+        963,
+        965,
+        962,
+        946
+      ],
+      "relevant_chunk_ids": [
+        882
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 418.9573749899864
+    },
+    {
+      "evaluation_id": "fin-046",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        934,
+        965,
+        964,
+        882,
+        952,
+        828,
+        829,
+        813,
+        812,
+        814
+      ],
+      "relevant_chunk_ids": [
+        882
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 90.8042499795556
+    },
+    {
+      "evaluation_id": "fin-046",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        882,
+        964,
+        965,
+        814,
+        889,
+        927,
+        934,
+        963,
+        926,
+        946
+      ],
+      "relevant_chunk_ids": [
+        882
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 473.65045896731317
+    },
+    {
+      "evaluation_id": "fin-046",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        882,
+        926,
+        946,
+        927,
+        965,
+        814,
+        963,
+        964,
+        923,
+        889
+      ],
+      "relevant_chunk_ids": [
+        882
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1229.7069589840248
+    },
+    {
+      "evaluation_id": "fin-047",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        885,
+        940,
+        939,
+        923,
+        887,
+        914,
+        938,
+        966,
+        931,
+        967
+      ],
+      "relevant_chunk_ids": [
+        885
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 311.3139580236748
+    },
+    {
+      "evaluation_id": "fin-047",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        885,
+        939,
+        968,
+        924,
+        923,
+        886,
+        940,
+        938,
+        902,
+        937
+      ],
+      "relevant_chunk_ids": [
+        885
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 121.08429195359349
+    },
+    {
+      "evaluation_id": "fin-047",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        885,
+        939,
+        940,
+        923,
+        938,
+        887,
+        931,
+        937,
+        886,
+        889
+      ],
+      "relevant_chunk_ids": [
+        885
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 439.79441601550207
+    },
+    {
+      "evaluation_id": "fin-047",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        885,
+        887,
+        954,
+        940,
+        889,
+        937,
+        925,
+        927,
+        952,
+        923
+      ],
+      "relevant_chunk_ids": [
+        885
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1336.9127500336617
+    },
+    {
+      "evaluation_id": "fin-048",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        887,
+        945,
+        942,
+        889,
+        943,
+        925,
+        951,
+        921,
+        940,
+        895
+      ],
+      "relevant_chunk_ids": [
+        887
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 257.6145420316607
+    },
+    {
+      "evaluation_id": "fin-048",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        917,
+        950,
+        958,
+        902,
+        940,
+        960,
+        943,
+        971,
+        887,
+        918
+      ],
+      "relevant_chunk_ids": [
+        887
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.1111111111111111,
+      "latency_ms": 115.06654199911281
+    },
+    {
+      "evaluation_id": "fin-048",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        887,
+        943,
+        940,
+        945,
+        950,
+        944,
+        951,
+        942,
+        947,
+        946
+      ],
+      "relevant_chunk_ids": [
+        887
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 406.7195410025306
+    },
+    {
+      "evaluation_id": "fin-048",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        887,
+        943,
+        940,
+        950,
+        951,
+        949,
+        942,
+        947,
+        944,
+        938
+      ],
+      "relevant_chunk_ids": [
+        887
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 1326.4277079724707
+    },
+    {
+      "evaluation_id": "fin-049",
+      "query_type": "exact",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        893,
+        892,
+        898,
+        891,
+        899,
+        905,
+        920,
+        900,
+        904,
+        945
+      ],
+      "relevant_chunk_ids": [
+        893
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 353.1023329705931
+    },
+    {
+      "evaluation_id": "fin-049",
+      "query_type": "exact",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        898,
+        892,
+        900,
+        960,
+        893,
+        899,
+        901,
+        920,
+        941,
+        940
+      ],
+      "relevant_chunk_ids": [
+        893
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.2,
+      "latency_ms": 126.26558303600177
+    },
+    {
+      "evaluation_id": "fin-049",
+      "query_type": "exact",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        898,
+        892,
+        893,
+        900,
+        899,
+        920,
+        960,
+        901,
+        945,
+        946
+      ],
+      "relevant_chunk_ids": [
+        893
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 381.5686669549905
+    },
+    {
+      "evaluation_id": "fin-049",
+      "query_type": "exact",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        898,
+        892,
+        893,
+        957,
+        945,
+        900,
+        890,
+        920,
+        899,
+        905
+      ],
+      "relevant_chunk_ids": [
+        893
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.3333333333333333,
+      "latency_ms": 1261.183125025127
+    },
+    {
+      "evaluation_id": "fin-050",
+      "query_type": "mixed",
+      "mode": "vector",
+      "retrieved_chunk_ids": [
+        895,
+        897,
+        889,
+        962,
+        963,
+        961,
+        947,
+        964,
+        927,
+        921
+      ],
+      "relevant_chunk_ids": [
+        898
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.0,
+      "reciprocal_rank": 0.0,
+      "latency_ms": 393.6102919979021
+    },
+    {
+      "evaluation_id": "fin-050",
+      "query_type": "mixed",
+      "mode": "keyword",
+      "retrieved_chunk_ids": [
+        898,
+        960,
+        900,
+        901,
+        947,
+        892,
+        946,
+        963,
+        965,
+        899
+      ],
+      "relevant_chunk_ids": [
+        898
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "latency_ms": 160.40804202202708
+    },
+    {
+      "evaluation_id": "fin-050",
+      "query_type": "mixed",
+      "mode": "hybrid",
+      "retrieved_chunk_ids": [
+        947,
+        895,
+        963,
+        897,
+        941,
+        962,
+        946,
+        898,
+        945,
+        889
+      ],
+      "relevant_chunk_ids": [
+        898
+      ],
+      "recall_at_5": 0.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.125,
+      "latency_ms": 507.2887080023065
+    },
+    {
+      "evaluation_id": "fin-050",
+      "query_type": "mixed",
+      "mode": "hybrid_rerank",
+      "retrieved_chunk_ids": [
+        895,
+        963,
+        897,
+        898,
+        964,
+        892,
+        965,
+        947,
+        957,
+        891
+      ],
+      "relevant_chunk_ids": [
+        898
+      ],
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 0.25,
+      "latency_ms": 3847.697707999032
     }
   ]
 }

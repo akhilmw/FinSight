@@ -4,6 +4,8 @@ Initial retrieval baseline: October 16, 2026
 
 Cross-encoder reranking update: October 18, 2026
 
+50-question expansion: November 8, 2026
+
 ## Objective
 
 Evaluate vector, PostgreSQL full-text, hybrid reciprocal-rank-fusion, and
@@ -12,8 +14,8 @@ generation.
 
 ## Evaluation set
 
-- 25 manually authored and labeled questions.
-- 34 relevant chunk labels.
+- 50 manually authored and labeled questions.
+- 60 relevant chunk labels.
 - Source: NVIDIA fiscal 2026 Form 10-K.
 - Accession number: `0001045810-26-000021`.
 - Query types: exact, semantic, and mixed.
@@ -21,7 +23,9 @@ generation.
 - Metrics: Recall@5, Recall@10, mean reciprocal rank, and end-to-end query
   latency.
 
-The relevance labels were not changed between evaluation runs.
+The first three runs used the original 25 questions. The November expansion
+adds 25 new questions while preserving the original labels. Stable labels are
+resolved to current database chunk IDs before each evaluation.
 
 ## Retrieval configurations
 
@@ -77,6 +81,10 @@ construction; the evaluation questions and labels remained fixed.
 | Reranker v3 | Keyword | 0.620 | 0.760 | 0.456 | **115.7 ms** |
 | Reranker v3 | Hybrid | 0.560 | 0.700 | 0.531 | 521.3 ms |
 | Reranker v3 | Hybrid + reranking | **0.860** | **0.980** | **0.786** | 1,405.3 ms |
+| Expanded v4 | Vector | 0.570 | 0.630 | 0.428 | 410.8 ms |
+| Expanded v4 | Keyword | 0.650 | 0.790 | 0.453 | **115.7 ms** |
+| Expanded v4 | Hybrid | 0.630 | 0.760 | 0.523 | 519.3 ms |
+| Expanded v4 | Hybrid + reranking | **0.870** | **0.970** | **0.755** | 1,425.3 ms |
 
 Latency differences between runs include external embedding-service and local
 system variability and should not be interpreted as a controlled performance
@@ -84,23 +92,22 @@ improvement.
 
 ## Reranking impact
 
-The controlled comparison below uses the hybrid and reranked-hybrid results
-from the same evaluation run.
+The controlled comparison below uses the expanded 50-question run.
 
 | Metric | Hybrid | Hybrid + reranking | Absolute change |
 |---|---:|---:|---:|
-| Recall@5 | 0.560 | **0.860** | **+0.300** |
-| Recall@10 | 0.700 | **0.980** | **+0.280** |
-| MRR | 0.531 | **0.786** | **+0.255** |
-| Mean latency | 521.3 ms | 1,405.3 ms | +884.0 ms |
+| Recall@5 | 0.630 | **0.870** | **+0.240** |
+| Recall@10 | 0.760 | **0.970** | **+0.210** |
+| MRR | 0.523 | **0.755** | **+0.232** |
+| Mean latency | 519.3 ms | 1,425.3 ms | +906.0 ms |
 
-Reranking increased Recall@10 from 70% to 98% and MRR from 0.531 to
-0.786. Mean retrieval latency increased by approximately 884 ms, or 2.7 times
+Reranking increased Recall@10 from 76% to 97% and MRR from 0.523 to
+0.755. Mean retrieval latency increased by approximately 906 ms, or 2.7 times
 the original hybrid latency. The evaluation requests ten results and therefore
 reranks 40 candidates; the default API request for five results reranks 20
 candidates and may be faster.
 
-## Results by query type
+## Original 25-question results by query type
 
 | Query type | Mode | Recall@5 | Recall@10 | MRR |
 |---|---|---:|---:|---:|
@@ -129,7 +136,7 @@ candidates and may be faster.
 - The quality improvement supports using the slower reranked mode for final RAG
   answer generation while retaining the faster modes as measurable baselines.
 
-## Recorded failure cases
+## Recorded failure cases from the original 25-question run
 
 ### Vector zero-recall-at-10 cases
 
@@ -188,13 +195,13 @@ stable benchmark.
 ## Limitations
 
 - The dataset covers one company and one 10-K.
-- The 25 questions and relevance labels were manually created.
+- The 50 questions and relevance labels were manually created.
 - Query-type subsets are small.
 - Timing results come from a single local run.
 - Cross-encoder results use one local reranker model and one candidate-pool
   configuration; model size and candidate count were not tuned.
-- Retrieval metrics measure evidence discovery, not answer groundedness or
-  citation correctness.
+- Answer groundedness and citation correctness are measured separately in
+  `results/answer_evaluation.json` using a structured LLM judge.
 - Multiple chunking strategies were not benchmarked; the selected strategy is
   section-aware, token-bounded natural-boundary chunking with a 600-token maximum
   and 100-token overlap.
@@ -204,6 +211,6 @@ stable benchmark.
 FinSight now provides vector, keyword, and hybrid retrieval; metadata filtering;
 indexed PostgreSQL search; a labeled evaluation dataset; automated retrieval
 metrics; saved baselines; failure-case analysis; an indexing benchmark; and
-cross-encoder reranking. The reranking milestone is complete. The next system
-stage is evidence-grounded answer generation with citations and insufficient-
-evidence behavior.
+cross-encoder reranking. The expanded retrieval benchmark is complete; answer
+quality, citation correctness, model cost, and adversarial evidence are measured
+by the Week 3 evaluation suite.

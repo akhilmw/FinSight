@@ -22,9 +22,11 @@ streaming, caching, and background workers.
 - Server-Sent Events (SSE) for progressive answer streaming
 - Redis cache-aside layer with deterministic request keys and graceful fallback
 - Celery worker for durable, asynchronous filing processing
+- MLflow traces with model latency, token usage, and estimated cost
+- Adversarial evidence filtering for document prompt-injection attempts
 - Measured retrieval quality, latency, and indexing performance
-- 159 automated tests across ingestion, retrieval, generation, API, cache, and
-  worker layers
+- 170 automated tests across ingestion, retrieval, generation, evaluation, API,
+  cache, observability, security, and worker layers
 
 ## Architecture
 
@@ -51,6 +53,7 @@ flowchart LR
     SEARCH --> RRF[Reciprocal-rank fusion]
     RRF --> RERANK[Cross-encoder reranking]
     RERANK --> LLM[Structured answer generation]
+    LLM --> MLFLOW[(MLflow traces)]
     LLM --> VALIDATE[Citation validation]
     VALIDATE --> API
     API -->|JSON or SSE| USER
@@ -62,20 +65,45 @@ broker, and Celery result backend.
 
 ## Retrieval results
 
-The current evaluation set contains 25 manually labeled questions and 34
+The current evaluation set contains 50 manually labeled questions and 60
 relevant-chunk labels from NVIDIA's FY2026 10-K. It includes exact-term,
 semantic, and mixed queries.
 
 | Retrieval mode | Recall@5 | Recall@10 | MRR | Mean latency |
 | --- | ---: | ---: | ---: | ---: |
-| Vector | 0.540 | 0.600 | 0.470 | 437.2 ms |
-| Keyword | 0.620 | 0.760 | 0.456 | 115.7 ms |
-| Hybrid | 0.560 | 0.700 | 0.531 | 521.3 ms |
-| **Hybrid + reranking** | **0.860** | **0.980** | **0.786** | 1405.3 ms |
+| Vector | 0.570 | 0.630 | 0.428 | 410.8 ms |
+| Keyword | 0.650 | 0.790 | 0.453 | 115.7 ms |
+| Hybrid | 0.630 | 0.760 | 0.523 | 519.3 ms |
+| **Hybrid + reranking** | **0.870** | **0.970** | **0.755** | 1425.3 ms |
 
-Cross-encoder reranking improves Recall@10 from 0.70 to 0.98 and MRR from
-0.531 to 0.786 over the hybrid baseline. The tradeoff is higher latency, which
+Cross-encoder reranking improves Recall@10 from 0.76 to 0.97 and MRR from
+0.523 to 0.755 over the hybrid baseline. The tradeoff is higher latency, which
 is why FinSight exposes each retrieval mode independently.
+
+### Answer quality and security
+
+The same 50 questions were run end to end through retrieval, reranking, answer
+generation, citation validation, and a separate structured LLM judge.
+
+| Metric | Result |
+| --- | ---: |
+| Sufficient-evidence rate | 1.000 |
+| Mean groundedness | **0.962** |
+| Mean citation correctness | **0.947** |
+| Mean end-to-end latency | 8704.4 ms |
+| OpenAI traces | 150 |
+| Total tokens | 252,759 |
+| Estimated model cost | **$0.0449** |
+
+FinSight also runs five adversarial cases containing direct system overrides,
+forced outputs, fabricated facts, and instruction-exfiltration attempts. The
+first run passed only 1/5 cases and exposed a real weakness. After adding a
+deterministic suspicious-evidence filter and stronger evidence boundaries, the
+unchanged suite passed **5/5**. Both evaluation outputs are saved under
+`evals/results/`.
+
+See the [answer quality and security report](evals/answer_report.md) for the
+methodology, cost breakdown, adversarial results, and limitations.
 
 See the [full retrieval evaluation](evals/retrieval_report.md) for methodology,
 per-mode results, and limitations.
@@ -132,6 +160,7 @@ citations.
 | Answer generation | OpenAI `gpt-4o-mini` with Structured Outputs |
 | Parsing and chunking | Beautiful Soup, lxml, tiktoken |
 | Cache and queue | Redis, Celery |
+| Observability | MLflow OpenAI tracing |
 | HTTP and streaming | HTTPX, Server-Sent Events |
 | Tooling | uv, Ruff, Pyright, pytest, Docker Compose |
 
@@ -211,6 +240,22 @@ uv run celery -A finsight.workers.celery_app:celery_app worker --loglevel=INFO -
 On Linux, Celery's default prefork pool can process multiple filings
 concurrently.
 
+### 5. Enable MLflow tracing (optional)
+
+Start a local tracking server:
+
+```bash
+uv run mlflow server \
+  --backend-store-uri sqlite:///mlflow.db \
+  --default-artifact-root ./mlartifacts \
+  --host 127.0.0.1 \
+  --port 5000
+```
+
+Then set `FINSIGHT_MLFLOW_TRACING_ENABLED=true` in `.env`. The MLflow UI is
+available at <http://127.0.0.1:5000> and records prompts, responses, streaming
+events, latency, token usage, and estimated model cost.
+
 ## API walkthrough
 
 ### Discover and store recent filings
@@ -239,11 +284,16 @@ curl -X POST http://127.0.0.1:8000/filings/3/chunk
 curl -X POST http://127.0.0.1:8000/filings/3/embed
 ```
 
-The full pipeline can also be submitted directly to Celery while the worker is
-running:
+The full pipeline can be submitted through the API while the worker is running:
 
 ```bash
-uv run python -c "from finsight.workers.tasks import process_filing_task; task = process_filing_task.delay(3); print(task.id)"
+curl -X POST http://127.0.0.1:8000/filings/3/pipeline
+```
+
+The response contains a task ID. Poll its status with:
+
+```bash
+curl http://127.0.0.1:8000/jobs/YOUR_TASK_ID
 ```
 
 ### Search indexed filings
@@ -311,6 +361,19 @@ Reproduce the retrieval comparison:
 uv run python scripts/evaluate_retrieval.py
 ```
 
+Evaluate groundedness, citations, latency, tokens, and cost:
+
+```bash
+uv run python scripts/evaluate_answers.py
+uv run python scripts/summarize_mlflow_traces.py
+```
+
+Run the adversarial document suite:
+
+```bash
+uv run python scripts/evaluate_prompt_injection.py
+```
+
 Benchmark the indexing pipeline for an existing filing:
 
 ```bash
@@ -339,6 +402,8 @@ FinSight/
 │   ├── clients/             # SEC EDGAR client
 │   ├── core/                # Configuration
 │   ├── db/                  # SQLAlchemy models and sessions
+│   ├── evaluation/          # Retrieval, answer, and security evaluation
+│   ├── observability/       # MLflow tracing configuration
 │   ├── repositories/        # Database access and retrieval queries
 │   ├── services/            # Pipeline, retrieval, generation, and cache logic
 │   └── workers/             # Celery application and tasks
@@ -363,21 +428,19 @@ FinSight/
 
 ## Current scope and roadmap
 
-The core ingestion, indexing, retrieval, reranking, answer generation, citation,
-streaming, caching, and worker layers are implemented.
+The complete Week 3 backend is implemented: ingestion, indexing, retrieval,
+reranking, answer generation, citations, insufficient-evidence handling,
+streaming, caching, background jobs, MLflow tracing, 50-question evaluation,
+and adversarial-document testing.
 
 The next milestones are:
 
-- API endpoints for submitting background pipeline jobs and checking job status
-- MLflow tracing and answer-level groundedness/citation evaluation
-- Expansion from 25 retrieval questions to a 50-question evaluation set
-- Automated prompt-injection and adversarial-document evaluation
 - Streamlit research interface with source previews and query history
 - Load testing, deployment, architecture assets, and a recorded product demo
 
 ## Evaluation limitations
 
-The saved retrieval results currently cover one company and one 10-K filing.
+The 50-question results currently cover one company and one 10-K filing.
 They are useful for comparing retrieval configurations under controlled
 conditions, but they do not yet establish performance across industries,
 companies, filing formats, or time periods. Expanding this benchmark is an

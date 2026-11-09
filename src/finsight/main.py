@@ -7,13 +7,17 @@ from redis.asyncio import Redis
 from finsight.api.routes.answers import router as answers_router
 from finsight.api.routes.filings import router as filings_router
 from finsight.api.routes.health import router as health_router
+from finsight.api.routes.jobs import router as jobs_router
 from finsight.api.routes.search import router as search_router
 from finsight.core.config import get_settings
+from finsight.observability import configure_mlflow_tracing
 
 settings = get_settings()
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    configure_mlflow_tracing(settings)
     redis_client = Redis.from_url(
         settings.redis_url,
         decode_responses=True,
@@ -26,6 +30,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     finally:
         await redis_client.aclose()
 
+
 app = FastAPI(
     title=settings.app_name,
     version="0.1.0",
@@ -36,3 +41,4 @@ app.include_router(health_router)
 app.include_router(filings_router)
 app.include_router(search_router)
 app.include_router(answers_router)
+app.include_router(jobs_router)

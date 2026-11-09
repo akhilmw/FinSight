@@ -1,10 +1,16 @@
 from typing import Annotated
 
 import httpx
+from celery import Celery
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from finsight.api.dependencies import get_document_store, get_embedding_client, get_sec_client
+from finsight.api.dependencies import (
+    get_celery_app,
+    get_document_store,
+    get_embedding_client,
+    get_sec_client,
+)
 from finsight.chunking.section import SectionChunker
 from finsight.clients.sec import CompanyNotFoundError, InvalidFilingDocumentError, SecClient
 from finsight.core.config import get_settings
@@ -19,6 +25,7 @@ from finsight.schemas import (
     FilingEmbeddingResponse,
     FilingIngestRequest,
     FilingIngestResponse,
+    FilingPipelineJobResponse,
     FilingProcessResponse,
     FilingResponse,
 )
@@ -63,6 +70,7 @@ EmbeddingClientDependency = Annotated[
     EmbeddingClient,
     Depends(get_embedding_client),
 ]
+CeleryDependency = Annotated[Celery, Depends(get_celery_app)]
 
 
 @router.post(
@@ -140,6 +148,34 @@ def get_filing(
         )
 
     return FilingResponse.model_validate(filing)
+
+
+@router.post(
+    "/{filing_id}/pipeline",
+    response_model=FilingPipelineJobResponse,
+    status_code=status.HTTP_202_ACCEPTED,
+)
+def enqueue_filing_pipeline(
+    filing_id: int,
+    session: DatabaseSession,
+    task_queue: CeleryDependency,
+) -> FilingPipelineJobResponse:
+    repository = FilingRepository(session)
+    if repository.get_by_id(filing_id) is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Filing {filing_id} was not found",
+        )
+
+    task = task_queue.send_task(
+        "finsight.process_filing",
+        args=[filing_id],
+    )
+    return FilingPipelineJobResponse(
+        task_id=task.id,
+        filing_id=filing_id,
+        status="queued",
+    )
 
 
 @router.post(

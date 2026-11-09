@@ -8,4 +8,7 @@ htmlcov/
 .env
 .DS_Store
 data/raw/
+mlflow.db
+mlartifacts/
+mlruns/
 

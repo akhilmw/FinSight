@@ -14,6 +14,7 @@ from finsight.schemas.filing import (
     FilingProcessResponse,
     FilingResponse,
 )
+from finsight.schemas.job import FilingPipelineJobResponse, JobStatusResponse
 from finsight.schemas.search import (
     FilingSearchMatchResponse,
     FilingSearchRequest,
@@ -32,6 +33,8 @@ __all__ = [
     "FilingProcessResponse",
     "FilingChunkResponse",
     "FilingEmbeddingResponse",
+    "FilingPipelineJobResponse",
+    "JobStatusResponse",
     "FilingSearchRequest",
     "FilingSearchResponse",
     "FilingSearchMatchResponse",

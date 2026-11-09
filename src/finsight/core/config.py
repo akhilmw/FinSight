@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     answer_cache_ttl_seconds: int = 86400
     celery_broker_url: str
     celery_result_backend: str
+    mlflow_tracing_enabled: bool = False
+    mlflow_tracking_uri: str = "http://127.0.0.1:5000"
+    mlflow_experiment_name: str = "finsight"
 
     model_config = SettingsConfigDict(
         env_file=".env",

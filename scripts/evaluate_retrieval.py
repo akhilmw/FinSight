@@ -9,7 +9,10 @@ from openai import AsyncOpenAI
 from finsight.core.config import get_settings
 from finsight.db.session import SessionLocal
 from finsight.embeddings import OpenAIEmbeddingClient
-from finsight.evaluation.dataset import load_retrieval_eval_cases
+from finsight.evaluation.dataset import (
+    load_retrieval_eval_cases,
+    resolve_retrieval_eval_cases,
+)
 from finsight.evaluation.report import (
     RetrievalModeSummary,
     summarize_retrieval_results,
@@ -162,6 +165,7 @@ async def evaluate(
         )
 
         with SessionLocal() as session:
+            cases = resolve_retrieval_eval_cases(cases, session)
             reranker = CrossEncoderReranker(
                 model_name=settings.reranker_model,
             )

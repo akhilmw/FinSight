@@ -2,6 +2,7 @@ from collections.abc import AsyncIterator
 from functools import lru_cache
 from typing import Annotated, cast
 
+from celery import Celery
 from fastapi import Depends, HTTPException, Request, status
 from openai import AsyncOpenAI
 from redis.asyncio import Redis
@@ -16,6 +17,7 @@ from finsight.embeddings import (
 from finsight.generation import AnswerGenerator, OpenAIAnswerGenerator
 from finsight.reranking import CrossEncoderReranker, Reranker
 from finsight.storage.local import LocalDocumentStore
+from finsight.workers.celery_app import celery_app
 
 
 def get_document_store() -> LocalDocumentStore:
@@ -84,3 +86,7 @@ def get_answer_cache(
         ttl_seconds=settings.answer_cache_ttl_seconds,
         answer_model=settings.answer_model,
     )
+
+
+def get_celery_app() -> Celery:
+    return celery_app

@@ -7,6 +7,7 @@ from finsight.clients.sec import SecClient
 from finsight.core.config import get_settings
 from finsight.db.session import SessionLocal
 from finsight.embeddings import OpenAIEmbeddingClient
+from finsight.observability import configure_mlflow_tracing
 from finsight.parsers.sec_html import SecHtmlParser
 from finsight.parsers.sec_sections import SecSectionDetector
 from finsight.services.filing_chunking import FilingChunkingService
@@ -38,6 +39,7 @@ async def run_filing_pipeline(
     filing_id: int,
 ) -> dict[str, int | str]:
     settings = get_settings()
+    configure_mlflow_tracing(settings)
 
     if settings.openai_api_key is None:
         raise RuntimeError("The embedding service is not configured")
