@@ -5,6 +5,8 @@ FinSight is an evidence-grounded research assistant for SEC filings. It ingests
 chunks, and answers financial research questions with citations back to the
 original filing.
 
+**Live demo:** [finsight-sec-research-akhil.streamlit.app](https://finsight-sec-research-akhil.streamlit.app/)
+
 The project is built as a production-oriented AI engineering system rather than
 a standalone chatbot: it includes a reproducible ingestion pipeline, hybrid
 retrieval, reranking, retrieval evaluation, structured answer generation,
