@@ -7,6 +7,8 @@ original filing.
 
 **Live demo:** [finsight-sec-research-akhil.streamlit.app](https://finsight-sec-research-akhil.streamlit.app/)
 
+![FinSight SEC filing research interface](docs/images/finsight-ui.png)
+
 The project is built as a production-oriented AI engineering system rather than
 a standalone chatbot: it includes a reproducible ingestion pipeline, hybrid
 retrieval, reranking, retrieval evaluation, structured answer generation,
